@@ -5,7 +5,6 @@ import riri.components.ModernScrollBarUI;
 import riri.components.SearchPanel;
 import riri.dao.BookDAO;
 import riri.model.Book;
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;

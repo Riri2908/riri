@@ -7,7 +7,6 @@ import javax.swing.*;
 import java.awt.*;
 
 public class BookItemPanel extends BorderPanel {
-
     public BookItemPanel(Book book) {
         super(15, Color.WHITE, 0, 0, null, 0);
         setOpaque(false);
