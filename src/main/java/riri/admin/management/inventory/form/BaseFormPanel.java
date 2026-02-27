@@ -27,20 +27,20 @@ public class BaseFormPanel extends BorderPanel {
         setLayout(new GridBagLayout());
         setOpaque(false);
 
-        gbc.insets = new Insets(-5,5,0,5);
+        gbc.insets = new Insets(0,5,0,5);
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1;
         gbc.weighty = 1;
 
         gbc.gridx = 0;
         gbc.gridy = 0;
-        add(BasePanel.createTitle("Tên sách","Segue UI",Font.BOLD, 13, new Color(53, 53, 53)),gbc);
+        add(BasePanel.createTitle("Tên sách","Segue UI",Font.BOLD, 13, new Color(71, 71, 71)),gbc);
         gbc.gridx = 1;
         gbc.gridy = 0;
-        add(BasePanel.createTitle("Số lượng","Segue UI",Font.BOLD, 13, new Color(53, 53, 53)),gbc);
+        add(BasePanel.createTitle("Số lượng","Segue UI",Font.BOLD, 13, new Color(71, 71, 71)),gbc);
         gbc.gridx = 2;
         gbc.gridy = 0;
-        add(BasePanel.createTitle("Ghi chú","Segue UI",Font.BOLD, 13, new Color(53, 53, 53)),gbc);
+        add(BasePanel.createTitle("Ghi chú","Segue UI",Font.BOLD, 13, new Color(71, 71, 71)),gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 1;
