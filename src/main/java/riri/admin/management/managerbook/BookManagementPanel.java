@@ -25,6 +25,7 @@ public class BookManagementPanel extends JPanel {
         // Load dữ liệu từ file txt
         bookDAO.loadDataFromFile();
 
+        //
         JPanel header = new JPanel(new BorderLayout());
         header.setOpaque(false);
 

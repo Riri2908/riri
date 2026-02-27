@@ -40,6 +40,7 @@ public class BookItemPanel extends BorderPanel {
         lblQuantity.setFont(new Font("Segoe UI", Font.BOLD, 13));
         lblQuantity.setForeground(new Color(255, 152, 0));
 
+        //
         JPanel actionPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
         actionPanel.setOpaque(false);
 
