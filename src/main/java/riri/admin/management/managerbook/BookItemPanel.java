@@ -28,7 +28,6 @@ public class BookItemPanel extends BorderPanel {
         lblCategory.setForeground(new Color(156, 39, 176));
         lblCategory.setBackground(new Color(243, 229, 245));
         lblCategory.setOpaque(true);
-
         JPanel categoryWrapper = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         categoryWrapper.setOpaque(false);
         categoryWrapper.add(lblCategory);
