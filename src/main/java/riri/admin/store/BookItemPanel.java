@@ -1,4 +1,11 @@
 package riri.admin.store;
 
-public class BookItemPanel {
+import riri.components.BorderPanel;
+
+import javax.swing.*;
+
+public class BookItemPanel extends BorderPanel {
+    public BookItemPanel() {
+
+    }
 }
