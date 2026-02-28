@@ -62,6 +62,7 @@ public class BaseFormPanel extends BorderPanel {
 
         cbBook.setBorder(null);
         cbBook.setOpaque(false);
+        cbBook.setFont(new Font("Arial", Font.PLAIN, 14));
 
         cbBook.setRenderer(new DefaultListCellRenderer() {
             @Override
@@ -83,7 +84,6 @@ public class BaseFormPanel extends BorderPanel {
                 return label;
             }
         });
-
 
         cbBook.setUI(new BasicComboBoxUI() {
 

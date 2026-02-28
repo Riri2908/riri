@@ -5,6 +5,7 @@ public class Book {
     private String id;
     private String name;
     private String author;
+    private String category;
     private double price;
     private int quantity;
 
@@ -32,6 +33,10 @@ public class Book {
         this.price = price;
     }
 
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
@@ -41,9 +46,17 @@ public class Book {
     }
 
     public String getId() { return id; }
+
     public String getName() { return name; }
+
     public String getAuthor() { return author; }
+
     public double getPrice() { return price; }
+
+    public String getCategory() {
+        return category;
+    }
+
     public int getQuantity() { return quantity; }
 
 

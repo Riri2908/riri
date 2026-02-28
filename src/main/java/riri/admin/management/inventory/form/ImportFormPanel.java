@@ -27,6 +27,7 @@ public class ImportFormPanel extends BaseFormPanel {
         importButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+//                System.out.println(cbBook.getSelectedItem());
 
             }
             @Override
