@@ -27,8 +27,7 @@ public abstract class BaseFileDAO {
 
     protected void backup() {
         try {
-            String time = LocalDateTime.now()
-                    .format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
+            String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
 
             Path backupFile = AppPath.BACKUP.resolve(
                     file.getFileName() + "_" + time + ".bak"

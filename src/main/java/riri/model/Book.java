@@ -9,10 +9,11 @@ public class Book {
     private double price;
     private int quantity;
 
-    public Book(String id, String name, String author, double price, int quantity) {
+    public Book(String id, String name, String author, String category, double price, int quantity) {
         this.id = id;
         this.name = name;
         this.author = author;
+        this.category = category;
         this.price = price;
         this.quantity = quantity;
     }
@@ -42,7 +43,7 @@ public class Book {
     }
 
     public String toFileString() {
-        return id + ";" + name + ";" + author + ";" + price + ";" + quantity;
+        return id + ";" + name + ";" + author + ";" + category + ";" + price + ";" + quantity;
     }
 
     public String getId() { return id; }
