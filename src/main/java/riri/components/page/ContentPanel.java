@@ -19,6 +19,7 @@ public class ContentPanel extends JPanel {
         setLayout(new BorderLayout());
         setBackground(new Color(247, 248, 249));
 
+
         this.textPanel=new JPanel();
         textPanel.setLayout(cardLayout);
         textPanel.add(new DashBoardPage(), "DashBoard");

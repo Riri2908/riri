@@ -78,7 +78,6 @@ public class SearchPanel extends JPanel {
         add(searchIcon, BorderLayout.WEST);
         add(textField, BorderLayout.CENTER);
     }
-
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

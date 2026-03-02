@@ -20,6 +20,7 @@ public class BookManagementPanel extends JPanel {
     //Ti le cac muc
     public static final double[] COLUMN_WEIGHTS = {0.30, 0.2, 0.1, 0.15, 0.1, 0.15};
 
+
     public BookManagementPanel() {
         this.bookDAO = new BookDAO();
         this.listContainer = new JPanel();

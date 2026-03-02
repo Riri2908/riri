@@ -78,17 +78,13 @@ public class BookItemPanel extends JPanel {
     }
 
     private JPanel createActionCol() {
-        // Dùng FlowLayout để xếp 2 icon nằm ngang, cách nhau 15 pixel
         JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         p.setOpaque(false);
 
-        // --- 1. Tạo Nút Sửa ---
+
         JButton btnEdit = new JButton();
-        // Gọi hàm getScaledIcon đã viết sẵn bên dưới.
-        // LƯU Ý: Sửa lại đường dẫn "/icons/edit.png" cho đúng với thư mục của bạn
         btnEdit.setIcon(getScaledIcon("/icons/management/edit.png", 20, 20));
 
-        // Xóa viền, xóa nền của nút mặc định
         btnEdit.setContentAreaFilled(false);
         btnEdit.setBorderPainted(false);
         btnEdit.setFocusPainted(false);
@@ -96,7 +92,6 @@ public class BookItemPanel extends JPanel {
 
         // --- 2. Tạo Nút Xóa ---
         JButton btnDelete = new JButton();
-        // LƯU Ý: Sửa lại đường dẫn "/icons/delete.png" cho đúng với thư mục của bạn
         btnDelete.setIcon(getScaledIcon("/icons/management/delete.png", 20, 20));
 
         // Xóa viền, xóa nền
@@ -111,7 +106,6 @@ public class BookItemPanel extends JPanel {
 
         return p;
     }
-    // --- THÊM HÀM NÀY VÀO CUỐI CLASS BookItemPanel ---
     @Override
     public Dimension getMaximumSize() {
         // Khóa cứng chiều cao, thả rông chiều ngang
