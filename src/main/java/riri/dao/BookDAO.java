@@ -17,6 +17,7 @@ public class BookDAO extends BaseFileDAO {
     public List<Book> findAll() {
         List<Book> list = new ArrayList<>();
 
+
         try {
             List<String> lines = Files.readAllLines(file);
 
@@ -25,7 +26,7 @@ public class BookDAO extends BaseFileDAO {
 
                 String[] d = line.split(";");
 
-                list.add(new Book(d[0], d[1], d[2], Double.parseDouble(d[3]), Integer.parseInt(d[4])));
+                list.add(new Book(d[0], d[1], d[2], d[3],Double.parseDouble(d[4]), Integer.parseInt(d[5])));
             }
 
         } catch (IOException e) {
