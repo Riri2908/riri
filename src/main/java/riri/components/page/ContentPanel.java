@@ -22,7 +22,7 @@ public class ContentPanel extends JPanel {
         this.textPanel=new JPanel();
         textPanel.setLayout(cardLayout);
         textPanel.add(new DashBoardPage(), "DashBoard");
-        textPanel.add(new JLabel("Quản lý sách"), "Quản lý sách");
+        textPanel.add(new riri.admin.management.managerbook.BookManagementPanel(), "Quản lý sách");
         textPanel.add(new ManagementPage(), "Quản lý tồn kho");
         textPanel.add(new JLabel("Hóa đơn"), "Hóa đơn");
         textPanel.add(new JLabel("Khách hàng"), "Khách hàng");
