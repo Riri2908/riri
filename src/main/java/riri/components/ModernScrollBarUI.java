@@ -1,6 +1,7 @@
 package riri.components;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 import java.awt.*;
 
@@ -36,6 +37,7 @@ public class ModernScrollBarUI extends BasicScrollBarUI {
 
     private JButton createZeroButton() {
         JButton btn = new JButton();
+        btn.setBorder(new EmptyBorder(0,10,0,0));
         btn.setPreferredSize(new Dimension(0, 0));
         btn.setMinimumSize(new Dimension(0, 0));
         btn.setMaximumSize(new Dimension(0, 0));

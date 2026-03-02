@@ -25,6 +25,7 @@ public abstract class BasePanel {
         JScrollBar vBar = scrollPane.getVerticalScrollBar();
         vBar.setUI(new ModernScrollBarUI());
         vBar.setPreferredSize(new Dimension(6, 0));
+        vBar.setUnitIncrement(16);
         vBar.setOpaque(false);
 
         JScrollBar hBar = scrollPane.getHorizontalScrollBar();

@@ -2,12 +2,17 @@ package riri.components.page;
 
 import riri.admin.dashboard.DashBoardPage;
 import riri.admin.management.ManagementPage;
+import riri.model.Book;
+import riri.model.Transaction;
+import riri.util.AppContext;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.util.List;
 
 public class ContentPanel extends JPanel {
+
 
     private final CardLayout cardLayout=new CardLayout();
     private final JPanel textPanel;
