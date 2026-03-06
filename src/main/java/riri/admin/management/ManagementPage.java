@@ -11,20 +11,30 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class ManagementPage extends JPanel {
+
     public ManagementPage() {
         setOpaque(true);
         setBackground(new Color(247, 248, 249));
         setLayout(new BorderLayout());
-        setBorder(new EmptyBorder(25,25,25,25));
+        setFocusable(true);
 
         JPanel panel = new JPanel();
+
+        panel.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mousePressed(java.awt.event.MouseEvent e) {
+                requestFocusInWindow();
+            }
+        });
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setOpaque(false);
+        panel.setFocusable(true);
 
         ManagementStatCard stat = new ManagementStatCard();
         InventoryPanel iventoryPanel = new InventoryPanel();
-        SearchPanel searchPanel = new SearchPanel();
         HistoryPanel historyPanel = new HistoryPanel();
+        JTable table = historyPanel.getTable();
+        SearchPanel searchPanel = new SearchPanel(table);
 
         panel.add(stat);
         panel.add(Box.createVerticalStrut(25));
@@ -35,6 +45,7 @@ public class ManagementPage extends JPanel {
         panel.add(historyPanel);
 
         JScrollPane scrollPanel = BasePanel.createScroll(panel);
+        scrollPanel.setBorder(new EmptyBorder(25,25,25,25));
 
         add(scrollPanel,BorderLayout.CENTER);
 

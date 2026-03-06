@@ -1,127 +1,111 @@
 package riri.components;
 
+import riri.components.page.BasePanel;
+
+import javax.swing.border.EmptyBorder;
+import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.util.regex.Pattern;
 
-public class SearchPanel extends JPanel {
 
-    private JTextField textField;
-    private boolean isFocused = false;
+public class SearchPanel extends BorderPanel {
 
-    public void addSearchEvent(Runnable event) {
-        textField.getDocument().addDocumentListener(new DocumentListener() {
-            @Override
-            public void insertUpdate(DocumentEvent e) { event.run(); }
-            @Override
-            public void removeUpdate(DocumentEvent e) { event.run(); }
-            @Override
-            public void changedUpdate(DocumentEvent e) { event.run(); }
-        });
-    }
+    private final JTextField searchField;
+    private final JTable table;
+    private final String PLACEHOLDER = "Search...";
+    private final Icon searchIcon = new ImageIcon(BasePanel.createImageLogo(getClass(),"sidebar/search",22,22)) ;
+    private final JLabel searchLabel = new JLabel(searchIcon);
 
-    public String getSearchText() {
-        return textField.getText().trim().toLowerCase();
-    }
-    public SearchPanel() {
-        setOpaque(false);
-        setLayout(new BorderLayout(10, 0));
-        setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
+    public SearchPanel(JTable table) {
+        super();
+        this.table = table;
+        setLayout(new BorderLayout());
+        setPreferredSize(new Dimension(0,70));
+        setMaximumSize(new Dimension(Integer.MAX_VALUE,70));
+        setBorder(new EmptyBorder(13,15,13,15));
 
-        setPreferredSize(new Dimension(800, 48));
-        setMaximumSize(new Dimension(Integer.MAX_VALUE, 48));
-        JLabel searchIcon = new JLabel(new SearchIcon());
+        BorderPanel searchPanel = new BorderPanel(16,Color.WHITE,0,0,new Color(221, 221, 221),1);
+        searchPanel.setLayout(new BoxLayout(searchPanel,BoxLayout.X_AXIS));
 
-        // Ô nhập chữ
-        textField = new JTextField() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                // Vẽ chữ Placeholder mờ
-                if (getText().isEmpty()) {
-                    Graphics2D g2 = (Graphics2D) g.create();
-                    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                    g2.setColor(new Color(150, 150, 150));
-                    g2.setFont(getFont());
-                    FontMetrics fm = g2.getFontMetrics();
-                    int y = (getHeight() - fm.getHeight()) / 2 + fm.getAscent();
-                    g2.drawString("Tìm kiếm theo tên sách, tác giả, hoặc thể loại...", 2, y);
-                    g2.dispose();
-                }
-            }
-        };
+        searchField= new JTextField();
 
-        textField.setOpaque(false);
-        textField.setBorder(null);
-        textField.setFont(new Font("Segoe UI", Font.PLAIN, 15));
-        textField.setForeground(new Color(50, 50, 50));
-        textField.setCaretColor(new Color(45, 110, 255));
+        showPlaceholder();
+        searchField.setOpaque(false);
+        searchField.setBorder(BorderFactory.createEmptyBorder());
+        searchField.setFont(new Font("Arial",Font.PLAIN,15));
 
-        // 3. THÊM SỰ KIỆN FOCUS ĐỂ ĐỔI MÀU VIỀN
-        textField.addFocusListener(new FocusAdapter() {
+        searchField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                isFocused = true; // Khi click chuột vào ô search
-                SearchPanel.this.repaint(); // Cập nhật lại màu viền
+                searchPanel.setBorder(new Color(31, 95, 255),2);
+                if (isPlaceholder()) {
+                    searchField.setText("");
+                    searchField.setForeground(Color.BLACK);
+                }
             }
 
             @Override
             public void focusLost(FocusEvent e) {
-                isFocused = false; // Khi click chuột ra chỗ khác
-                SearchPanel.this.repaint(); // Trả lại viền màu xám
+                searchPanel.setBorder(new Color(221, 221, 221),1);
+                if (searchField.getText().isEmpty()) {
+                    showPlaceholder();
+
+                }
             }
         });
 
-        add(searchIcon, BorderLayout.WEST);
-        add(textField, BorderLayout.CENTER);
+        search();
+        searchPanel.add(Box.createHorizontalStrut(10));
+        searchPanel.add(searchLabel);
+        searchPanel.add(Box.createHorizontalStrut(10));
+        searchPanel.add(searchField);
+
+        add(searchPanel,BorderLayout.CENTER);
+
     }
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D) g.create();
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-        // Nen trang
-        g2.setColor(Color.WHITE);
-        g2.fillRoundRect(1, 1, getWidth() - 3, getHeight() - 3, 20, 20);
-
-        // Nhap vao nhap nhay
-        if (isFocused) {
-            g2.setColor(new Color(45, 110, 255)); // Màu viền xanh dương khi đang click
-            g2.setStroke(new BasicStroke(1.5f));
-        } else {
-            g2.setColor(new Color(220, 220, 220)); // Màu viền xám nhạt mặc định
-            g2.setStroke(new BasicStroke(1.0f));
-        }
-
-        g2.drawRoundRect(1, 1, getWidth() - 3, getHeight() - 3, 20, 20);
-
-        g2.dispose();
+    private void showPlaceholder() {
+        searchField.setText(PLACEHOLDER);
+        searchField.setForeground(new Color(174,174,174));
     }
 
-    // Class vẽ kính lúp
-    private static class SearchIcon implements Icon {
-        @Override
-        public void paintIcon(Component c, Graphics g, int x, int y) {
-            Graphics2D g2 = (Graphics2D) g.create();
-            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    private boolean isPlaceholder() {
+        return searchField.getText().equals(PLACEHOLDER);
+    }
+    private void search() {
 
-            g2.setColor(new Color(150, 150, 150));
-            g2.setStroke(new BasicStroke(2f));
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+        table.setRowSorter(sorter);
+        searchField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                search();
+            }
 
-            g2.drawOval(x + 2, y + 4, 12, 12);
-            g2.drawLine(x + 11, y + 13, x + 17, y + 19);
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                search();
+            }
 
-            g2.dispose();
-        }
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                search();
+            }
+            private void search(){
+                String text = searchField.getText();
 
-        @Override
-        public int getIconWidth() { return 22; }
-
-        @Override
-        public int getIconHeight() { return 22; }
+                if(text.isEmpty() || isPlaceholder()){
+                    sorter.setRowFilter(null);
+                }else {
+                    sorter.setRowFilter(RowFilter.regexFilter("(?i)"+ Pattern.quote(text)));
+                }
+            }
+        });
     }
 }

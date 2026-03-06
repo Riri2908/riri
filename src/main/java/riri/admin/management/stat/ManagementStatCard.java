@@ -1,19 +1,17 @@
 package riri.admin.management.stat;
 
-import riri.dao.BookDAO;
 import riri.model.Book;
-import riri.service.BookStatistics;
+import riri.model.Transaction;
+import riri.util.AppContext;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
 public class ManagementStatCard extends JPanel {
-
-    private final BookDAO bookDAO = new BookDAO();
-    private final List<Book> bookList=bookDAO.findAll();
-
-    private final double quantity= BookStatistics.totalQuantity(bookList);
+    private final List<Book> books = AppContext.BOOK_SERVICE.getAll();
+    private final List<Transaction> transactions = AppContext.TRANSACTION_SERVICE.getAll();
+    private final double quantity= AppContext.BOOK_SERVICE.totalQuantity();
     private final int HEIGHT=120;
     public ManagementStatCard(){
         setPreferredSize(new Dimension(0, HEIGHT));
