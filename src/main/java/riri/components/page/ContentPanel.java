@@ -2,14 +2,9 @@ package riri.components.page;
 
 import riri.admin.dashboard.DashBoardPage;
 import riri.admin.management.ManagementPage;
-import riri.model.Book;
-import riri.model.Transaction;
-import riri.util.AppContext;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.util.List;
 
 public class ContentPanel extends JPanel {
 
@@ -28,7 +23,7 @@ public class ContentPanel extends JPanel {
         this.textPanel=new JPanel();
         textPanel.setLayout(cardLayout);
         textPanel.add(new DashBoardPage(), "DashBoard");
-        textPanel.add(new riri.admin.management.managerbook.BookManagementPanel(), "Quản lý sách");
+        textPanel.add(new JLabel("Haha"), "Quản lý sách");
         textPanel.add(new ManagementPage(), "Quản lý tồn kho");
         textPanel.add(new JLabel("Hóa đơn"), "Hóa đơn");
         textPanel.add(new JLabel("Khách hàng"), "Khách hàng");

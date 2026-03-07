@@ -3,69 +3,68 @@ package riri.service;
 import riri.dao.BookDAO;
 import riri.model.Book;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class BookService {
 
     private final BookDAO bookDAO = new BookDAO();
-    private final List<Book> books;
+    private final Map<Integer, Book> books;
 
     public BookService() {
-        books = new ArrayList<>(bookDAO.findAll());
+        books = bookDAO.findAll();
     }
 
-    public List<Book> getAll() {
+    public Map<Integer, Book> getAll() {
         return books;
     }
 
-    public Book findById(String id) {
-        return books.stream()
-                .filter(b -> b.getId().equalsIgnoreCase(id))
+    public Book findById(Integer id) {
+        return books.get(id);
+    }
+
+    public Book findByName(String name) {
+        return books.values()
+                .stream()
+                .filter(b -> b.getName().equalsIgnoreCase(name))
                 .findFirst()
                 .orElse(null);
     }
 
     public void add(Book book) {
-        books.add(book);
-        bookDAO.saveAll(books);
+        books.put(book.getId(), book);
+        save();
     }
 
     public void update(Book book) {
 
-        boolean found = false;
-
-        for (int i = 0; i < books.size(); i++) {
-            if (books.get(i).getId().equalsIgnoreCase(book.getId())) {
-                books.set(i, book);
-                found = true;
-                break;
-            }
-        }
-
-        if (!found) {
+        if(!books.containsKey(book.getId())){
             throw new RuntimeException("Book không tồn tại");
         }
 
+        books.put(book.getId(), book);
+        save();
+    }
+
+    public void delete(Integer id) {
+        books.remove(id);
+        save();
+    }
+
+    public void save(){
         bookDAO.saveAll(books);
     }
 
-    public void updateAll() {
-        bookDAO.saveAll(books);
-    }
 
-    public void delete(String id) {
-        books.removeIf(b -> b.getId().equalsIgnoreCase(id));
-        bookDAO.saveAll(books);
-    }
     public double totalInventoryValue() {
-        return books.stream()
-                .mapToDouble(b->b.getPrice()*b.getQuantity())
+        return books.values()
+                .stream()
+                .mapToDouble(b -> b.getPrice() * b.getQuantity())
                 .sum();
     }
 
     public int totalQuantity() {
-        return books.stream()
+        return books.values()
+                .stream()
                 .mapToInt(Book::getQuantity)
                 .sum();
     }

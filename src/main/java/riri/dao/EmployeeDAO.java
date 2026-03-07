@@ -4,8 +4,7 @@ import riri.model.Employee;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class EmployeeDAO extends BaseFileDAO {
 
@@ -13,8 +12,8 @@ public class EmployeeDAO extends BaseFileDAO {
         super("employees.txt");
     }
 
-    public List<Employee> findAll() {
-        List<Employee> list = new ArrayList<>();
+    public Map<Integer,Employee> findAll() {
+        Map<Integer,Employee> employeeMap = new LinkedHashMap<>();
 
         try {
             List<String> lines = Files.readAllLines(file);
@@ -23,18 +22,19 @@ public class EmployeeDAO extends BaseFileDAO {
                 if (line.isBlank()) continue;
 
                 String[] d = line.split(";");
-                list.add(new Employee(d[0], d[1], d[2], d[3]));
+                employeeMap.put(Integer.parseInt(d[0]),new Employee(Integer.parseInt(d[0]), d[1], d[2], d[3]));
             }
 
         } catch (IOException e) {
             throw new RuntimeException("Failed to read employees", e);
         }
 
-        return list;
+        return employeeMap;
     }
 
-    public void saveAll(List<Employee> employees) {
+    public void saveAll(Map<Integer,Employee>  employeeMap) {
         List<String> lines = new ArrayList<>();
+        Collection<Employee> employees = employeeMap.values();
 
         for (Employee e : employees) {
             lines.add(e.toFileString());
@@ -45,18 +45,5 @@ public class EmployeeDAO extends BaseFileDAO {
         } catch (IOException e) {
             throw new RuntimeException("Failed to save employees", e);
         }
-    }
-
-    public void add(Employee employee) {
-        List<Employee> employees = findAll();
-        employees.add(employee);
-        saveAll(employees);
-    }
-
-    public Employee findById(String id) {
-        return findAll().stream()
-                .filter(e -> e.getId().equalsIgnoreCase(id))
-                .findFirst()
-                .orElse(null);
     }
 }

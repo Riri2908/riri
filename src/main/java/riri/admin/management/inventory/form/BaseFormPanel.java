@@ -4,16 +4,26 @@ import riri.components.BorderPanel;
 import riri.components.page.BasePanel;
 import riri.dao.BookDAO;
 import riri.model.Book;
+import riri.service.BookService;
+import riri.service.EmployeeService;
+import riri.util.AppContext;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.plaf.basic.*;
 import java.awt.*;
+import java.awt.event.*;
 import java.util.List;
+import java.util.Map;
 
 public class BaseFormPanel extends BorderPanel {
-    private final BookDAO bookDAO = new BookDAO();
-    private final List<Book> bookList = bookDAO.findAll();
+
+    private final BookService bookService = AppContext.BOOK_SERVICE;
+    private final EmployeeService employeeService = AppContext.EMPLOYEE_SERVICE;
+
+    private final Map<Integer, Book> bookList =bookService.getAll();
 
     protected final GridBagConstraints gbc = new GridBagConstraints();
 
@@ -21,13 +31,14 @@ public class BaseFormPanel extends BorderPanel {
     public final JSpinner spinner = new JSpinner(spinnerModel);
     public final JComboBox<String> cbBook = new JComboBox<>();
 
+    private int hoverIndex = -1;
+
     public BaseFormPanel() {
         super(0,Color.WHITE,0,0,null,0);
-
         setLayout(new GridBagLayout());
         setOpaque(false);
 
-        gbc.insets = new Insets(0,5,0,5);
+        gbc.insets = new Insets(0,0,0,5);
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1;
         gbc.weighty = 1;
@@ -35,24 +46,45 @@ public class BaseFormPanel extends BorderPanel {
         gbc.gridx = 0;
         gbc.gridy = 0;
         add(BasePanel.createTitle("Tên sách","Segue UI",Font.BOLD, 13, new Color(71, 71, 71)),gbc);
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        add(BasePanel.createTitle("Số lượng","Segue UI",Font.BOLD, 13, new Color(71, 71, 71)),gbc);
-        gbc.gridx = 2;
-        gbc.gridy = 0;
-        add(BasePanel.createTitle("Ghi chú","Segue UI",Font.BOLD, 13, new Color(71, 71, 71)),gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 1;
         add(selectWrapper(),gbc);
 
         gbc.gridx = 1;
+        gbc.gridy = 0;
+        add(BasePanel.createTitle("Tác giả","Segue UI",Font.BOLD, 13, new Color(71, 71, 71)),gbc);
+
+        gbc.gridx = 1;
         gbc.gridy = 1;
-        add(spinnerWrapper(),gbc);
+        add(noteWrapper("Nhập tên tác giả"),gbc);
+
+        gbc.gridx = 2;
+        gbc.gridy = 0;
+        add(BasePanel.createTitle("Thể loại","Segue UI",Font.BOLD, 13, new Color(71, 71, 71)),gbc);
 
         gbc.gridx = 2;
         gbc.gridy = 1;
-        add(noteWrapper(),gbc);
+        add(noteWrapper("Nhập thể loại"),gbc);
+
+        gbc.gridx = 3;
+        gbc.gridy = 0;
+        add(BasePanel.createTitle("Số lượng","Segue UI",Font.BOLD, 13, new Color(71, 71, 71)),gbc);
+
+        gbc.gridx = 3;
+        gbc.gridy = 1;
+        add(spinnerWrapper(),gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+
+        add(BasePanel.createTitle("Ghi chú","Segue UI",Font.BOLD, 13, new Color(71, 71, 71)),gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.gridwidth = 3;
+        add(noteWrapper("VD: Nhập từ NXB..."),gbc);
+        gbc.gridwidth = 1;
     }
 
     private BorderPanel selectWrapper(){
@@ -66,21 +98,34 @@ public class BaseFormPanel extends BorderPanel {
 
         cbBook.setRenderer(new DefaultListCellRenderer() {
             @Override
-            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            public Component getListCellRendererComponent(
+                    JList<?> list, Object value, int index,
+                    boolean isSelected, boolean cellHasFocus) {
 
-                JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, false, false);
 
+                label.setOpaque(false);
                 label.setBorder(new EmptyBorder(8, 12, 8, 12));
                 label.setFont(new Font("Arial", Font.PLAIN, 14));
 
-                if (isSelected) {
-                    label.setBackground(new Color(230, 240, 255));
-                    label.setForeground(Color.BLACK);
-                } else {
-                    label.setBackground(new Color(255, 255, 255));
-                    label.setForeground(new Color(83, 83, 83));
+                if(index >= 0){
+                    label.setOpaque(true);
+
+                    if(index == hoverIndex){
+                        label.setBackground(new Color(240,245,255));
+                    }
+                    else if(isSelected){
+                        label.setBackground(new Color(210,225,255));
+                    }
+                    else{
+                        label.setBackground(Color.WHITE);
+                    }
+                }
+                else{
+                    label.setOpaque(false);
                 }
 
+                label.setForeground(new Color(83,83,83));
                 return label;
             }
         });
@@ -143,6 +188,21 @@ public class BaseFormPanel extends BorderPanel {
                 JList<?> list = popup.getList();
                 list.setBackground(Color.WHITE);
 
+                list.addMouseMotionListener(new MouseMotionAdapter() {
+                    @Override
+                    public void mouseMoved(MouseEvent e) {
+                        hoverIndex = list.locationToIndex(e.getPoint());
+                        list.repaint();
+                    }
+                });
+
+                list.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+                        hoverIndex = -1;
+                        list.repaint();
+                    }
+                });
                 return popup;
             }
         });
@@ -150,9 +210,25 @@ public class BaseFormPanel extends BorderPanel {
 
         ((JComponent) cbBook.getRenderer()).setOpaque(false);
 
-        for(Book book : bookList){
+        for(Book book : bookList.values()){
             cbBook.addItem(book.getName());
         }
+        cbBook.addItem("--Thêm sách mới--");
+
+        cbBook.addFocusListener(new  FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                selectBook.setBorder(new Color(31, 95, 255),2);
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                selectBook.setBorder(new Color(221, 221, 221),1);
+            }
+        });
+        cbBook.addActionListener(e -> {
+            Book book = bookService.findByName( (String) cbBook.getSelectedItem());
+        });
         selectBook.add(cbBook, BorderLayout.CENTER);
         return selectBook;
     }
@@ -223,32 +299,44 @@ public class BaseFormPanel extends BorderPanel {
         return spinnerWrapper;
     }
 
-    private BorderPanel noteWrapper(){
+    private BorderPanel noteWrapper(String text){
         BorderPanel noteWrapper = new BorderPanel(12, Color.WHITE, 0, 0, new Color(214, 214, 214), 1);
         noteWrapper.setBorder(new EmptyBorder(0,10,0,0));
         noteWrapper.setLayout(new BorderLayout());
 
-        JTextField field = new JTextField(){
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
 
-                if (getText().isEmpty() && !isFocusOwner()) {
-                    Graphics2D g2 = (Graphics2D) g.create();
-                    g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-                    g2.setColor(new Color(174, 174, 174));
-                    g2.setFont(getFont());
-                    g2.drawString("VD: Nhập từ NXB...", 5, getHeight()/2 + 5);
-                    g2.dispose();
+        JTextField field = new JTextField();
+        showPlaceholder(text,field);
+
+        field.addFocusListener(new  FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                noteWrapper.setBorder(new Color(31, 95, 255),2);
+                if (field.getText().equals(text)){
+                    field.setText("");
+                    field.setForeground(Color.BLACK);
                 }
             }
-        };
+            @Override
+            public void focusLost(FocusEvent e) {
+                noteWrapper.setBorder(new Color(221, 221, 221),1);
+                if(field.getText().isEmpty()){
+                    showPlaceholder(text,field);
+                }
+            }
+        });
         field.setBorder(BorderFactory.createEmptyBorder());
         field.setOpaque(false);
         field.setFont(new Font("Arial",Font.PLAIN,15));
+        field.setPreferredSize(new Dimension(0, 34));
 
         noteWrapper.add(field, BorderLayout.CENTER);
 
         return noteWrapper;
+    }
+
+    private void showPlaceholder(String text, JTextField field) {
+        field.setText(text);
+        field.setForeground(new Color(174,174,174));
     }
 }

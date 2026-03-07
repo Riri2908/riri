@@ -5,34 +5,33 @@ import riri.model.Employee;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public class EmployeeService {
 
     private final EmployeeDAO employeeDAO = new EmployeeDAO();
-    private final List<Employee> employees;
+    private final Map<Integer,Employee> employees;
 
     public EmployeeService() {
-        employees = new ArrayList<>(employeeDAO.findAll());
+        employees = employeeDAO.findAll();
     }
 
-    public List<Employee> getAll() {
+    public Map<Integer,Employee> getAll() {
         return employees;
     }
 
-    public Employee findById(String id) {
-        return employees.stream()
-                .filter(e -> e.getId().equalsIgnoreCase(id))
-                .findFirst()
-                .orElse(null);
+    public Employee findById(Integer id) {
+        return employees.get(id);
     }
 
     public void add(Employee employee) {
-        employees.add(employee);
+        employees.put(employee.getId(),employee);
         employeeDAO.saveAll(employees);
     }
 
-    public void delete(String id) {
-        employees.removeIf(e -> e.getId().equalsIgnoreCase(id));
+    public void delete(Integer id) {
+        employees.remove(id);
         employeeDAO.saveAll(employees);
     }
 }

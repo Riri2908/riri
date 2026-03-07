@@ -2,19 +2,18 @@ package riri.model;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
-public class Transaction {
+public class Transaction implements BaseModel{
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-    private String id;
-    private String bookId;
-    private String employeeId;
+    private Integer id;
+    private Integer bookId;
+    private Integer employeeId;
     private int quantity;
     private String type;
     private LocalDate date;
     private String note;
 
-    public Transaction(String id, String bookId, String employeeId, int quantity, String type, LocalDate date, String note) {
+    public Transaction(Integer id, Integer bookId, Integer employeeId, int quantity, String type, LocalDate date, String note) {
         this.id = id;
         this.bookId = bookId;
         this.employeeId = employeeId;
@@ -24,11 +23,13 @@ public class Transaction {
         this.note = note;
     }
 
-    public String getId() {
+    @Override
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    @Override
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -40,11 +41,11 @@ public class Transaction {
         this.note = note;
     }
 
-    public String getBookId() {
+    public Integer getBookId() {
         return bookId;
     }
 
-    public void setBookId(String bookId) {
+    public void setBookId(Integer bookId) {
         this.bookId = bookId;
     }
 
@@ -72,14 +73,14 @@ public class Transaction {
         this.quantity = quantity;
     }
 
-    public String getEmployeeId() {
+    public Integer getEmployeeId() {
         return employeeId;
     }
 
-    public void setEmployeeId(String employeeId) {
+    public void setEmployeeId(Integer employeeId) {
         this.employeeId = employeeId;
     }
-
+    @Override
     public String toFileString() {
         return id + ";" + bookId + ";" + employeeId + ";" + quantity + ";" + type + ";" + date.format(formatter) + ";" + note;
     }

@@ -6,8 +6,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class TransactionDAO extends BaseFileDAO {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -16,8 +15,8 @@ public class TransactionDAO extends BaseFileDAO {
         super("transactions.txt");
     }
 
-    public List<Transaction> findAll() {
-        List<Transaction> list = new ArrayList<>();
+        public Map<Integer,Transaction> findAll() {
+            Map<Integer,Transaction> transactionMap = new LinkedHashMap<>();
 
         try {
             List<String> lines = Files.readAllLines(file);
@@ -27,19 +26,20 @@ public class TransactionDAO extends BaseFileDAO {
 
                 String[] d = line.split(";");
 
-                list.add(new Transaction(d[0], d[1], d[2], Integer.parseInt(d[3]), d[4], LocalDate.parse(d[5],formatter), d[6]));
+                transactionMap.put(Integer.parseInt(d[0]), new Transaction(Integer.parseInt(d[0]), Integer.parseInt(d[1]), Integer.parseInt(d[2]), Integer.parseInt(d[3]), d[4], LocalDate.parse(d[5],formatter), d[6]));
             }
 
         } catch (IOException e) {
             throw new RuntimeException("Failed to read transactions", e);
         }
 
-        return list;
+        return transactionMap;
     }
 
-    public void saveAll(List<Transaction> transactions) {
+    public void saveAll(Map<Integer,Transaction> transactionMap) {
 
         List<String> lines = new ArrayList<>();
+        Collection<Transaction> transactions = transactionMap.values();
 
         for (Transaction t : transactions) {
             lines.add(t.toFileString());

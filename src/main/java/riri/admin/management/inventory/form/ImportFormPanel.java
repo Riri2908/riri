@@ -8,12 +8,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.List;
+import java.util.Map;
 
 public class ImportFormPanel extends BaseFormPanel {
 
     private final BookDAO bookDAO = new BookDAO();
-    private final List<Book> bookList=bookDAO.findAll();
+    private final Map<Integer,Book> bookList=bookDAO.findAll();
     private final BorderPanel importButton = new BorderPanel(16,new Color(0, 165, 62),0,0,Color.WHITE,0);
     public ImportFormPanel() {
         super();
@@ -27,7 +27,6 @@ public class ImportFormPanel extends BaseFormPanel {
         importButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-//                System.out.println(cbBook.getSelectedItem());
 
             }
             @Override
@@ -41,7 +40,7 @@ public class ImportFormPanel extends BaseFormPanel {
             }
         });
         gbc.gridx = 3;
-        gbc.gridy = 1;
+        gbc.gridy = 3;
         add(importButton,gbc);
     }
 }

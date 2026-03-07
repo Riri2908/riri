@@ -1,5 +1,6 @@
 package riri.admin.management.history;
 
+import riri.admin.management.ManagementPage;
 import riri.components.BorderPanel;
 import riri.components.page.BasePanel;
 import riri.model.Book;
@@ -24,19 +25,12 @@ import java.util.List;
 import java.util.Map;
 
 public class HistoryPanel extends BorderPanel {
-    private final BookService bookService = AppContext.BOOK_SERVICE;
-    private final TransactionService transactionService = AppContext.TRANSACTION_SERVICE;
-    private final EmployeeService employeeService = AppContext.EMPLOYEE_SERVICE;
-
-    private final List<Book> booklist = bookService.getAll();
-    private final List<Transaction> transactionlist = transactionService.getAll();
-    private final List<Employee> employeelist = employeeService.getAll();
-
-    private final Map<String,Book> bookMap = new HashMap<>();
-    private final Map<String,Employee> employeeMap = new HashMap<>();
+    private Map<Integer,Book> books= AppContext.BOOK_SERVICE.getAll();
+    private Map<Integer,Employee> employees= AppContext.EMPLOYEE_SERVICE.getAll();
+    private Map<Integer,Transaction> transactions= AppContext.TRANSACTION_SERVICE.getAll();
 
     private final String[] columns = {"LOẠI", "TÊN SÁCH", "TÁC GIẢ", "THỂ LOẠI", "SỐ LƯỢNG", "NGÀY", "NHÂN VIÊN", "GHI CHÚ"};
-    private Object[] data;
+    private Object[] dataTable;
 
     private int hoveredRow = -1;
     public DefaultTableModel model = new DefaultTableModel(columns, 0) {
@@ -190,18 +184,11 @@ public class HistoryPanel extends BorderPanel {
     }
 
     private void loadData(){
-        for(Book book : booklist){
-            bookMap.put(book.getId(),book);
-        }
-        for(Employee  employee : employeelist){
-            employeeMap.put(employee.getId(),employee);
-        }
-
-        for(Transaction transaction : transactionlist){
-            Book book = bookMap.get(transaction.getBookId());
-            Employee employee = employeeMap.get(transaction.getEmployeeId());
+        for(Transaction transaction : transactions.values()){
+            Book book = books.get(transaction.getBookId());
+            Employee employee = employees.get(transaction.getEmployeeId());
             if(book != null){
-                data= new Object[]{
+                dataTable= new Object[]{
                         transaction.getType(),
                         book.getName(),
                         book.getAuthor(),
@@ -210,7 +197,7 @@ public class HistoryPanel extends BorderPanel {
                         transaction.getDate(),
                         employee.getName(),
                         transaction.getNote()};
-                model.addRow(data);
+                model.addRow(dataTable);
             }
         }
 

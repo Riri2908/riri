@@ -10,7 +10,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class InventoryPanel extends BorderPanel {
-    private final int HEIGHT_INVENTORYPANEL = 180;
+    private final int HEIGHT_INVENTORYPANEL = 260;
     private final CardLayout cardLayout;
     private final JPanel cardPanel;
 

@@ -8,45 +8,41 @@ import riri.model.InvoiceDetail;
 import riri.util.AppContext;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class InvoiceService {
 
     private final InvoiceDAO invoiceDAO = new InvoiceDAO();
     private final InvoiceDetailDAO detailDAO = new InvoiceDetailDAO();
 
-    private final List<Invoice> invoices;
-    private final List<InvoiceDetail> details;
+    private final Map<Integer,Invoice> invoices;
+    private final Map<Integer,InvoiceDetail> details;
 
     public InvoiceService() {
-        invoices = new ArrayList<>(invoiceDAO.findAll());
-        details = new ArrayList<>(detailDAO.findAll());
+        invoices = invoiceDAO.findAll();
+        details = detailDAO.findAll();
     }
 
-    public List<Invoice> getAllInvoices() {
+    public Map<Integer,Invoice> getAllInvoices() {
         return invoices;
     }
 
-    public List<InvoiceDetail> getDetailsByInvoiceId(String invoiceId) {
-        return details.stream()
-                .filter(d -> d.getInvoiceId().equalsIgnoreCase(invoiceId))
-                .toList();
+    public InvoiceDetail getDetailsByInvoiceId(Integer invoiceId) {
+        return details.get(invoiceId);
     }
 
-    public void createInvoice(String employeeId, List<InvoiceDetail> invoiceDetails) {
+    public void createInvoice(Integer employeeId, Map<Integer,InvoiceDetail> invoiceDetails) {
+        Collection<InvoiceDetail> detailValues = invoiceDetails.values();
 
         if (AppContext.EMPLOYEE_SERVICE.findById(employeeId) == null) {
             throw new RuntimeException("Employee không tồn tại");
         }
 
-        String invoiceId = generateInvoiceId();
+        Integer invoiceId = generateId();
 
         double totalAmount = 0;
 
-        for (InvoiceDetail d : invoiceDetails) {
+        for (InvoiceDetail d : detailValues) {
 
             Book book = AppContext.BOOK_SERVICE.findById(d.getBookId());
 
@@ -62,22 +58,22 @@ public class InvoiceService {
 
             totalAmount += d.getQuantity() * d.getPrice();
 
-            d.setInvoiceId(invoiceId);
+            d.setId(invoiceId);
 
-            details.add(d);
+            details.put(invoiceId,d);
         }
 
         Invoice invoice = new Invoice(invoiceId, employeeId, LocalDate.now(), totalAmount);
 
-        invoices.add(invoice);
+        invoices.put(invoiceId,invoice);
 
         invoiceDAO.saveAll(invoices);
-        detailDAO.saveAll(details);
+        detailDAO.saveAll(invoiceDetails);
 
-        AppContext.BOOK_SERVICE.updateAll();
+        AppContext.BOOK_SERVICE.save();
     }
 
-    private String generateInvoiceId() {
-        return "INV" + UUID.randomUUID().toString().substring(0, 6).toUpperCase();
+    private Integer generateId() {
+        return (int) (Math.random() * 9000000) + 1000000;
     }
 }

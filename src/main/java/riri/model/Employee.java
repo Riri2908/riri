@@ -1,12 +1,12 @@
 package riri.model;
 
-public class Employee {
-    private String id;
+public class Employee implements BaseModel {
+    private Integer id;
     private String name;
     private String phone;
-    private String role;     // admin / staff
+    private String role;
 
-    public Employee(String id, String name, String phone, String role) {
+    public Employee(Integer id, String name, String phone, String role) {
         this.id = id;
         this.name = name;
         this.phone = phone;
@@ -21,11 +21,13 @@ public class Employee {
         this.name = name;
     }
 
-    public String getId() {
+    @Override
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    @Override
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -45,6 +47,7 @@ public class Employee {
         this.role = role;
     }
 
+    @Override
     public String toFileString() {
         return id + ";" + name + ";" + phone + ";" + role;
     }

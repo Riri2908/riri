@@ -9,14 +9,14 @@ import java.awt.*;
 public class ExportFormPanel extends BaseFormPanel{
     public ExportFormPanel() {
         super();
-        BorderPanel importButton = new BorderPanel(16,new Color(255, 0, 0),0,0,Color.WHITE,0);
-        importButton.setLayout(new BorderLayout());
+        BorderPanel exportButton = new BorderPanel(16,new Color(255, 0, 0),0,0,Color.WHITE,0);
+        exportButton.setLayout(new BorderLayout());
         JLabel label = BasePanel.createTitle("Xuất hàng", "Arial", Font.PLAIN, 17, Color.WHITE);
 
         label.setHorizontalAlignment(SwingConstants.CENTER);
-        importButton.add(label,BorderLayout.CENTER);
+        exportButton.add(label,BorderLayout.CENTER);
         gbc.gridx = 3;
-        gbc.gridy = 1;
-        add(importButton,gbc);
+        gbc.gridy = 3;
+        add(exportButton,gbc);
     }
 }

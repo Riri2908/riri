@@ -6,22 +6,25 @@ import riri.model.Transaction;
 import riri.util.AppContext;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 public class TransactionService {
 
     private final TransactionDAO transactionDAO = new TransactionDAO();
-    private final List<Transaction> transactions;
+    private final Map<Integer,Transaction> transactions;
 
     public TransactionService() {
-        transactions = new ArrayList<>(transactionDAO.findAll());
+        transactions = transactionDAO.findAll();
     }
 
-    public List<Transaction> getAll() {
+    public Map<Integer,Transaction> getAll() {
         return transactions;
     }
 
     public void add(Transaction transaction) {
+        transaction.setId(generateId());
 
         Book book = AppContext.BOOK_SERVICE.findById(transaction.getBookId());
         if (book == null) {
@@ -41,21 +44,27 @@ public class TransactionService {
             book.setQuantity(book.getQuantity() - transaction.getQuantity());
         }
 
-        transactions.add(transaction);
+        transactions.put(transaction.getId(),transaction);
 
         transactionDAO.saveAll(transactions);
         AppContext.BOOK_SERVICE.update(book);
     }
     public int getTotalImportQuantity() {
-        return transactions.stream()
+        Collection<Transaction> transaction =  transactions.values();
+        return transaction.stream()
                 .filter(t -> t.getType().equalsIgnoreCase("Nhập"))
                 .mapToInt(Transaction::getQuantity)
                 .sum();
     }
     public int getTotalExportQuantity() {
-        return transactions.stream()
+        Collection<Transaction> transaction =  transactions.values();
+        return transaction.stream()
                 .filter(t -> t.getType().equalsIgnoreCase("Xuất"))
                 .mapToInt(Transaction::getQuantity)
                 .sum();
+    }
+
+    private Integer generateId() {
+        return (int) (Math.random() * 9000000) + 1000000;
     }
 }

@@ -7,10 +7,9 @@ import riri.util.AppContext;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
+import java.util.Map;
 
 public class ManagementStatCard extends JPanel {
-    private final List<Book> books = AppContext.BOOK_SERVICE.getAll();
-    private final List<Transaction> transactions = AppContext.TRANSACTION_SERVICE.getAll();
     private final double quantity= AppContext.BOOK_SERVICE.totalQuantity();
     private final int HEIGHT=120;
     public ManagementStatCard(){
