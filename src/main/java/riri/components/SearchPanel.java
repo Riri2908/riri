@@ -1,6 +1,7 @@
 package riri.components;
 
 import riri.components.page.BasePanel;
+import riri.components.table.TablePanel;
 
 import javax.swing.border.EmptyBorder;
 import javax.swing.*;
@@ -17,12 +18,12 @@ import java.util.regex.Pattern;
 public class SearchPanel extends BorderPanel {
 
     private final JTextField searchField;
-    private final JTable table;
+    private final TablePanel table;
     private final String PLACEHOLDER = "Search...";
     private final Icon searchIcon = new ImageIcon(BasePanel.createImageLogo(getClass(),"sidebar/search",22,22)) ;
     private final JLabel searchLabel = new JLabel(searchIcon);
 
-    public SearchPanel(JTable table) {
+    public SearchPanel(TablePanel table) {
         super();
         this.table = table;
         setLayout(new BorderLayout());

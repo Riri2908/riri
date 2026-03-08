@@ -74,6 +74,6 @@ public class InvoiceService {
     }
 
     private Integer generateId() {
-        return (int) (Math.random() * 9000000) + 1000000;
+        return invoices.size()+1;
     }
 }

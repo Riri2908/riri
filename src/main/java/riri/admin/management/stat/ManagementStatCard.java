@@ -1,17 +1,22 @@
 package riri.admin.management.stat;
 
-import riri.model.Book;
-import riri.model.Transaction;
 import riri.util.AppContext;
+import riri.admin.management.stat.ManagementStat;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
-import java.util.Map;
 
 public class ManagementStatCard extends JPanel {
     private final double quantity= AppContext.BOOK_SERVICE.totalQuantity();
+    private final double importQuantity= AppContext.TRANSACTION_SERVICE.getTotalImportQuantity();
+    private final double exportQuantity= AppContext.TRANSACTION_SERVICE.getTotalExportQuantity();
+
+    private static ManagementStat importStat;
+    private static ManagementStat exportStat;
+    private static ManagementStat quantityStat;
+
     private final int HEIGHT=120;
+    
     public ManagementStatCard(){
         setPreferredSize(new Dimension(0, HEIGHT));
         setMaximumSize(new Dimension(Integer.MAX_VALUE, HEIGHT));
@@ -22,11 +27,23 @@ public class ManagementStatCard extends JPanel {
         panel.setOpaque(false);
         panel.setLayout(new BoxLayout(panel,BoxLayout.X_AXIS));
 
-        panel.add(new ManagementStat("Tổng số nhập",quantity,new Color(0, 200, 80),"import"));
+        importStat = new ManagementStat("Tổng số nhập",importQuantity,new Color(0, 200, 80),"import");
+        exportStat = new ManagementStat("Tổng số xuất",exportQuantity,Color.RED,"export");
+        quantityStat = new ManagementStat("Tồn kho hiện tại",quantity,new Color(43, 126, 253),"inventory");
+        panel.add(importStat);
         panel.add(Box.createHorizontalStrut(15));
-        panel.add(new ManagementStat("Tổng số xuất",quantity,Color.RED,"export"));
+        panel.add(exportStat);
         panel.add(Box.createHorizontalStrut(15));
-        panel.add(new ManagementStat("Tồn kho hiện tại",quantity,new Color(43, 126, 253),"inventory"));
+        panel.add(quantityStat);
         add(panel);
+    }
+    public static void updateQuantity(){
+        double quantity = AppContext.BOOK_SERVICE.totalQuantity();
+        double importQuantity = AppContext.TRANSACTION_SERVICE.getTotalImportQuantity();
+        double exportQuantity = AppContext.TRANSACTION_SERVICE.getTotalExportQuantity();
+
+        importStat.setValue(importQuantity);
+        exportStat.setValue(exportQuantity);
+        quantityStat.setValue(quantity);
     }
 }

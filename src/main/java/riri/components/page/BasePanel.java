@@ -20,7 +20,7 @@ public abstract class BasePanel {
         return title;
     }
 
-    public static JScrollPane createScroll(JPanel panel){
+    public static JScrollPane createScroll(Component panel){
         JScrollPane scrollPane = new JScrollPane(panel);
         JScrollBar vBar = scrollPane.getVerticalScrollBar();
         vBar.setUI(new ModernScrollBarUI());

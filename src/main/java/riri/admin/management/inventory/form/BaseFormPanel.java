@@ -1,35 +1,35 @@
 package riri.admin.management.inventory.form;
 
+import riri.admin.management.history.HistoryPanel;
 import riri.components.BorderPanel;
 import riri.components.page.BasePanel;
-import riri.dao.BookDAO;
 import riri.model.Book;
-import riri.service.BookService;
-import riri.service.EmployeeService;
+import riri.model.Employee;
+import riri.model.Transaction;
+
 import riri.util.AppContext;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.plaf.basic.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.List;
+import java.time.LocalDate;
 import java.util.Map;
 
 public class BaseFormPanel extends BorderPanel {
-
-    private final BookService bookService = AppContext.BOOK_SERVICE;
-    private final EmployeeService employeeService = AppContext.EMPLOYEE_SERVICE;
-
-    private final Map<Integer, Book> bookList =bookService.getAll();
+    public Map<Integer, Book> bookList =AppContext.BOOK_SERVICE.getAll();
+    public Map<Integer, Employee> employeeList = AppContext.EMPLOYEE_SERVICE.getAll();
+    public Map<Integer, Transaction> transactionList = AppContext.TRANSACTION_SERVICE.getAll();
 
     protected final GridBagConstraints gbc = new GridBagConstraints();
 
     public final SpinnerModel spinnerModel = new SpinnerNumberModel(0, 0, null, 1);
     public final JSpinner spinner = new JSpinner(spinnerModel);
     public final JComboBox<String> cbBook = new JComboBox<>();
+    public final JTextField authorField= new JTextField();
+    public final JTextField categoryField = new JTextField();
+    public final JTextField noteField= new JTextField();
 
     private int hoverIndex = -1;
 
@@ -57,7 +57,7 @@ public class BaseFormPanel extends BorderPanel {
 
         gbc.gridx = 1;
         gbc.gridy = 1;
-        add(noteWrapper("Nhập tên tác giả"),gbc);
+        add(noteWrapper("Nhập tên tác giả",authorField),gbc);
 
         gbc.gridx = 2;
         gbc.gridy = 0;
@@ -65,7 +65,7 @@ public class BaseFormPanel extends BorderPanel {
 
         gbc.gridx = 2;
         gbc.gridy = 1;
-        add(noteWrapper("Nhập thể loại"),gbc);
+        add(noteWrapper("Nhập thể loại", categoryField),gbc);
 
         gbc.gridx = 3;
         gbc.gridy = 0;
@@ -83,8 +83,10 @@ public class BaseFormPanel extends BorderPanel {
         gbc.gridx = 0;
         gbc.gridy = 3;
         gbc.gridwidth = 3;
-        add(noteWrapper("VD: Nhập từ NXB..."),gbc);
+        add(noteWrapper("VD: Nhập từ NXB...",noteField),gbc);
         gbc.gridwidth = 1;
+
+        fillBookInfo();
     }
 
     private BorderPanel selectWrapper(){
@@ -144,6 +146,15 @@ public class BaseFormPanel extends BorderPanel {
                         Graphics2D g2 = (Graphics2D) g.create();
                         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                         int w = getWidth();
+                        Polygon triangle = getPolygon(w);
+
+                        g2.setColor(new Color(80, 80, 80));
+                        g2.fill(triangle);
+
+                        g2.dispose();
+                    }
+
+                    private Polygon getPolygon(int w) {
                         int h = getHeight();
                         int size = 6;
                         int x = w / 2;
@@ -159,11 +170,7 @@ public class BaseFormPanel extends BorderPanel {
                         triangle.addPoint(x + size, y);
 
                         triangle.addPoint(x, y + size);
-
-                        g2.setColor(new Color(80, 80, 80));
-                        g2.fill(triangle);
-
-                        g2.dispose();
+                        return triangle;
                     }
                 };
 
@@ -226,9 +233,7 @@ public class BaseFormPanel extends BorderPanel {
                 selectBook.setBorder(new Color(221, 221, 221),1);
             }
         });
-        cbBook.addActionListener(e -> {
-            Book book = bookService.findByName( (String) cbBook.getSelectedItem());
-        });
+
         selectBook.add(cbBook, BorderLayout.CENTER);
         return selectBook;
     }
@@ -257,9 +262,7 @@ public class BaseFormPanel extends BorderPanel {
                 btn.setContentAreaFilled(false);
                 btn.setOpaque(false);
                 btn.setMargin(new Insets(0, 0, 0, 8));
-                btn.addActionListener(e -> {
-                    spinner.setValue(spinner.getNextValue());
-                });
+                btn.addActionListener(_ -> spinner.setValue(spinner.getNextValue()));
                 btn.setFocusPainted(false);
                 return btn;
             }
@@ -271,9 +274,7 @@ public class BaseFormPanel extends BorderPanel {
                 btn.setContentAreaFilled(false);
                 btn.setOpaque(false);
                 btn.setMargin(new Insets(0, 0, 0, 8));
-                btn.addActionListener(e -> {
-                    spinner.setValue(spinner.getPreviousValue());
-                });
+                btn.addActionListener(_ -> spinner.setValue(spinner.getPreviousValue()));
                 btn.setFocusPainted(false);
                 return btn;
             }
@@ -299,14 +300,12 @@ public class BaseFormPanel extends BorderPanel {
         return spinnerWrapper;
     }
 
-    private BorderPanel noteWrapper(String text){
+    private BorderPanel noteWrapper(String text, JTextField field){
         BorderPanel noteWrapper = new BorderPanel(12, Color.WHITE, 0, 0, new Color(214, 214, 214), 1);
         noteWrapper.setBorder(new EmptyBorder(0,10,0,0));
         noteWrapper.setLayout(new BorderLayout());
 
-
-        JTextField field = new JTextField();
-        showPlaceholder(text,field);
+        showPlaceholder(text, field, new Color(174,174,174));
 
         field.addFocusListener(new  FocusAdapter() {
             @Override
@@ -321,7 +320,7 @@ public class BaseFormPanel extends BorderPanel {
             public void focusLost(FocusEvent e) {
                 noteWrapper.setBorder(new Color(221, 221, 221),1);
                 if(field.getText().isEmpty()){
-                    showPlaceholder(text,field);
+                    showPlaceholder(text, field,new Color(174,174,174));
                 }
             }
         });
@@ -335,8 +334,37 @@ public class BaseFormPanel extends BorderPanel {
         return noteWrapper;
     }
 
-    private void showPlaceholder(String text, JTextField field) {
+    private void showPlaceholder(String text, JTextField field,Color colorForeground) {
         field.setText(text);
-        field.setForeground(new Color(174,174,174));
+        field.setForeground(colorForeground);
     }
+
+    private void fillBookInfo(){
+        cbBook.addActionListener(_->{
+            String bookName = (String)cbBook.getSelectedItem();
+            if(bookName==null || bookName.equalsIgnoreCase("--Chọn sách--")){
+                showPlaceholder("Nhập tên tác giả",authorField, new Color(174,174,174));
+                showPlaceholder("Nhập thể loại",categoryField, new Color(174,174,174));
+            }else {
+                Book book = AppContext.BOOK_SERVICE.findByName(bookName);
+                showPlaceholder(book.getAuthor(),authorField,Color.BLACK);
+                showPlaceholder(book.getCategory(),categoryField,Color.BLACK);
+            }
+        });
+    }
+
+    public void addData(String type){
+
+        String bookName = (String) cbBook.getSelectedItem();
+
+        if(bookName == null || bookName.equals("--Thêm sách mới--") || bookName.equals("--Chọn sách--")) {
+            return;
+        }
+        Book book = AppContext.BOOK_SERVICE.findByName(bookName);
+        Transaction transaction = new Transaction(0,book.getId(),1,(Integer)spinner.getValue(),type,LocalDate.now(),noteField.getText());
+
+        AppContext.TRANSACTION_SERVICE.add(transaction);
+    }
+
+
 }

@@ -3,34 +3,24 @@ package riri.model;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class Transaction implements BaseModel{
+public class Transaction extends BaseModel{
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-    private Integer id;
-    private Integer bookId;
-    private Integer employeeId;
+
+    private int bookId;
+    private int employeeId;
     private int quantity;
     private String type;
     private LocalDate date;
     private String note;
 
-    public Transaction(Integer id, Integer bookId, Integer employeeId, int quantity, String type, LocalDate date, String note) {
-        this.id = id;
+    public Transaction(int id, int bookId, int employeeId, int quantity, String type, LocalDate date, String note) {
+        super(id);
         this.bookId = bookId;
         this.employeeId = employeeId;
         this.quantity = quantity;
         this.type = type;
         this.date = date;
         this.note = note;
-    }
-
-    @Override
-    public Integer getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public String getNote() {
@@ -41,11 +31,11 @@ public class Transaction implements BaseModel{
         this.note = note;
     }
 
-    public Integer getBookId() {
+    public int getBookId() {
         return bookId;
     }
 
-    public void setBookId(Integer bookId) {
+    public void setBookId(int bookId) {
         this.bookId = bookId;
     }
 

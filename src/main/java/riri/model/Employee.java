@@ -1,13 +1,12 @@
 package riri.model;
 
-public class Employee implements BaseModel {
-    private Integer id;
+public class Employee extends BaseModel {
     private String name;
     private String phone;
     private String role;
 
-    public Employee(Integer id, String name, String phone, String role) {
-        this.id = id;
+    public Employee(int id, String name, String phone, String role) {
+        super(id);
         this.name = name;
         this.phone = phone;
         this.role = role;
@@ -19,16 +18,6 @@ public class Employee implements BaseModel {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    @Override
-    public Integer getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public String getPhone() {

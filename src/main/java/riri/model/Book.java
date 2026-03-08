@@ -1,16 +1,15 @@
 package riri.model;
 
-public class Book implements BaseModel{
+public class Book extends BaseModel{
 
-    private Integer id;
     private String name;
     private String author;
     private String category;
     private double price;
     private int quantity;
 
-    public Book(Integer id, String name, String author, String category, double price, int quantity) {
-        this.id = id;
+    public Book(int id, String name, String author, String category, double price, int quantity) {
+        super(id);
         this.name = name;
         this.author = author;
         this.category = category;
@@ -20,10 +19,6 @@ public class Book implements BaseModel{
 
     public void setName(String name) {
         this.name = name;
-    }
-    @Override
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public void setAuthor(String author) {
@@ -46,8 +41,6 @@ public class Book implements BaseModel{
     public String toFileString() {
         return id + ";" + name + ";" + author + ";" + category + ";" + price + ";" + quantity;
     }
-    @Override
-    public Integer getId() { return id; }
 
     public String getName() { return name; }
 

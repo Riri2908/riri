@@ -10,6 +10,8 @@ import java.awt.*;
 
 public class ManagementStat extends BorderPanel  {
 
+    private JLabel valueLabel;
+
     public ManagementStat(String text,double value,Color color,String logoName) {
         super();
 
@@ -20,13 +22,15 @@ public class ManagementStat extends BorderPanel  {
         statPanel.setLayout( new BoxLayout(statPanel, BoxLayout.Y_AXIS));
         statPanel.setOpaque(false);
 
-
         JLabel title = BasePanel.createTitle(text,"Arial", Font.PLAIN,14, new Color(136, 136, 136));
 
         statPanel.add(title);
         statPanel.add(Box.createVerticalStrut(6));
-        statPanel.add(BasePanel.createTitle(String.valueOf(value),"Arial",Font.BOLD,20, new Color(0, 0, 0)));
+
+        valueLabel = BasePanel.createTitle(String.valueOf(value),"Arial",Font.BOLD,20,Color.BLACK);
+        statPanel.add(valueLabel);
         statPanel.add(Box.createVerticalStrut(6));
+
         statPanel.add(BasePanel.createTitle("sản phẩm","Arial",Font.PLAIN,14, new Color(136, 136, 136)));
 
 
@@ -44,5 +48,9 @@ public class ManagementStat extends BorderPanel  {
 
         add(statPanel, BorderLayout.WEST);
         add(rightWrapper, BorderLayout.EAST);
+    }
+
+    public void setValue(double value){
+        valueLabel.setText(String.valueOf(value));
     }
 }

@@ -1,8 +1,15 @@
 package riri.model;
 
-public interface  BaseModel {
-    Integer getId();
-    void setId(Integer id);
-
-    String toFileString();
+public abstract class BaseModel {
+    public int id;
+    public BaseModel(int id) {
+        this.id = id;
+    }
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
+    public abstract String toFileString();
 }

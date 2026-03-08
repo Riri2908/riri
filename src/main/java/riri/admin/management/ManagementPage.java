@@ -5,6 +5,7 @@ import riri.admin.management.history.HistoryPanel;
 import riri.admin.management.stat.ManagementStatCard;
 import riri.components.SearchPanel;
 import riri.components.page.BasePanel;
+import riri.components.table.TablePanel;
 import riri.model.Book;
 import riri.model.Employee;
 import riri.model.Transaction;
@@ -43,7 +44,7 @@ public class ManagementPage extends JPanel {
         ManagementStatCard stat = new ManagementStatCard();
         InventoryPanel iventoryPanel = new InventoryPanel();
         HistoryPanel historyPanel = new HistoryPanel();
-        JTable table = historyPanel.getTable();
+        TablePanel table = historyPanel.getTable();
         SearchPanel searchPanel = new SearchPanel(table);
 
         panel.add(stat);

@@ -31,6 +31,7 @@ public class BookService {
     }
 
     public void add(Book book) {
+        book.setId(this.generateId());
         books.put(book.getId(), book);
         save();
     }
@@ -54,7 +55,6 @@ public class BookService {
         bookDAO.saveAll(books);
     }
 
-
     public double totalInventoryValue() {
         return books.values()
                 .stream()
@@ -67,5 +67,8 @@ public class BookService {
                 .stream()
                 .mapToInt(Book::getQuantity)
                 .sum();
+    }
+    private Integer generateId() {
+        return books.size()+1;
     }
 }

@@ -1,66 +1,197 @@
-package riri.admin.store;
-
-import riri.components.BorderPanel;
-import riri.model.Book;
-
-import javax.swing.*;
-import java.awt.*;
-
-public class BookItemPanel extends BorderPanel {
-
-    public BookItemPanel(Book book) {
-        super(15, Color.WHITE, 0, 0, null, 0);
-        setOpaque(false);
-
-        setLayout(new GridLayout(1, 6, 10, 0));
-        setBorder(BorderFactory.createEmptyBorder(15, 20, 15, 20));
-
-        JLabel lblName = new JLabel(book.getName());
-        lblName.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        lblName.setForeground(new Color(51, 51, 51));
-
-        JLabel lblAuthor = new JLabel(book.getAuthor());
-        lblAuthor.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        lblAuthor.setForeground(new Color(102, 102, 102));
-
-        JLabel lblCategory = new JLabel("  Kỹ năng  ", SwingConstants.CENTER);
-        lblCategory.setFont(new Font("Segoe UI", Font.BOLD, 12));
-        lblCategory.setForeground(new Color(156, 39, 176));
-        lblCategory.setBackground(new Color(243, 229, 245));
-        lblCategory.setOpaque(true);
-
-        JPanel categoryWrapper = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        categoryWrapper.setOpaque(false);
-        categoryWrapper.add(lblCategory);
-
-        JLabel lblPrice = new JLabel(String.format("%,.0f đ", book.getPrice()));
-        lblPrice.setFont(new Font("Segoe UI", Font.BOLD, 14));
-
-        JLabel lblQuantity = new JLabel(String.valueOf(book.getQuantity()));
-        lblQuantity.setFont(new Font("Segoe UI", Font.BOLD, 13));
-        lblQuantity.setForeground(new Color(255, 152, 0));
-
-        JPanel actionPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
-        actionPanel.setOpaque(false);
-
-        JButton btnEdit = new JButton("Sửa");
-        btnEdit.setForeground(new Color(0, 123, 255)); // Chữ xanh
-        btnEdit.setFocusPainted(false);
-        btnEdit.setBackground(Color.WHITE);
-
-        JButton btnDelete = new JButton("Xóa");
-        btnDelete.setForeground(Color.RED); // Chữ đỏ
-        btnDelete.setFocusPainted(false);
-        btnDelete.setBackground(Color.WHITE);
-
-        actionPanel.add(btnEdit);
-        actionPanel.add(btnDelete);
-
-        add(lblName);
-        add(lblAuthor);
-        add(categoryWrapper);
-        add(lblPrice);
-        add(lblQuantity);
-        add(actionPanel);
-    }
-}
+//package riri.admin.store;
+//
+//import riri.model.Book;
+//import javax.swing.*;
+//import java.awt.*;
+//import java.text.DecimalFormat;
+//
+//public class BookItemPanel extends JPanel {
+//    public BookItemPanel(Book book) {
+//        setLayout(new GridBagLayout());
+//        setOpaque(false);
+//        setBorder(BorderFactory.createEmptyBorder(12, 25, 12, 25));
+//
+//        GridBagConstraints gbc = new GridBagConstraints();
+//        gbc.fill = GridBagConstraints.HORIZONTAL;
+//        gbc.anchor = GridBagConstraints.WEST;
+//        gbc.insets = new Insets(0, 0, 0, 0);
+//
+//        double[] weights = BookManagementPanel.COLUMN_WEIGHTS;
+//        DecimalFormat df = new DecimalFormat("#,### đ");
+//
+//        // Cột 1: Tên sách (có icon)
+//        gbc.gridx = 0;
+//        gbc.weightx = weights[0];
+//        add(createCellWrapper(createNameCol(book), 0), gbc);
+//
+//        // Cột 2: Tác giả - KHÔNG padding để thẳng với header
+//        gbc.gridx = 1;
+//        gbc.weightx = weights[1];
+//        JLabel lblAuthor = new JLabel(book.getAuthor());
+//        lblAuthor.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+//        add(createCellWrapper(lblAuthor, 17), gbc);
+//
+//        // Cột 3: Mã sách - KHÔNG padding
+//        gbc.gridx = 2;
+//        gbc.weightx = weights[2];
+//        BadgeUI idBadge = new BadgeUI(book.getId(), new Color(243, 232, 255), new Color(147, 51, 234));
+//        add(createCellWrapper(idBadge, -15), gbc);
+//
+//        // Cột 4: Giá tiền - KHÔNG padding
+//        gbc.gridx = 3;
+//        gbc.weightx = weights[3];
+//        JLabel lblPrice = new JLabel(df.format(book.getPrice()));
+//        lblPrice.setFont(new Font("Segoe UI", Font.BOLD, 14));
+//        add(createCellWrapper(lblPrice, 0), gbc);
+//
+//        // Cột 5: Số lượng - KHÔNG padding
+//        gbc.gridx = 4;
+//        gbc.weightx = weights[4];
+//        BadgeUI qtyBadge = new BadgeUI(String.valueOf(book.getQuantity()), new Color(254, 243, 199), new Color(217, 119, 6));
+//        add(createCellWrapper(qtyBadge, -20), gbc);
+//
+//        // Cột 6: Thao tác - KHÔNG padding
+//        gbc.gridx = 5;
+//        gbc.weightx = weights[5];
+//        add(createCellWrapper(createActionCol(), 0), gbc);
+//    }
+//
+//    private JPanel createCellWrapper(JComponent comp, int paddingLeft) {
+//        JPanel p = new JPanel(new BorderLayout());
+//        p.setOpaque(false);
+//        p.setPreferredSize(new Dimension(0, comp.getPreferredSize().height));
+//
+//        p.add(comp, BorderLayout.WEST);
+//        return p;
+//    }
+//
+//    private JPanel createNameCol(Book book) {
+//        JPanel p = new JPanel(new BorderLayout(15, 0));
+//        p.setOpaque(false);
+//        p.add(new JLabel(new BookIconUI()), BorderLayout.WEST);
+//
+//        JLabel lblName = new JLabel(book.getName());
+//        lblName.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+//        p.add(lblName, BorderLayout.CENTER);
+//        return p;
+//    }
+//
+//    private JPanel createActionCol() {
+//        JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+//        p.setOpaque(false);
+//
+//
+//        JButton btnEdit = new JButton();
+//        btnEdit.setIcon(getScaledIcon("/icons/management/edit.png", 20, 20));
+//
+//        btnEdit.setContentAreaFilled(false);
+//        btnEdit.setBorderPainted(false);
+//        btnEdit.setFocusPainted(false);
+//        btnEdit.setCursor(new Cursor(Cursor.HAND_CURSOR));
+//
+//        // --- 2. Tạo Nút Xóa ---
+//        JButton btnDelete = new JButton();
+//        btnDelete.setIcon(getScaledIcon("/icons/management/delete.png", 20, 20));
+//
+//        // Xóa viền, xóa nền
+//        btnDelete.setContentAreaFilled(false);
+//        btnDelete.setBorderPainted(false);
+//        btnDelete.setFocusPainted(false);
+//        btnDelete.setCursor(new Cursor(Cursor.HAND_CURSOR));
+//
+//        // Thêm 2 nút vào panel
+//        p.add(btnEdit);
+//        p.add(btnDelete);
+//
+//        return p;
+//    }
+//    @Override
+//    public Dimension getMaximumSize() {
+//        // Khóa cứng chiều cao, thả rông chiều ngang
+//        return new Dimension(Integer.MAX_VALUE, getPreferredSize().height);
+//    }
+//    // Hàm hỗ trợ load và chỉnh kích thước icon
+//    private ImageIcon getScaledIcon(String path, int width, int height) {
+//        try {
+//            // Thay đổi đường dẫn này tùy thuộc vào vị trí thư mục icons của bạn
+//            ImageIcon originalIcon = new ImageIcon(getClass().getResource(path));
+//            Image img = originalIcon.getImage();
+//            Image scaledImg = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+//            return new ImageIcon(scaledImg);
+//        } catch (Exception e) {
+//            System.err.println("Không tìm thấy ảnh tại: " + path);
+//            return null; // Trả về null nếu lỗi để code không bị crash
+//        }
+//    }
+//
+//}
+//
+//class BadgeUI extends JPanel {
+//    private final Color bgColor;
+//    private final String text;
+//    private final Color fgColor;
+//
+//    public BadgeUI(String text, Color bgColor, Color fgColor) {
+//        this.text = text;
+//        this.bgColor = bgColor;
+//        this.fgColor = fgColor;
+//        setOpaque(false);
+//        setPreferredSize(new Dimension(70, 28));
+//    }
+//
+//    @Override
+//    protected void paintComponent(Graphics g) {
+//        Graphics2D g2 = (Graphics2D) g.create();
+//        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+//
+//        g2.setColor(bgColor);
+//        g2.fillRoundRect(0, 0, getWidth(), getHeight(), 12, 12);
+//
+//        g2.setColor(fgColor);
+//        g2.setFont(new Font("Segoe UI", Font.BOLD, 12));
+//        FontMetrics fm = g2.getFontMetrics();
+//        int textWidth = fm.stringWidth(text);
+//        int textHeight = fm.getAscent();
+//        int x = (getWidth() - textWidth) / 2;
+//        int y = (getHeight() + textHeight) / 2 - 2;
+//        g2.drawString(text, x, y);
+//
+//        g2.dispose();
+//    }
+//}
+//
+//class BookIconUI implements Icon {
+//    @Override
+//    public void paintIcon(Component c, Graphics g, int x, int y) {
+//        Graphics2D g2 = (Graphics2D) g.create();
+//        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+//
+//        // Vẽ nền icon
+//        g2.setColor(new Color(224, 236, 255));
+//        g2.fillRoundRect(x, y, 32, 32, 8, 8);
+//
+//        // Vẽ quyển sách
+//        g2.setColor(new Color(45, 110, 255));
+//        g2.setStroke(new BasicStroke(1.5f));
+//
+//        // Vẽ hình chữ nhật (quyển sách)
+//        g2.drawRoundRect(x + 8, y + 8, 16, 16, 4, 4);
+//
+//        // Vẽ đường gáy sách
+//        g2.drawLine(x + 16, y + 8, x + 16, y + 24);
+//
+//        g2.dispose();
+//    }
+//
+//    @Override
+//    public int getIconWidth() {
+//        return 32;
+//    }
+//
+//    @Override
+//    public int getIconHeight() {
+//        return 32;
+//    }
+//
+//
+//}

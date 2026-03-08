@@ -3,10 +3,8 @@ package riri.service;
 import riri.dao.EmployeeDAO;
 import riri.model.Employee;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
-import java.util.Objects;
+
 
 public class EmployeeService {
 
@@ -26,12 +24,20 @@ public class EmployeeService {
     }
 
     public void add(Employee employee) {
+        employee.setId(generateId());
         employees.put(employee.getId(),employee);
+        save();
+    }
+
+    public void save(){
         employeeDAO.saveAll(employees);
     }
 
     public void delete(Integer id) {
         employees.remove(id);
         employeeDAO.saveAll(employees);
+    }
+    public Integer generateId() {
+        return employees.size()+1;
     }
 }

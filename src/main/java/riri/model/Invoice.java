@@ -3,36 +3,25 @@ package riri.model;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class Invoice implements BaseModel {
+public class Invoice extends BaseModel {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-    private Integer id;
-    private Integer employeeId;
+    private int employeeId;
     private LocalDate date;
     private double totalAmount;
 
-    public Invoice(Integer id, Integer employeeId, LocalDate date, double totalAmount) {
-        this.id = id;
+    public Invoice(int id, int employeeId, LocalDate date, double totalAmount) {
+        super(id);
         this.employeeId = employeeId;
         this.date = date;
         this.totalAmount = totalAmount;
     }
 
-    @Override
-    public Integer getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getEmployeeId() {
+    public int getEmployeeId() {
         return employeeId;
     }
 
-    public void setEmployeeId(Integer employeeId) {
+    public void setEmployeeId(int employeeId) {
         this.employeeId = employeeId;
     }
 

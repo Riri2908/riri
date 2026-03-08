@@ -1,32 +1,23 @@
 package riri.model;
 
-public class InvoiceDetail implements BaseModel{
-    private Integer id;
-    private Integer bookId;
+public class InvoiceDetail extends BaseModel{
+
+    private int bookId;
     private int quantity;
     private double price;
 
-    public InvoiceDetail(Integer id, Integer bookId, int quantity, double price) {
-        this.id = id;
+    public InvoiceDetail(int id, int bookId, int quantity, double price) {
+        super(id);
         this.bookId = bookId;
         this.quantity = quantity;
         this.price = price;
     }
-    @Override
-    public Integer getId() {
-        return id;
-    }
 
-    @Override
-    public void setId(Integer invoiceId) {
-        this.id = invoiceId;
-    }
-
-    public Integer getBookId() {
+    public int getBookId() {
         return bookId;
     }
 
-    public void setBookId(Integer bookId) {
+    public void setBookId(int bookId) {
         this.bookId = bookId;
     }
 
