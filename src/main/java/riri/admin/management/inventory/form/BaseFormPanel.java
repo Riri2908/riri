@@ -3,6 +3,7 @@ package riri.admin.management.inventory.form;
 import riri.admin.management.history.HistoryPanel;
 import riri.components.BorderPanel;
 import riri.components.page.BasePanel;
+import riri.components.table.TablePanel;
 import riri.model.Book;
 import riri.model.Employee;
 import riri.model.Transaction;
@@ -30,11 +31,13 @@ public class BaseFormPanel extends BorderPanel {
     public final JTextField authorField= new JTextField();
     public final JTextField categoryField = new JTextField();
     public final JTextField noteField= new JTextField();
+    protected HistoryPanel historyPanel;
 
     private int hoverIndex = -1;
 
-    public BaseFormPanel() {
+    public BaseFormPanel(HistoryPanel historyPanel) {
         super(0,Color.WHITE,0,0,null,0);
+        this.historyPanel = historyPanel;
         setLayout(new GridBagLayout());
         setOpaque(false);
 
@@ -364,6 +367,18 @@ public class BaseFormPanel extends BorderPanel {
         Transaction transaction = new Transaction(0,book.getId(),1,(Integer)spinner.getValue(),type,LocalDate.now(),noteField.getText());
 
         AppContext.TRANSACTION_SERVICE.add(transaction);
+        historyPanel.getTable().addRow(new Object[]{
+                transaction.getId(),
+                transaction.getType(),
+                book.getName(),
+                book.getAuthor(),
+                book.getCategory(),
+                transaction.getQuantity(),
+                transaction.getDate(),
+                "Admin",
+                transaction.getNote()
+        });
+        historyPanel.updateData();
     }
 
 

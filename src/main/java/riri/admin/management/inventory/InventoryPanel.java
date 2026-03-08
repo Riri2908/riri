@@ -1,9 +1,11 @@
 package riri.admin.management.inventory;
 
+import riri.admin.management.history.HistoryPanel;
 import riri.admin.management.inventory.form.ExportFormPanel;
 import riri.admin.management.inventory.form.ImportFormPanel;
 import riri.components.BorderPanel;
 import riri.components.page.BasePanel;
+import riri.components.table.TablePanel;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -14,7 +16,7 @@ public class InventoryPanel extends BorderPanel {
     private final CardLayout cardLayout;
     private final JPanel cardPanel;
 
-    public InventoryPanel() {
+    public InventoryPanel(HistoryPanel historyPanel) {
         super();
 
         setMaximumSize(new Dimension(Integer.MAX_VALUE, HEIGHT_INVENTORYPANEL));
@@ -34,8 +36,8 @@ public class InventoryPanel extends BorderPanel {
         cardLayout=new CardLayout();
         cardPanel = new JPanel(cardLayout);
 
-        cardPanel.add(new ImportFormPanel(),"IMPORT");
-        cardPanel.add(new ExportFormPanel(),"EXPORT");
+        cardPanel.add(new ImportFormPanel(historyPanel),"IMPORT");
+        cardPanel.add(new ExportFormPanel(historyPanel),"EXPORT");
         cardPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         panel.add(title);

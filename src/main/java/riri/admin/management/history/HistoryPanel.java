@@ -11,14 +11,11 @@ import riri.util.AppContext;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.plaf.basic.BasicTableHeaderUI;
 import javax.swing.table.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 public class HistoryPanel extends BorderPanel {
     private static final Map<Integer,Book> books = AppContext.BOOK_SERVICE.getAll();
@@ -26,8 +23,8 @@ public class HistoryPanel extends BorderPanel {
     private static final Map<Integer,Transaction> transactions = AppContext.TRANSACTION_SERVICE.getAll();
 
     public TablePanel tablePanel = new TablePanel();
-    CustomRenderer renderer = new CustomRenderer();
-
+    public CustomRenderer renderer = new CustomRenderer();
+    public TableRowSorter<DefaultTableModel> sorter;
 
     private final Icon iconUp = new ImageIcon(BasePanel.createImageLogo(getClass(),"management/trending_up",18,18));
     private final Icon iconDown = new ImageIcon(BasePanel.createImageLogo(getClass(),"management/trending_down",18,18));
@@ -49,14 +46,53 @@ public class HistoryPanel extends BorderPanel {
         tablePanel.addColumn(7,"NHÂN VIÊN");
         tablePanel.addColumn(8,"GHI CHÚ");
 
-        renderer.addLabel(1,(table,value,isSelected,hasFocus,row,column)->{
+        sorter = new TableRowSorter<>(tablePanel.getModel());
+        sorter.setSortKeys(List.of(new RowSorter.SortKey(0,SortOrder.DESCENDING)));
+        tablePanel.getTable().setRowSorter(sorter);
 
-            JLabel label = new JLabel(value.toString());
+        renderer.setDefaultSetting((label,row)->{
+
+            boolean hover = row == tablePanel.getHoveredRow();
+
             label.setBorder(new EmptyBorder(10,20,10,10));
+
+            label.setBackground(
+                    hover ? new Color(245,245,245) : Color.WHITE
+            );
+
+            label.setBorder(BorderFactory.createMatteBorder(
+                    0,0,1,0,
+                    hover ? new Color(245,245,245) : new Color(230,230,230)
+            ));
+
             label.setHorizontalAlignment(JLabel.CENTER);
+            label.setForeground(new Color(57,57,57));
+
+            label.setIcon(null);
+            label.setFont(new Font("Arial",Font.PLAIN,14));
+
+            label.setOpaque(true);
+
+            return label;
+        });
+
+        renderer.setHeaderSetting(label -> {
+            label.setBorder(new EmptyBorder(10,0,10,0));
+            label.setBackground(new Color(247, 248, 249));
+            label.setForeground(new Color(140, 140, 140));
+            label.setFont(new Font("Segoe UI", Font.BOLD, 12));
+            label.setHorizontalAlignment(JLabel.CENTER);
+            label.setOpaque(true);
+            return label;
+        });
+
+        renderer.applyHeader(tablePanel.getTable());
+
+        renderer.addLabel(1,(label,row)->{
+
             label.setFont(new Font("Arial",Font.BOLD,15));
 
-            if("Nhập".equals(value)){
+            if("Nhập".equals(label.getText())){
                 label.setForeground(new Color(54,253,112));
                 label.setIcon(iconUp);
             }else{
@@ -67,17 +103,14 @@ public class HistoryPanel extends BorderPanel {
             return label;
         });
 
-        renderer.addLabel(2,(table,value,isSelected,hasFocus,row,column)->{
+        renderer.addLabel(2,(label,row)->{
 
-            JLabel label = new JLabel(value.toString());
-            label.setBorder(new EmptyBorder(10,20,10,10));
             label.setFont(new Font("Arial",Font.BOLD,15));
             label.setForeground(new Color(16,16,16));
 
             return label;
         });
-
-        renderer.addLabel(5,(table,value,isSelected,hasFocus,row,column)->{
+        renderer.addLabel(5,(label,row)->{
 
             boolean hover = row == tablePanel.getHoveredRow();
 
@@ -96,16 +129,16 @@ public class HistoryPanel extends BorderPanel {
             qtyLabel.setFont(new Font("Arial",Font.BOLD,15));
             qtyLabel.setBorder(new EmptyBorder(0,10,0,10));
 
-            int qty = Integer.parseInt(value.toString());
+            int qty = Integer.parseInt(label.getText());
 
-            if("Nhập".equals(table.getValueAt(row,1))){
+            if("Nhập".equals(tablePanel.getTable().getValueAt(row,1))){
                 qtyLabel.setForeground(new Color(0,150,0));
                 titlePanel.setBackground(new Color(217,250,229));
-                qtyLabel.setText("+"+qty);
+                qtyLabel.setText("+" + qty);
             }else{
                 qtyLabel.setForeground(new Color(198,0,7));
                 titlePanel.setBackground(new Color(253,224,224));
-                qtyLabel.setText("-"+qty);
+                qtyLabel.setText("-" + qty);
             }
 
             titlePanel.add(qtyLabel);
@@ -114,24 +147,20 @@ public class HistoryPanel extends BorderPanel {
             return panel;
         });
 
-        renderer.addLabel(6,(table,value,isSelected,hasFocus,row,column)->{
+        renderer.addLabel(6,(label,row)->{
 
-            JLabel label = new JLabel(value.toString());
-            label.setBorder(new EmptyBorder(10,20,10,10));
             label.setIcon(date);
-
             return label;
         });
 
         tablePanel.setRenderer(renderer);
 
         loadData();
+        sorter.sort();
 
         add(tablePanel, BorderLayout.CENTER);
 
     }
-
-
 
     private void loadData(){
 
@@ -153,6 +182,12 @@ public class HistoryPanel extends BorderPanel {
             });
         }
     }
+
+    public void updateData(){
+        tablePanel.getModel().setRowCount(0);
+        loadData();
+    }
+
     public TablePanel getTable(){
         return this.tablePanel;
     }

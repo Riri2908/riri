@@ -37,13 +37,15 @@ public class ManagementPage extends JPanel {
                 requestFocusInWindow();
             }
         });
+        panel.setBorder(new EmptyBorder(25, 25, 25, 25));
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setOpaque(false);
         panel.setFocusable(true);
 
         ManagementStatCard stat = new ManagementStatCard();
-        InventoryPanel iventoryPanel = new InventoryPanel();
         HistoryPanel historyPanel = new HistoryPanel();
+        InventoryPanel iventoryPanel = new InventoryPanel(historyPanel);
+
         TablePanel table = historyPanel.getTable();
         SearchPanel searchPanel = new SearchPanel(table);
 
@@ -56,7 +58,6 @@ public class ManagementPage extends JPanel {
         panel.add(historyPanel);
 
         JScrollPane scrollPanel = BasePanel.createScroll(panel);
-        scrollPanel.setBorder(new EmptyBorder(25,25,25,25));
 
         add(scrollPanel,BorderLayout.CENTER);
 

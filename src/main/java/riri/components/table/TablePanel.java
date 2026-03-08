@@ -18,11 +18,11 @@ public class TablePanel extends BorderPanel {
     public DefaultTableCellRenderer renderer;
     public Map<Integer,String> column= new HashMap<>();
 
-    private JLabel titleLabel;
+    private final JLabel titleLabel;
     private int hoveredRow = -1;
 
     public JTable table;
-    private DefaultTableModel model;
+    private final DefaultTableModel model;
 
     public TablePanel() {
         setLayout(new BorderLayout());
@@ -66,14 +66,15 @@ public class TablePanel extends BorderPanel {
         table.setDefaultRenderer(Object.class,renderer);
 
         JScrollPane scroll = BasePanel.createScroll(table);
+
         scroll.setOpaque(false);
         scroll.setBorder(new EmptyBorder(0, 1, 10, 4));
         scroll.getViewport().setOpaque(false);
         add(scroll, BorderLayout.CENTER);
 
     }
-    public void addColumn(int oder, String name){
-        column.put(oder,name);
+    public void addColumn(int order, String name){
+        column.put(order,name);
         model.addColumn(name);
     }
 

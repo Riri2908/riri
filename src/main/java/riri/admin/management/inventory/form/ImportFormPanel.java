@@ -15,8 +15,8 @@ import java.awt.event.MouseEvent;
 public class ImportFormPanel extends BaseFormPanel {
 
     private final BorderPanel importButton = new BorderPanel(16,new Color(0, 165, 62),0,0,Color.WHITE,0);
-    public ImportFormPanel() {
-        super();
+    public ImportFormPanel(HistoryPanel historyPanel) {
+        super(historyPanel);
 
         importButton.setLayout(new BorderLayout());
         JLabel label = BasePanel.createTitle("Nhập hàng", "Arial", Font.PLAIN, 17, Color.WHITE);

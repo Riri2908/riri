@@ -3,6 +3,7 @@ package riri.components.page;
 import riri.components.ModernScrollBarUI;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.Objects;
 
@@ -22,6 +23,7 @@ public abstract class BasePanel {
 
     public static JScrollPane createScroll(Component panel){
         JScrollPane scrollPane = new JScrollPane(panel);
+
         JScrollBar vBar = scrollPane.getVerticalScrollBar();
         vBar.setUI(new ModernScrollBarUI());
         vBar.setPreferredSize(new Dimension(6, 0));
@@ -33,11 +35,14 @@ public abstract class BasePanel {
         hBar.setPreferredSize(new Dimension(0, 6));
         hBar.setOpaque(false);
 
-        scrollPane.setBorder(null);
+        scrollPane.setBorder(new EmptyBorder(0,0,8,8));
+
         scrollPane.setOpaque(false);
         scrollPane.getViewport().setOpaque(false);
+
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
         return scrollPane;
     }
 
