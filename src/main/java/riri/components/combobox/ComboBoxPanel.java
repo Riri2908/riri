@@ -38,6 +38,7 @@ public class ComboBoxPanel extends BorderPanel {
     public void setComboBox(JComboBox<String> cbBook) {
         this.comboBox = cbBook;
     }
+
     public void addItem(String item){
         comboBox.addItem(item);
     }

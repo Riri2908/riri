@@ -31,6 +31,7 @@ public class ComboBoxCustomRenderer extends DefaultListCellRenderer {
         if(index >= 0){
 
             label.setOpaque(true);
+
             if(index == hoverIndex){
                 label.setBackground(new Color(230,240,255));
             }

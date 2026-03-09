@@ -11,6 +11,7 @@ import java.awt.event.MouseMotionAdapter;
 
 public class ComboBoxCustomUI extends BasicComboBoxUI {
 
+
     private int hoverIndex;
 
     @Override
