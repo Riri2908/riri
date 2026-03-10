@@ -1,11 +1,13 @@
 package riri.admin.management.inventory.form;
 
 import riri.admin.management.history.HistoryPanel;
+import riri.admin.management.stat.ManagementStatCard;
 import riri.components.BorderPanel;
 import riri.components.combobox.ComboBoxPanel;
 import riri.components.field.FieldPanel;
 import riri.components.page.BasePanel;
 import riri.components.spinner.SpinnerPanel;
+import riri.components.table.TablePanel;
 import riri.model.Book;
 import riri.model.Employee;
 import riri.model.Transaction;
@@ -41,10 +43,12 @@ public class BaseFormPanel extends BorderPanel {
     public FieldPanel priceField = new FieldPanel("Nhập giá bán cho sách...");
 
     protected HistoryPanel historyPanel;
+    protected ManagementStatCard statCard;
 
-    public BaseFormPanel(HistoryPanel historyPanel, String type) {
+    public BaseFormPanel(HistoryPanel historyPanel, ManagementStatCard statCard, String type) {
         super(0,Color.WHITE,0,0,null,0);
         this.historyPanel = historyPanel;
+        this.statCard= statCard;
         this.type = type;
 
         setLayout(new GridBagLayout());
@@ -137,7 +141,6 @@ public class BaseFormPanel extends BorderPanel {
     }
 
     public void addData(String type){
-        Book book;
         double price;
         String bookName = (String) comboBoxBook.getComboBox().getSelectedItem();
 
@@ -152,22 +155,29 @@ public class BaseFormPanel extends BorderPanel {
             return;
         }
 
-        if(bookName.equals("--Thêm sách mới--")){
+        Book book = new Book(
+                0,
+                bookField.getTextField(),
+                authorField.getTextField(),
+                categoryField.getTextField(),
+                publisherField.getTextField(),
+                price,
+                spinnerPanel.getValue());
 
+        if(bookName.equals("--Thêm sách mới--")){
+            AppContext.BOOK_SERVICE.add(book);
+        }else {
+            book = AppContext.BOOK_SERVICE.findByName(bookName);
             book = new Book(
-                    0,
-                    bookField.getTextField(),
+                    book.getId(),
+                    book.getName(),
                     authorField.getTextField(),
                     categoryField.getTextField(),
                     publisherField.getTextField(),
                     price,
                     spinnerPanel.getValue());
-
-            AppContext.BOOK_SERVICE.add(book);
-        }else {
-            book = AppContext.BOOK_SERVICE.findByName(bookName);
+            AppContext.BOOK_SERVICE.update(book);
         }
-
 
         Transaction transaction = new Transaction(
                 0,

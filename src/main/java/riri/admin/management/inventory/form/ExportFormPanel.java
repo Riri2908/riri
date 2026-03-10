@@ -11,8 +11,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class ExportFormPanel extends BaseFormPanel{
-    public ExportFormPanel(HistoryPanel historyPanel) {
-        super(historyPanel, "Xuất");
+    public ExportFormPanel(HistoryPanel historyPanel, ManagementStatCard statCard) {
+        super(historyPanel, statCard,"Xuất");
 
         BorderPanel exportButton = new BorderPanel(16,new Color(255, 0, 0),0,0,Color.WHITE,0);
         exportButton.setLayout(new BorderLayout());
@@ -25,7 +25,7 @@ public class ExportFormPanel extends BaseFormPanel{
             @Override
             public void mouseClicked(MouseEvent e) {
                 addData("Xuất");
-                ManagementStatCard.updateQuantity();
+                statCard.updateQuantity();
             }
             @Override
             public void mouseEntered(MouseEvent e) {

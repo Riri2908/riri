@@ -17,9 +17,8 @@ public class ImportFormPanel extends BaseFormPanel {
 
     private final BorderPanel importButton = new BorderPanel(16,new Color(0, 165, 62),0,0,Color.WHITE,0);
 
-
-    public ImportFormPanel(HistoryPanel historyPanel) {
-        super(historyPanel, "Nhập");
+    public ImportFormPanel(HistoryPanel historyPanel, ManagementStatCard statCard) {
+        super(historyPanel,statCard, "Nhập");
 
         importButton.setLayout(new BorderLayout());
         JLabel label = BasePanel.createTitle("Nhập hàng", "Arial", Font.PLAIN, 17, Color.WHITE);
@@ -31,7 +30,7 @@ public class ImportFormPanel extends BaseFormPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 addData("Nhập");
-                ManagementStatCard.updateQuantity();
+                statCard.updateQuantity();
             }
             @Override
             public void mouseEntered(MouseEvent e) {

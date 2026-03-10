@@ -11,9 +11,9 @@ public class ManagementStatCard extends JPanel {
     private final double importQuantity= AppContext.TRANSACTION_SERVICE.getTotalImportQuantity();
     private final double exportQuantity= AppContext.TRANSACTION_SERVICE.getTotalExportQuantity();
 
-    private static ManagementStat importStat;
-    private static ManagementStat exportStat;
-    private static ManagementStat quantityStat;
+    public ManagementStat importStat;
+    public ManagementStat exportStat;
+    public ManagementStat quantityStat;
 
     private final int HEIGHT=120;
     
@@ -37,13 +37,13 @@ public class ManagementStatCard extends JPanel {
         panel.add(quantityStat);
         add(panel);
     }
-    public static void updateQuantity(){
+    public void updateQuantity(){
         double quantity = AppContext.BOOK_SERVICE.totalQuantity();
         double importQuantity = AppContext.TRANSACTION_SERVICE.getTotalImportQuantity();
         double exportQuantity = AppContext.TRANSACTION_SERVICE.getTotalExportQuantity();
 
-        importStat.setValue(importQuantity);
-        exportStat.setValue(exportQuantity);
-        quantityStat.setValue(quantity);
+        this.importStat.setValue(importQuantity);
+        this.exportStat.setValue(exportQuantity);
+        this.quantityStat.setValue(quantity);
     }
 }

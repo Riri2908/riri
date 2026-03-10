@@ -44,7 +44,7 @@ public class ManagementPage extends JPanel {
 
         ManagementStatCard stat = new ManagementStatCard();
         HistoryPanel historyPanel = new HistoryPanel();
-        InventoryPanel iventoryPanel = new InventoryPanel(historyPanel);
+        InventoryPanel iventoryPanel = new InventoryPanel(historyPanel,stat);
 
         TablePanel table = historyPanel.getTable();
         SearchPanel searchPanel = new SearchPanel(table);
