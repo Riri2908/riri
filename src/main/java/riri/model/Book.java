@@ -5,14 +5,16 @@ public class Book extends BaseModel{
     private String name;
     private String author;
     private String category;
+    private String publisher;
     private double price;
     private int quantity;
 
-    public Book(int id, String name, String author, String category, double price, int quantity) {
+    public Book(int id, String name, String author, String category, String publisher, double price, int quantity) {
         super(id);
         this.name = name;
         this.author = author;
         this.category = category;
+        this.publisher = publisher;
         this.price = price;
         this.quantity = quantity;
     }
@@ -37,9 +39,8 @@ public class Book extends BaseModel{
         this.quantity = quantity;
     }
 
-    @Override
-    public String toFileString() {
-        return id + ";" + name + ";" + author + ";" + category + ";" + price + ";" + quantity;
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
     }
 
     public String getName() { return name; }
@@ -54,5 +55,12 @@ public class Book extends BaseModel{
 
     public int getQuantity() { return quantity; }
 
+    public String getPublisher() { return publisher; }
+
+
+    @Override
+    public String toFileString() {
+        return id + ";" + name + ";" + author + ";" + category + ";" + publisher + ";" + price + ";" + quantity;
+    }
 
 }

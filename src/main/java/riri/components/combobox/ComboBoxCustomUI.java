@@ -1,6 +1,10 @@
 package riri.components.combobox;
 
+import riri.components.ModernScrollBarUI;
+
 import javax.swing.*;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 import javax.swing.plaf.basic.BasicComboPopup;
 import javax.swing.plaf.basic.ComboPopup;
@@ -86,4 +90,29 @@ public class ComboBoxCustomUI extends BasicComboBoxUI {
 
         return popup;
     }
+
+    public static void customizeComboBoxScroll(JComboBox<?> comboBox) {
+
+        comboBox.addPopupMenuListener(new PopupMenuListener() {
+
+            @Override
+            public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+
+                Object child = comboBox.getAccessibleContext().getAccessibleChild(0);
+
+                if (child instanceof JPopupMenu popup) {
+
+                    JScrollPane scrollPane = (JScrollPane) popup.getComponent(0);
+
+                    scrollPane.getVerticalScrollBar().setUI(new ModernScrollBarUI());
+
+                    scrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(8,0));
+                }
+            }
+
+            @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {}
+            @Override public void popupMenuCanceled(PopupMenuEvent e) {}
+        });
+    }
+
 }

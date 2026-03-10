@@ -12,7 +12,8 @@ import java.awt.event.MouseEvent;
 
 public class ExportFormPanel extends BaseFormPanel{
     public ExportFormPanel(HistoryPanel historyPanel) {
-        super(historyPanel);
+        super(historyPanel, "Xuất");
+
         BorderPanel exportButton = new BorderPanel(16,new Color(255, 0, 0),0,0,Color.WHITE,0);
         exportButton.setLayout(new BorderLayout());
         JLabel label = BasePanel.createTitle("Xuất hàng", "Arial", Font.PLAIN, 17, Color.WHITE);
@@ -36,8 +37,6 @@ public class ExportFormPanel extends BaseFormPanel{
                 exportButton.setBackground(new Color(255, 0, 0));
             }
         });
-        gbc.gridx = 3;
-        gbc.gridy = 3;
-        add(exportButton,gbc);
+        addItem(exportButton,3,3);
     }
 }

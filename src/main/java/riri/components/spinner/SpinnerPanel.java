@@ -5,6 +5,8 @@ import riri.components.BorderPanel;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicFormattedTextFieldUI;
 import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 public class SpinnerPanel extends BorderPanel {
 
@@ -43,6 +45,17 @@ public class SpinnerPanel extends BorderPanel {
         textField.setBorder(null);
         textField.setOpaque(false);
         textField.setBackground(new Color(0,0,0,0));
+
+        textField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                setBorder(new Color(31, 95, 255),2);
+            }
+            @Override
+            public void focusLost(FocusEvent e) {
+                setBorder(new Color(221, 221, 221),1);
+            }
+        });
 
         JComponent editorComp = spinner.getEditor();
         editorComp.setOpaque(false);

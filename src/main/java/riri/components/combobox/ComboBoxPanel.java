@@ -14,7 +14,7 @@ public class ComboBoxPanel extends BorderPanel {
     public ComboBoxCustomUI comboBoxCustomUI = new ComboBoxCustomUI();
 
     public ComboBoxPanel() {
-        super(12, Color.WHITE, 0, 0, new Color(214, 214, 214), 1);
+        super(16, Color.WHITE, 0, 0, new Color(214, 214, 214), 1);
 
         setBorder(new EmptyBorder(0,10,0,0));
         setLayout(new BorderLayout());
@@ -26,6 +26,7 @@ public class ComboBoxPanel extends BorderPanel {
         comboBox.setFont(new Font("Arial", Font.PLAIN, 14));
         comboBox.setRenderer(comboBoxRenderer);
         comboBox.setUI(comboBoxCustomUI);
+        ComboBoxCustomUI.customizeComboBoxScroll(comboBox);
 
         add(comboBox,BorderLayout.CENTER);
 

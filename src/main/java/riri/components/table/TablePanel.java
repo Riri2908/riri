@@ -5,9 +5,7 @@ import riri.components.page.BasePanel;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
+import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -40,6 +38,7 @@ public class TablePanel extends BorderPanel {
         };
         table = new JTable(model);
 
+        table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS );
         table.setRowHeight(45);
         table.setFont(new Font("Arial", Font.PLAIN, 15));
         table.setShowGrid(false);
@@ -66,6 +65,7 @@ public class TablePanel extends BorderPanel {
         table.setDefaultRenderer(Object.class,renderer);
 
         JScrollPane scroll = BasePanel.createScroll(table);
+        scroll.setPreferredSize(new Dimension(400,400));
 
         scroll.setOpaque(false);
         scroll.setBorder(new EmptyBorder(0, 1, 10, 4));
@@ -74,6 +74,11 @@ public class TablePanel extends BorderPanel {
 
     }
     public void addColumn(int order, String name){
+        column.put(order,name);
+        model.addColumn(name);
+    }
+
+    public void addColumn(int order, String name,int width){
         column.put(order,name);
         model.addColumn(name);
     }
@@ -111,6 +116,42 @@ public class TablePanel extends BorderPanel {
 
     public int getHoveredRow(){
         return this.hoveredRow;
+    }
+
+    public void autoResizeColumns() {
+
+        JTable table = this.table;
+
+        for (int col = 0; col < table.getColumnCount(); col++) {
+
+            TableColumn column = table.getColumnModel().getColumn(col);
+
+            int maxWidth = 50;
+
+            TableCellRenderer headerRenderer = table.getTableHeader().getDefaultRenderer();
+
+            Component headerComp = headerRenderer.getTableCellRendererComponent(
+                    table,
+                    column.getHeaderValue(),
+                    false,
+                    false,
+                    0,
+                    col
+            );
+
+            maxWidth = Math.max(maxWidth, headerComp.getPreferredSize().width);
+
+            for (int row = 0; row < table.getRowCount(); row++) {
+
+                TableCellRenderer cellRenderer = table.getCellRenderer(row, col);
+
+                Component comp = table.prepareRenderer(cellRenderer, row, col);
+
+                maxWidth = Math.max(maxWidth, comp.getPreferredSize().width + 20);
+            }
+
+            column.setPreferredWidth(maxWidth);
+        }
     }
 
 

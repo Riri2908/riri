@@ -36,7 +36,7 @@ public class HistoryPanel extends BorderPanel {
 
         tablePanel.setTitle("Lịch sử giao dịch");
 
-        tablePanel.addColumn(0,"ID");
+        tablePanel.addColumn(0,"STT");
         tablePanel.addColumn(1,"LOẠI");
         tablePanel.addColumn(2,"TÊN SÁCH");
         tablePanel.addColumn(3,"TÁC GIẢ");
@@ -156,6 +156,7 @@ public class HistoryPanel extends BorderPanel {
         tablePanel.setRenderer(renderer);
 
         loadData();
+
         sorter.sort();
 
         add(tablePanel, BorderLayout.CENTER);
@@ -181,6 +182,8 @@ public class HistoryPanel extends BorderPanel {
                     transaction.getNote()
             });
         }
+
+
     }
 
     public void updateData(){
