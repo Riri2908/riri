@@ -2,10 +2,12 @@ package riri;
 
 import riri.components.page.ContentPanel;
 import riri.components.sidebar.*;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class BookStoreApp {
+
     void main(){
         JFrame frame = new JFrame("App");
         frame.setSize(SideBar.WIDTH, SideBar.HEIGHT);
