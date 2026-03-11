@@ -1,0 +1,30 @@
+1;1;1;10;Nhập;01/03/2026;Nhập hàng đầu tháng
+2;2;2;5;Xuất;01/03/2026;Bán lẻ tại quầy
+3;3;3;7;Xuất;02/03/2026;Khách đặt online
+4;1;1;20;Nhập;03/03/2026;Nhập bổ sung kho A
+5;4;2;3;Xuất;04/03/2026;Bán cho khách VIP
+6;5;1;15;Nhập;05/03/2026;Nhập sách Công nghệ mới
+7;6;3;2;Xuất;05/03/2026;Khách lẻ mua tại quầy
+8;7;2;12;Nhập;06/03/2026;Nhập sách kỹ năng
+9;2;1;4;Xuất;06/03/2026;Đơn hàng Shopee
+10;10;3;30;Nhập;07/03/2026;Nhập lô sách Văn học
+11;1;2;8;Xuất;08/03/2026;Bán cho trường học
+12;15;1;5;Xuất;08/03/2026;Khách mua làm quà tặng
+13;20;3;25;Nhập;09/03/2026;Nhập từ NXB Trẻ
+14;3;2;1;Xuất;09/03/2026;Bán lẻ
+15;8;1;10;Nhập;10/03/2026;Nhập định kỳ
+16;22;2;6;Xuất;10/03/2026;Bán sách lập trình
+17;12;3;20;Nhập;11/03/2026;Nhập kho bổ sung
+18;5;1;3;Xuất;12/03/2026;Khách quen mua
+19;30;2;15;Nhập;13/03/2026;Sách mới về kho
+20;7;3;9;Xuất;14/03/2026;Bán combo kỹ năng
+21;18;1;40;Nhập;15/03/2026;Nhập số lượng lớn
+22;18;2;10;Xuất;16/03/2026;Xuất bán sỉ
+23;4;3;2;Xuất;17/03/2026;Khách lẻ
+24;9;1;18;Nhập;18/03/2026;Nhập sách lịch sử
+25;11;2;5;Xuất;19/03/2026;Bán qua Facebook
+26;25;3;12;Nhập;20/03/2026;Nhập kho định kỳ
+27;2;1;3;Xuất;21/03/2026;Khách tại quầy
+28;14;2;10;Nhập;22/03/2026;Nhập sách chuyên ngành
+29;27;3;4;Xuất;23/03/2026;Bán online
+30;6;1;20;Nhập;24/03/2026;Nhập đợt cuối tháng
