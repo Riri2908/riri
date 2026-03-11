@@ -1,6 +1,7 @@
 package riri.components.page;
 
 import riri.admin.dashboard.DashBoardPage;
+import riri.admin.invoice.InvoicePanel;
 import riri.admin.management.ManagementPage;
 
 import javax.swing.*;
@@ -25,7 +26,7 @@ public class ContentPanel extends JPanel {
         textPanel.add(new DashBoardPage(), "DashBoard");
         textPanel.add(new JLabel("Haha"), "Quản lý sách");
         textPanel.add(new ManagementPage(), "Quản lý tồn kho");
-        textPanel.add(new JLabel("Hóa đơn"), "Hóa đơn");
+        textPanel.add(new InvoicePanel(), "Hóa đơn");
         textPanel.add(new JLabel("Khách hàng"), "Khách hàng");
 
         add(topBar,BorderLayout.NORTH);

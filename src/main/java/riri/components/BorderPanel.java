@@ -14,7 +14,6 @@ public class BorderPanel extends JPanel {
     private Color borderColor = new Color(220,220,220);
     private int borderWidth = 1;
 
-
     public BorderPanel() {
         setOpaque(false);
     }

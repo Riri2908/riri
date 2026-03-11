@@ -52,9 +52,8 @@ public class BaseFormPanel extends BorderPanel {
         this.type = type;
 
         setLayout(new GridBagLayout());
-        setOpaque(false);
 
-        gbc.insets = new Insets(0,0,0,5);
+        gbc.insets = new Insets(0,0,0,10);
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1;
         gbc.weighty = 1;
@@ -79,8 +78,8 @@ public class BaseFormPanel extends BorderPanel {
     }
 
     public void addItem(Component component, int x, int y) {
-        gbc.gridx = x;
-        gbc.gridy = y;
+        this.gbc.gridx = x;
+        this.gbc.gridy = y;
         add(component,gbc);
     }
 
