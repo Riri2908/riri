@@ -55,6 +55,27 @@ public class InformationPanel extends BorderPanel {
         addItem(BasePanel.createItem("Số điện thoại",phoneField),1,1);
         addItem(BasePanel.createItem("Loại khách hàng",customerTypeBox() ),0,2);
         addItem(BasePanel.createItem("Chiếc khấu (%)", voucher),1,2);
+
+        customerField.getField().addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if(e.getKeyCode() == KeyEvent.VK_ESCAPE){
+                    customerCard.show(customerPanel,"customerBox");
+                    e.consume();
+                }
+            }
+        });
+
+        customerTypeField.getField().addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if(e.getKeyCode() == KeyEvent.VK_ESCAPE){
+                    customerTypeCard.show(customerTypePanel,"customerTypeBox");
+                    e.consume();
+                }
+            }
+        });
+
         fillCustomerInfo();
     }
 
@@ -98,7 +119,7 @@ public class InformationPanel extends BorderPanel {
     private void fillCustomerInfo(){
 
         customerBox.getComboBox().addActionListener(_->{
-            String customerName = (String)customerBox.getComboBox().getSelectedItem();
+            String customerName = (String) customerBox.getComboBox().getSelectedItem();
             if(customerName==null || customerName.equalsIgnoreCase("--Chọn khách hàng--")){
                 showPlaceholder();
                 return;
@@ -106,32 +127,21 @@ public class InformationPanel extends BorderPanel {
 
             if( customerName.equalsIgnoreCase("--Thêm khách hàng mới--")){
                 customerCard.show(customerPanel,"customerField");
-
                 showPlaceholder();
-
-                customerField.getField().addKeyListener(new KeyAdapter() {
-                    @Override
-                    public void keyPressed(KeyEvent e) {
-                        if(e.getKeyCode() == KeyEvent.VK_ESCAPE){
-                            customerCard.show(customerPanel,"customerBox");
-                            e.consume();
-                        }
-                    }
-                });
+                customerTypeCard.show(customerTypePanel,"customerTypeField");
                 return;
             }
 
             Customer customer = AppContext.CUSTOMER_SERVICE.findByName(customerName);
 
             showPlaceholder(customer);
-
         });
-
     }
 
     public void showPlaceholder(){
         customerField.showPlaceholder();
         phoneField.showPlaceholder();
+        customerTypeCard.show(customerTypePanel,"customerTypeBox");
         customerTypeBox.showPlaceholder();
         voucher.showPlaceholder();
     }
@@ -139,6 +149,7 @@ public class InformationPanel extends BorderPanel {
     public void showPlaceholder(Customer customer){
         customerField.showPlaceholder(customer.getName(),Color.BLACK);
         phoneField.showPlaceholder(customer.getPhone(),Color.BLACK);
+        customerTypeCard.show(customerTypePanel,"customerTypeBox");
         customerTypeBox.showPlaceholder(customer.getIdType());
         CustomerType customerType = AppContext.CUSTOMER_TYPE_SERVICE.findById(customer.getIdType());
         int discountRate = (int) (customerType.getDiscountRate() * 100);
