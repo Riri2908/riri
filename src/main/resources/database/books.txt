@@ -1,5 +1,5 @@
 1;Java Core;Riri;Học thuật;NXB Giáo Dục;200000.0;57
-2;Clean Code;Robert C. Martin;Lập trình;Prentice Hall;38000.0;2
+2;Clean Code;Robert C. Martin;Lập trình;Prentice Hall;38000.0;0
 3;Đắc Nhân Tâm;Dale Carnegie;Kỹ năng sống;NXB Tổng Hợp TP.HCM;150000.0;10
 4;Design Patterns;GoF;Lập trình;Addison-Wesley;400000.0;40
 5;Spring Boot;Riri Dev;Công nghệ;NXB Công Nghệ Thông Tin;280000.0;45
