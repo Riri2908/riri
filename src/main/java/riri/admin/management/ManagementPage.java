@@ -47,7 +47,7 @@ public class ManagementPage extends JPanel {
         InventoryPanel iventoryPanel = new InventoryPanel(historyPanel,stat);
 
         TablePanel table = historyPanel.getTable();
-        SearchPanel searchPanel = new SearchPanel(table);
+        SearchPanel searchPanel = new SearchPanel(table,"Tìm kiếm theo số thứ tự, tên sách, tên tác giả...");
 
         panel.add(stat);
         panel.add(Box.createVerticalStrut(25));

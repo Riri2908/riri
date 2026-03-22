@@ -14,14 +14,14 @@ public class FieldPanel extends BorderPanel {
     public JTextField field;
 
     public FieldPanel(String title) {
-        super(16, Color.WHITE, 0, 0, new Color(214, 214, 214), 1);
-        setBorder(new EmptyBorder(0,10,0,0));
+        super(20, Color.WHITE, 0, 0, new Color(214, 214, 214), 1);
+        setBorder(new EmptyBorder(10,10,10,10));
         setLayout(new BorderLayout());
 
         this.title = title;
         field = new JTextField();
 
-        this.setFontField(new Font("Arial",Font.PLAIN,15));
+        this.setFontField(new Font("Noto Sans",Font.PLAIN,16 ));
         this.showPlaceholder();
 
         field.setOpaque(false);
@@ -80,7 +80,7 @@ public class FieldPanel extends BorderPanel {
 
     public void showPlaceholder() {
         this.field.setText(title);
-        this.field.setForeground(new Color(174,174,174));
+        this.field.setForeground(new Color(133, 133, 133));
     }
 
     public void setFontField(Font font) {

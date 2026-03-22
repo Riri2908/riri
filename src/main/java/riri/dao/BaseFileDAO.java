@@ -28,9 +28,7 @@ public abstract class BaseFileDAO {
 
         Files.createDirectories(file.getParent());
 
-        try (InputStream is = getClass()
-                .getClassLoader()
-                .getResourceAsStream("database/" + fileName)) {
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream("database/" + fileName)) {
 
             if (is == null) {
                 Files.createFile(file);

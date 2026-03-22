@@ -28,7 +28,7 @@ public class ManagementStatCard extends JPanel {
         panel.setLayout(new BoxLayout(panel,BoxLayout.X_AXIS));
 
         importStat = new ManagementStat("Tổng số nhập",importQuantity,new Color(0, 200, 80),"import");
-        exportStat = new ManagementStat("Tổng số xuất",exportQuantity,Color.RED,"export");
+        exportStat = new ManagementStat("Tổng đã bán",exportQuantity,Color.RED,"export");
         quantityStat = new ManagementStat("Tồn kho hiện tại",quantity,new Color(43, 126, 253),"inventory");
         panel.add(importStat);
         panel.add(Box.createHorizontalStrut(15));

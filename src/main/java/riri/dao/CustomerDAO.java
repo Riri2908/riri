@@ -24,7 +24,7 @@ public class CustomerDAO extends BaseFileDAO {
 
                 String[] d = line.split(";");
 
-                Customer customer = new Customer(Integer.parseInt(d[0]), d[1], d[2], d[3], d[4],Integer.parseInt(d[5]) ,Double.parseDouble(d[6]));
+                Customer customer = new Customer(Integer.parseInt(d[0]), d[1], d[2], d[3], Integer.parseInt(d[4]),Integer.parseInt(d[5]) ,Double.parseDouble(d[6]));
 
                 customerMap.put(Integer.parseInt(d[0]), customer);
             }

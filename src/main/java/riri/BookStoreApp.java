@@ -21,6 +21,6 @@ public class BookStoreApp {
         frame.add(contentPanel, BorderLayout.CENTER);
 
         frame.setVisible(true);
-
     }
+
 }

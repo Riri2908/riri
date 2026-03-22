@@ -1,5 +1,6 @@
 package riri.components.page;
 
+import riri.components.BorderPanel;
 import riri.components.ModernScrollBarUI;
 
 import javax.swing.*;
@@ -15,10 +16,20 @@ public abstract class BasePanel {
     }
 
     public static JLabel createTitle(String text, String font, int style, int size, Color color) {
-        JLabel title = new JLabel(text);
-            title.setFont(new Font(font, style, size));
+        JLabel title = new JLabel(text);title.setFont(new Font(font, style, size));
         title.setForeground(color);
         return title;
+    }
+
+    public static JPanel createItem(String title, Component component){
+        JPanel item = new JPanel();
+        item.setOpaque(false);
+        item.setLayout(new BorderLayout(0,5));
+        JLabel label = createTitle(title,"Segue UI",Font.BOLD, 13, new Color(71, 71, 71));
+        label.setBorder(new EmptyBorder(0,5,0,0));
+        item.add(label, BorderLayout.NORTH);
+        item.add(component,BorderLayout.CENTER);
+        return item;
     }
 
     public static JScrollPane createScroll(Component panel){
@@ -45,6 +56,5 @@ public abstract class BasePanel {
 
         return scrollPane;
     }
-
 
 }

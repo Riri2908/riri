@@ -4,6 +4,7 @@ import riri.components.BorderPanel;
 import riri.components.page.BasePanel;
 import riri.components.table.CustomRenderer;
 import riri.components.table.TablePanel;
+import riri.dao.TransactionDAO;
 import riri.model.Book;
 import riri.model.Employee;
 import riri.model.Transaction;
@@ -14,6 +15,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.*;
 import java.awt.*;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.*;
 import java.util.List;
 
@@ -46,9 +49,11 @@ public class HistoryPanel extends BorderPanel {
         tablePanel.addColumn(7,"NHÂN VIÊN");
         tablePanel.addColumn(8,"GHI CHÚ");
 
+
         sorter = new TableRowSorter<>(tablePanel.getModel());
-        sorter.setSortKeys(List.of(new RowSorter.SortKey(0,SortOrder.DESCENDING)));
         tablePanel.getTable().setRowSorter(sorter);
+        sorter.setSortKeys(List.of(new RowSorter.SortKey(6,SortOrder.ASCENDING)));
+
 
         renderer.setDefaultSetting((label,row)->{
 
@@ -142,6 +147,7 @@ public class HistoryPanel extends BorderPanel {
             }
 
             titlePanel.add(qtyLabel);
+
             panel.add(titlePanel);
 
             return panel;
@@ -164,8 +170,10 @@ public class HistoryPanel extends BorderPanel {
     }
 
     private void loadData(){
+        List<Transaction> transactionCollection =new ArrayList<>(transactions.values());
+        Collections.reverse(transactionCollection);
 
-        for(Transaction transaction : transactions.values()){
+        for(Transaction transaction : transactionCollection ){
 
             Book book = books.get(transaction.getBookId());
             Employee employee = employees.get(transaction.getEmployeeId());

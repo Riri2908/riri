@@ -32,7 +32,7 @@ public class TransactionService {
 
         Book book = AppContext.BOOK_SERVICE.findById(transaction.getBookId());
         if (book == null) {
-            throw new RuntimeException("Book không tồn tại");
+            throw new RuntimeException("Sách không tồn tại");
         }
 
         Employee employee = AppContext.EMPLOYEE_SERVICE.findById(transaction.getEmployeeId());

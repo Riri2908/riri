@@ -16,7 +16,7 @@ public class SpinnerPanel extends BorderPanel {
 
     public SpinnerPanel() {
 
-        super(12, Color.WHITE, 0,0,new Color(200,200,200),1);
+        super(20, Color.WHITE, 0,0,new Color(200,200,200),1);
         setLayout(new BorderLayout());
 
         this.spinnerModel = new SpinnerNumberModel(0, 0, null, 1);
@@ -83,5 +83,16 @@ public class SpinnerPanel extends BorderPanel {
 
     public int getValue(){
         return (int) this.spinner.getValue();
+    }
+
+    public void setValue(int value){
+        this.spinner.setValue(value);
+    }
+
+    public void showPlaceholder(){
+        this.spinner.setValue(0);
+    }
+    public void showPlaceholder(int value){
+        this.spinner.setValue(value);
     }
 }

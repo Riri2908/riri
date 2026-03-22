@@ -19,12 +19,13 @@ public class SearchPanel extends BorderPanel {
 
     private final JTextField searchField;
     private final TablePanel table;
-    private final String PLACEHOLDER = "Search...";
+    private final String title;
     private final Icon searchIcon = new ImageIcon(BasePanel.createImageLogo(getClass(),"sidebar/search",22,22)) ;
     private final JLabel searchLabel = new JLabel(searchIcon);
 
-    public SearchPanel(TablePanel table) {
+    public SearchPanel(TablePanel table, String title) {
         super();
+        this.title = title;
         this.table = table;
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(0,70));
@@ -71,12 +72,12 @@ public class SearchPanel extends BorderPanel {
 
     }
     private void showPlaceholder() {
-        searchField.setText(PLACEHOLDER);
+        searchField.setText(this.title);
         searchField.setForeground(new Color(174,174,174));
     }
 
     private boolean isPlaceholder() {
-        return searchField.getText().equals(PLACEHOLDER);
+        return searchField.getText().equals(this.title);
     }
     private void search() {
 
