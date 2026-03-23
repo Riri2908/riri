@@ -9,9 +9,9 @@ import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
-public class ComboBoxPanel extends BorderPanel {
+public class ComboBoxPanel<T> extends BorderPanel {
 
-    public JComboBox<String> comboBox;
+    public JComboBox<T> comboBox;
     public ComboBoxCustomRenderer comboBoxRenderer = new ComboBoxCustomRenderer();
     public ComboBoxCustomUI comboBoxCustomUI = new ComboBoxCustomUI();
 
@@ -47,26 +47,26 @@ public class ComboBoxPanel extends BorderPanel {
     }
 
 
-    public JComboBox<String> getComboBox() {
+    public JComboBox<T> getComboBox() {
         return comboBox;
     }
 
-    public void setComboBox(JComboBox<String> cbBook) {
+    public void setComboBox(JComboBox<T> cbBook) {
         this.comboBox = cbBook;
     }
 
-    public void addItem(String item){
+    public void addItem(T item){
         comboBox.addItem(item);
     }
 
-    public void setItems(String[] items){
+    public void setItems(T[] items){
         comboBox.removeAllItems();
-        for(String item : items){
+        for(T item : items){
             comboBox.addItem(item);
         }
     }
 
-    public void setCustomRenderer(ListCellRenderer<? super String> renderer){
+    public void setCustomRenderer(ListCellRenderer<? super T> renderer){
         comboBox.setRenderer(renderer);
     }
 
