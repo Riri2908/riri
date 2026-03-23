@@ -20,19 +20,19 @@ public class TransactionTypeTogglePanel extends JPanel {
                 inventoryPanel.showImport();
             }
         });
-
-        ToggleButton exportButton = new ToggleButton("Xuất hàng","export");
-
-        exportButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                inventoryPanel.showExport();
-            }
-        });
+//
+//        ToggleButton exportButton = new ToggleButton("Xuất hàng","export");
+//
+//        exportButton.addMouseListener(new MouseAdapter() {
+//            @Override
+//            public void mouseClicked(MouseEvent e) {
+//                inventoryPanel.showExport();
+//            }
+//        });
 
         add(importButton);
-        add(Box.createHorizontalStrut(15));
-        add(exportButton);
+//        add(Box.createHorizontalStrut(15));
+//        add(exportButton);
 
 
     }

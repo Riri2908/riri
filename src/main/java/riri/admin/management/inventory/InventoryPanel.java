@@ -28,7 +28,7 @@ public class InventoryPanel extends BorderPanel {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setOpaque(false);
-        JLabel title = BasePanel.createTitle("Nhập / Xuất hàng", "Segue UI", Font.BOLD, 18, new Color(53, 53, 53));
+        JLabel title = BasePanel.createTitle("Nhập hàng", "Segue UI", Font.BOLD, 18, new Color(53, 53, 53));
         title.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         TransactionTypeTogglePanel togglePanel = new TransactionTypeTogglePanel(this);
@@ -38,7 +38,6 @@ public class InventoryPanel extends BorderPanel {
         cardPanel = new JPanel(cardLayout);
 
         cardPanel.add(new ImportFormPanel(historyPanel, statCard),"IMPORT");
-        cardPanel.add(new ExportFormPanel(historyPanel, statCard),"EXPORT");
         cardPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         panel.add(title);
@@ -54,7 +53,7 @@ public class InventoryPanel extends BorderPanel {
     public void showImport(){
         cardLayout.show(cardPanel,"IMPORT");
     }
-    public void showExport(){
-        cardLayout.show(cardPanel,"EXPORT");
-    }
+//    public void showExport(){
+//        cardLayout.show(cardPanel,"EXPORT");
+//    }
 }

@@ -1,5 +1,8 @@
 package riri.components.table;
 
+import riri.model.Customer;
+import riri.util.AppContext;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
@@ -9,6 +12,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public class CustomRenderer extends DefaultTableCellRenderer {
+    public Map<Integer, Customer> customers = AppContext.CUSTOMER_SERVICE.getAll();
 
     private final Map<Integer, BiFunction<JLabel,Integer,Component>> renderers = new HashMap<>();
     private BiFunction<JLabel,Integer,JLabel> defaultSetting;

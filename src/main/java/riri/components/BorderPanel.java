@@ -1,5 +1,7 @@
 package riri.components;
 
+import riri.admin.invoice.TitlePanel;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -70,4 +72,5 @@ public class BorderPanel extends JPanel {
         g2.dispose();
         super.paintComponent(g);
     }
+
 }

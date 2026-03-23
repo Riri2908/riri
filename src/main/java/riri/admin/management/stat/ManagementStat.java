@@ -10,7 +10,7 @@ import java.awt.*;
 
 public class ManagementStat extends BorderPanel  {
 
-    private JLabel valueLabel;
+    private final JLabel valueLabel;
 
     public ManagementStat(String text,double value,Color color,String logoName) {
         super();

@@ -3,9 +3,8 @@ package riri.dao;
 import riri.util.AppPath;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
+import java.io.InputStream;
+import java.nio.file.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -18,16 +17,32 @@ public abstract class BaseFileDAO {
 
         try {
             if (Files.notExists(file)) {
-                Files.createFile(file);
+                createFromTemplate(fileName);
             }
         } catch (IOException e) {
-            throw new RuntimeException("Failed to create data file: " + fileName, e);
+            throw new RuntimeException("Failed to init data file: " + fileName, e);
+        }
+    }
+
+    private void createFromTemplate(String fileName) throws IOException {
+
+        Files.createDirectories(file.getParent());
+
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream("database/" + fileName)) {
+
+            if (is == null) {
+                Files.createFile(file);
+                return;
+            }
+
+            Files.copy(is, file, StandardCopyOption.REPLACE_EXISTING);
         }
     }
 
     protected void backup() {
         try {
-            String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
+            String time = LocalDateTime.now()
+                    .format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
 
             Path backupFile = AppPath.BACKUP.resolve(
                     file.getFileName() + "_" + time + ".bak"
