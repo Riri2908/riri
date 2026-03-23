@@ -12,7 +12,7 @@ import java.awt.event.FocusEvent;
 public class ComboBoxPanel<T> extends BorderPanel {
 
     public JComboBox<T> comboBox;
-    public ComboBoxCustomRenderer comboBoxRenderer = new ComboBoxCustomRenderer();
+    public ComboBoxCustomRenderer<T> comboBoxRenderer = new ComboBoxCustomRenderer<>();
     public ComboBoxCustomUI comboBoxCustomUI = new ComboBoxCustomUI();
 
     public ComboBoxPanel() {
