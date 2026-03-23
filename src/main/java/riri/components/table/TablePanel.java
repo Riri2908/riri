@@ -18,6 +18,8 @@ public class TablePanel extends BorderPanel {
 
     private final JLabel titleLabel;
     private int hoveredRow = -1;
+    private int hoveredCol = -1;
+    private int hoveredX = -1;
 
     public JTable table;
     private final DefaultTableModel model;
@@ -50,6 +52,8 @@ public class TablePanel extends BorderPanel {
             @Override
             public void mouseMoved(MouseEvent e) {
                 hoveredRow = table.rowAtPoint(e.getPoint());
+                hoveredCol = table.columnAtPoint(e.getPoint());
+                hoveredX = e.getPoint().x;
                 table.repaint();
             }
         });
@@ -58,6 +62,8 @@ public class TablePanel extends BorderPanel {
             @Override
             public void mouseExited(MouseEvent e) {
                 hoveredRow = -1;
+                hoveredCol = -1;
+                hoveredX = -1;
                 table.repaint();
             }
         });
@@ -117,7 +123,12 @@ public class TablePanel extends BorderPanel {
     public int getHoveredRow(){
         return this.hoveredRow;
     }
-
+    public int getHoveredCol() {
+        return this.hoveredCol;
+    }
+    public int getHoveredX() {
+        return this.hoveredX;
+    }
     public void autoResizeColumns() {
 
         JTable table = this.table;

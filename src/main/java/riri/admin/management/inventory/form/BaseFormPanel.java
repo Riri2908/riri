@@ -161,7 +161,8 @@ public class BaseFormPanel extends BorderPanel {
                 categoryField.getTextField(),
                 publisherField.getTextField(),
                 price,
-                spinnerPanel.getValue());
+                spinnerPanel.getValue(),
+                "", "");
 
         if(bookName.equals("--Thêm sách mới--")){
             AppContext.BOOK_SERVICE.add(book);
@@ -174,7 +175,8 @@ public class BaseFormPanel extends BorderPanel {
                     categoryField.getTextField(),
                     publisherField.getTextField(),
                     price,
-                    spinnerPanel.getValue());
+                    spinnerPanel.getValue(),
+                    book.getArea()  != null ? book.getArea()  : "", book.getShelf() != null ? book.getShelf() : "");
             AppContext.BOOK_SERVICE.update(book);
         }
 
