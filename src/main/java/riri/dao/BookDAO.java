@@ -23,7 +23,11 @@ public class BookDAO extends BaseFileDAO {
                 String[] d = line.split(";");
                 bookMap.put(
                         Integer.parseInt(d[0]),
-                        new Book(Integer.parseInt(d[0]), d[1], d[2], d[3], d[4], Double.parseDouble(d[5]), Integer.parseInt(d[6]), d[7], d[8]));
+                        new Book(Integer.parseInt(d[0]), d[1], d[2], d[3], d[4],
+                                Double.parseDouble(d[5]),
+                                Integer.parseInt(d[6]),
+                                Integer.parseInt(d[7]),
+                                Integer.parseInt(d[8])));
             }
 
         } catch (IOException e) {

@@ -8,9 +8,7 @@ import riri.components.field.FieldPanel;
 import riri.components.page.BasePanel;
 import riri.components.spinner.SpinnerPanel;
 import riri.components.table.TablePanel;
-import riri.model.Book;
-import riri.model.Employee;
-import riri.model.Transaction;
+import riri.model.*;
 
 import riri.util.AppContext;
 
@@ -25,6 +23,8 @@ public class BaseFormPanel extends BorderPanel {
     public Map<Integer, Book> bookList =AppContext.BOOK_SERVICE.getAll();
     public Map<Integer, Employee> employeeList = AppContext.EMPLOYEE_SERVICE.getAll();
     public Map<Integer, Transaction> transactionList = AppContext.TRANSACTION_SERVICE.getAll();
+    private final Map<Integer, Shelf> shelf = AppContext.SHELF_SERVICE.getAll();
+    private final Map<Integer, Area> Area = AppContext.AREA_SERVICE.getAll();
 
     public String type;
 
@@ -162,7 +162,7 @@ public class BaseFormPanel extends BorderPanel {
                 publisherField.getTextField(),
                 price,
                 spinnerPanel.getValue(),
-                "", "");
+                1, 1);
 
         if(bookName.equals("--Thêm sách mới--")){
             AppContext.BOOK_SERVICE.add(book);
@@ -176,7 +176,7 @@ public class BaseFormPanel extends BorderPanel {
                     publisherField.getTextField(),
                     price,
                     spinnerPanel.getValue(),
-                    book.getArea()  != null ? book.getArea()  : "", book.getShelf() != null ? book.getShelf() : "");
+                    1, 1);
             AppContext.BOOK_SERVICE.update(book);
         }
 
