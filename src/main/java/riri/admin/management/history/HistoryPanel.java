@@ -4,7 +4,6 @@ import riri.components.BorderPanel;
 import riri.components.page.BasePanel;
 import riri.components.table.CustomRenderer;
 import riri.components.table.TablePanel;
-import riri.dao.TransactionDAO;
 import riri.model.Book;
 import riri.model.Employee;
 import riri.model.Transaction;
@@ -15,8 +14,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.*;
 import java.awt.*;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.*;
 import java.util.List;
 
@@ -187,7 +184,7 @@ public class HistoryPanel extends BorderPanel {
                     transaction.getQuantity(),
                     transaction.getDate(),
                     employee.getName(),
-                    transaction.getNote()
+                    transaction.getNote(),
             });
         }
 

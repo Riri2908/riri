@@ -28,10 +28,10 @@ public class InformationPanel extends BorderPanel {
 
     public JLabel titleLabel;
 
-    public ComboBoxPanel customerBox = new ComboBoxPanel();
+    public ComboBoxPanel<String> customerBox = new ComboBoxPanel<>();
     public BorderPanel customerPanel = new BorderPanel(16, Color.WHITE,0,0,new Color(214, 214, 214),1);
     public FieldPanel customerField = new FieldPanel("Nhập tên khách hàng mới... (Ấn ESC để quay về)");
-    public ComboBoxPanel customerTypeBox = new ComboBoxPanel();
+    public ComboBoxPanel<String> customerTypeBox = new ComboBoxPanel<>();
     public BorderPanel customerTypePanel = new BorderPanel(16, Color.WHITE,0,0,new Color(214, 214, 214),1);
     public FieldPanel customerTypeField = new FieldPanel("Nhập tên khách hàng mới... (Ấn ESC để quay về)");
     public FieldPanel phoneField = new FieldPanel("Nhập số điện thoại");
@@ -56,6 +56,7 @@ public class InformationPanel extends BorderPanel {
         addItem(BasePanel.createItem("Loại khách hàng",customerTypeBox() ),0,2);
         addItem(BasePanel.createItem("Chiếc khấu (%)", voucher),1,2);
 
+        customerField.addBorderFocus();
         customerField.getField().addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -66,6 +67,7 @@ public class InformationPanel extends BorderPanel {
             }
         });
 
+        customerTypeField.addBorderFocus();
         customerTypeField.getField().addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -75,6 +77,7 @@ public class InformationPanel extends BorderPanel {
                 }
             }
         });
+        phoneField.addBorderFocus();
 
         fillCustomerInfo();
     }

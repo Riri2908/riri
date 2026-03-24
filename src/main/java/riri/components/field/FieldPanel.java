@@ -26,26 +26,15 @@ public class FieldPanel extends BorderPanel {
 
         field.setOpaque(false);
         field.setBorder(BorderFactory.createEmptyBorder());
-
         field.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                setBorder(new Color(31, 95, 255),2);
                 if(getTextField().equals(title)){
                     setTextField("");
                     field.setForeground(Color.BLACK);
                 }
             }
-
-            @Override
-            public void focusLost(FocusEvent e) {
-                setBorder(new Color(221, 221, 221),1);
-                if(getTextField().isEmpty()){
-                    showPlaceholder(title,new Color(174,174,174));
-                }
-            }
         });
-
 
         add(field, BorderLayout.CENTER);
 
@@ -71,6 +60,23 @@ public class FieldPanel extends BorderPanel {
     }
     public String getTitle() {
         return title;
+    }
+
+    public void addBorderFocus(){
+        field.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                setBorder(new Color(31, 95, 255),2);
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                setBorder(new Color(221, 221, 221),1);
+                if(getTextField().isEmpty()){
+                    showPlaceholder(title,new Color(174,174,174));
+                }
+            }
+        });
     }
 
     public void showPlaceholder(String text, Color colorForeground) {

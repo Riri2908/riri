@@ -7,7 +7,6 @@ import riri.components.combobox.ComboBoxPanel;
 import riri.components.field.FieldPanel;
 import riri.components.page.BasePanel;
 import riri.components.spinner.SpinnerPanel;
-import riri.components.table.TablePanel;
 import riri.model.*;
 
 import riri.util.AppContext;
@@ -21,18 +20,13 @@ import java.util.Map;
 
 public class BaseFormPanel extends BorderPanel {
     public Map<Integer, Book> bookList =AppContext.BOOK_SERVICE.getAll();
-    public Map<Integer, Employee> employeeList = AppContext.EMPLOYEE_SERVICE.getAll();
-    public Map<Integer, Transaction> transactionList = AppContext.TRANSACTION_SERVICE.getAll();
-    private final Map<Integer, Shelf> shelf = AppContext.SHELF_SERVICE.getAll();
-    private final Map<Integer, Area> Area = AppContext.AREA_SERVICE.getAll();
-
     public String type;
 
     protected final GridBagConstraints gbc = new GridBagConstraints();
 
     public CardLayout cardLayout = new CardLayout();
     public BorderPanel bookPanel = new BorderPanel(16, Color.WHITE,0,0,new Color(214, 214, 214),1);
-    public ComboBoxPanel comboBoxBook = new ComboBoxPanel();
+    public ComboBoxPanel<String> comboBoxBook = new ComboBoxPanel<>();
     public SpinnerPanel spinnerPanel = new SpinnerPanel();
 
     public FieldPanel bookField = new FieldPanel("Nhập sách mới... (Nhấn ESC để có thể lựa chọn sách...)");
@@ -57,6 +51,13 @@ public class BaseFormPanel extends BorderPanel {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1;
         gbc.weighty = 1;
+
+        bookField.addBorderFocus();
+        authorField.addBorderFocus();
+        categoryField.addBorderFocus();
+        noteField.addBorderFocus();
+        publisherField.addBorderFocus();
+        priceField.addBorderFocus();
 
         addItem(BasePanel.createTitle("Tên sách","Segue UI",Font.BOLD, 13, new Color(71, 71, 71)),0,0);
         addItem(BasePanel.createTitle("Tác giả","Segue UI",Font.BOLD, 13, new Color(71, 71, 71)),1,0);
