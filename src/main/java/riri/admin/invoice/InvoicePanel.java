@@ -1,9 +1,11 @@
 package riri.admin.invoice;
 
-import riri.admin.invoice.page.InformationPanel;
-import riri.admin.invoice.page.ListPanel;
-import riri.admin.invoice.page.ShoppingCart;
-import riri.admin.invoice.page.TotalAmountPanel;
+import riri.admin.invoice.item.*;
+import riri.admin.invoice.item.invoice.InformationPanel;
+import riri.admin.invoice.item.invoice.ListPanel;
+import riri.admin.invoice.item.invoice.ShoppingCart;
+import riri.admin.invoice.item.invoice.TotalAmountPanel;
+import riri.admin.invoice.item.invoicelist.ListInvoiceTable;
 import riri.components.BorderPanel;
 import riri.components.page.BasePanel;
 
@@ -12,15 +14,25 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class InvoicePanel extends JPanel {
-    public BorderPanel invoice = new BorderPanel(0, new Color(247, 248, 249), 0, 0, null, 0);;
+    public InformationPanel informationPanel = new InformationPanel(null);
+    public TotalAmountPanel totalAmountPanel = new TotalAmountPanel(null,informationPanel,null);
+    public ListPanel listPanel = new ListPanel(totalAmountPanel);
+    public ShoppingCart shoppingCart = new ShoppingCart(listPanel, totalAmountPanel);
+    public ListInvoiceTable listInvoiceTable = new ListInvoiceTable(informationPanel, shoppingCart);
+
+    public BorderPanel invoice = new BorderPanel(0, new Color(247, 248, 249), 0, 0, null, 0);
+
     public BorderPanel invoiceList;
 
     public CardLayout cardLayout = new CardLayout();
     private final JPanel root = new JPanel();
 
     public InvoicePanel() {
-        setLayout(new BorderLayout());
+        this.totalAmountPanel.listPanel = listPanel;
+        this.informationPanel.totalAmountPanel = totalAmountPanel;
+        this.totalAmountPanel.listInvoiceTable = listInvoiceTable;
 
+        setLayout(new BorderLayout());
         root.setOpaque(true);
         root.setBackground(new Color(247, 248, 249));
         root.setLayout(cardLayout);
@@ -33,28 +45,29 @@ public class InvoicePanel extends JPanel {
             }
         });
 
-        invoice.setLayout(new BorderLayout(0,15));
-        invoice.add(new TitlePanel("Tạo hóa đơn bán hàng", "Xem danh sách hóa đơn", "Xem danh sách hóa đơn",this),BorderLayout.NORTH);
+        invoice.setLayout(new BorderLayout(0, 15));
+        invoice.add(new TitlePanel("Tạo hóa đơn bán hàng", "Xem danh sách hóa đơn", "Xem danh sách hóa đơn", this), BorderLayout.NORTH);
         invoice.add(customerPanel(), BorderLayout.CENTER);
-        invoice.add(new TotalAmountPanel(), BorderLayout.EAST);
+        invoice.add(totalAmountPanel, BorderLayout.EAST);
 
         invoiceList = new BorderPanel(0, new Color(247, 248, 249), 0, 0, null, 0);
         invoiceList.setOpaque(false);
-        invoiceList.setLayout(new BoxLayout(invoiceList, BoxLayout.Y_AXIS));
+        invoiceList.setLayout(new BorderLayout(0,15));
 
-        invoiceList.add(new TitlePanel("Danh sách hóa đơn", "Tạo hóa đơn mới", "Tạo hoá đơn",this));
+        invoiceList.add(new TitlePanel("Danh sách hóa đơn", "Tạo hóa đơn mới", "Tạo hoá đơn", this),BorderLayout.NORTH);
+        invoiceList.add(listInvoiceTable, BorderLayout.CENTER);
 
-        root.add(invoice,"Tạo hoá đơn");
-        root.add(invoiceList,"Xem danh sách hóa đơn");
+        root.add(invoice, "Tạo hoá đơn");
+        root.add(invoiceList, "Xem danh sách hóa đơn");
 
         JScrollPane panel = BasePanel.createScroll(root);
-        add(panel,BorderLayout.CENTER);
+        add(panel, BorderLayout.CENTER);
 
     }
 
     //Trang để tính toán hóa đơn
     public BorderPanel customerPanel() {
-        BorderPanel customerPanel = new BorderPanel(0, new Color(247, 248, 249), 0, 0, null, 0){
+        BorderPanel customerPanel = new BorderPanel(0, new Color(247, 248, 249), 0, 0, null, 0) {
             @Override
             public Component add(Component comp) {
                 addImpl(comp, null, -1);
@@ -64,17 +77,18 @@ public class InvoicePanel extends JPanel {
         };
 
         customerPanel.setBorder(new EmptyBorder(0, 0, 0, 25));
-        customerPanel.setLayout(new BoxLayout(customerPanel,BoxLayout.Y_AXIS));
+        customerPanel.setLayout(new BoxLayout(customerPanel, BoxLayout.Y_AXIS));
 
-        customerPanel.add(new InformationPanel());
-        customerPanel.add(new ShoppingCart());
-        customerPanel.add(new ListPanel());
-        add(customerPanel,BorderLayout.CENTER);
+
+        customerPanel.add(informationPanel);
+        customerPanel.add(shoppingCart);
+        customerPanel.add(listPanel);
+        add(customerPanel, BorderLayout.CENTER);
         return customerPanel;
     }
 
-    public void showPageButton(String constructor){
-        cardLayout.show(root,constructor);
+    public void showPageButton(String constructor) {
+        cardLayout.show(root, constructor);
     }
 }
 

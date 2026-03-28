@@ -23,7 +23,12 @@ public class InvoiceDetailDAO extends BaseFileDAO {
 
                 String[] d = line.split(";");
 
-                detailMap.put(Integer.parseInt(d[0]),new InvoiceDetail(Integer.parseInt(d[0]), Integer.parseInt(d[1]), Integer.parseInt(d[2]), Double.parseDouble(d[3])));
+                detailMap.put(Integer.parseInt(d[0]),
+                        new InvoiceDetail(Integer.parseInt(d[0]),
+                                Integer.parseInt(d[1]),
+                                Integer.parseInt(d[2]),
+                                Integer.parseInt(d[3]),
+                                Double.parseDouble(d[4])));
             }
 
         } catch (IOException e) {

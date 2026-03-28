@@ -1,11 +1,10 @@
-package riri.admin.invoice.page;
+package riri.admin.invoice.item.invoice;
 
 import riri.components.BorderPanel;
 import riri.components.combobox.ComboBoxPanel;
 import riri.components.field.FieldPanel;
 import riri.components.page.BasePanel;
 import riri.components.spinner.SpinnerPanel;
-import riri.model.Book;
 import riri.model.Customer;
 import riri.model.CustomerType;
 import riri.util.AppContext;
@@ -13,14 +12,17 @@ import riri.util.AppContext;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.HashMap;
 import java.util.Map;
 
 public class InformationPanel extends BorderPanel {
     public Map<Integer, CustomerType> customerTypeList = AppContext.CUSTOMER_TYPE_SERVICE.getAll();
     public Map<Integer,Customer> customerList = AppContext.CUSTOMER_SERVICE.getAll();
+
+    public TotalAmountPanel totalAmountPanel;
 
     protected final GridBagConstraints gbc = new GridBagConstraints();
     public final CardLayout customerCard = new CardLayout();
@@ -37,7 +39,8 @@ public class InformationPanel extends BorderPanel {
     public FieldPanel phoneField = new FieldPanel("Nhập số điện thoại");
     public SpinnerPanel voucher = new SpinnerPanel();
 
-    public InformationPanel(){
+    public InformationPanel(TotalAmountPanel totalAmountPanel){
+        this.totalAmountPanel = totalAmountPanel;
 
         setLayout(new GridBagLayout());
         setBorder(new EmptyBorder(20,20,20,20));
@@ -54,7 +57,7 @@ public class InformationPanel extends BorderPanel {
         addItem(BasePanel.createItem("Chọn khách hàng", customerBox()),0,1);
         addItem(BasePanel.createItem("Số điện thoại",phoneField),1,1);
         addItem(BasePanel.createItem("Loại khách hàng",customerTypeBox() ),0,2);
-        addItem(BasePanel.createItem("Chiếc khấu (%)", voucher),1,2);
+        addItem(BasePanel.createItem("Chiếc khấu (%)", voucher()),1,2);
 
         customerField.addBorderFocus();
         customerField.getField().addKeyListener(new KeyAdapter() {
@@ -92,15 +95,22 @@ public class InformationPanel extends BorderPanel {
 
         customerPanel.setLayout(customerCard);
 
-        this.customerBox.addItem("--Chọn khách hàng--");
-
-        for(Customer customer: customerList.values()){
-            this.customerBox.addItem(customer.getName());
-        }
-        this.customerBox.addItem("--Thêm khách hàng mới--");
+        loadDataCustomer();
 
         customerPanel.add(customerBox.getComboBox(),"customerBox");
         customerPanel.add(customerField,"customerField");
+
+        customerBox.getComboBox().addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                customerPanel.setBorder(new Color(31,95,255),2);
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                customerPanel.setBorder(new Color(221,221,221),1);
+            }
+        });
 
         return this.customerPanel;
     }
@@ -112,10 +122,21 @@ public class InformationPanel extends BorderPanel {
         for(CustomerType customerType: customerTypeList.values()){
             this.customerTypeBox.addItem(customerType.getName());
         }
-        this.customerTypeBox.addItem("--Thêm loại khách hàng--");
 
         customerTypePanel.add(customerTypeBox.getComboBox(),"customerTypeBox");
-        customerTypePanel.add(customerTypeField,"customerTypeField");
+
+        customerTypeBox.getComboBox().addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                customerTypePanel.setBorder(new Color(31,95,255),2);
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                customerTypePanel.setBorder(new Color(221,221,221),1);
+            }
+        });
+
         return this.customerTypePanel;
     }
 
@@ -141,6 +162,24 @@ public class InformationPanel extends BorderPanel {
         });
     }
 
+    public void loadDataCustomer(){
+        customerBox.getComboBox().removeAllItems();
+        this.customerBox.addItem("--Chọn khách hàng--");
+
+        for(Customer customer: customerList.values()){
+            this.customerBox.addItem(customer.getName());
+        }
+        this.customerBox.addItem("--Thêm khách hàng mới--");
+    }
+
+    private BorderPanel voucher(){
+        voucher.setSpinnerModel(new SpinnerNumberModel(0,0,100,1));
+        this.voucher.getSpinner().addChangeListener(e-> {
+                totalAmountPanel.updateTotals();
+        });
+        return this.voucher;
+    }
+
     public void showPlaceholder(){
         customerField.showPlaceholder();
         phoneField.showPlaceholder();
@@ -159,9 +198,5 @@ public class InformationPanel extends BorderPanel {
         voucher.showPlaceholder(discountRate);
     }
 
-
-    public void loadData(){
-
-    }
 
 }

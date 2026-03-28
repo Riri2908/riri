@@ -79,6 +79,7 @@ public class SpinnerPanel extends BorderPanel {
 
     public void setSpinnerModel(SpinnerModel spinnerModel){
         this.spinnerModel = spinnerModel;
+        this.spinner.setModel(spinnerModel);
     }
 
     public int getValue(){

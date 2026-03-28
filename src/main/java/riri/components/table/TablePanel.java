@@ -11,6 +11,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
 
 public class TablePanel extends BorderPanel {
     public DefaultTableCellRenderer renderer;
@@ -31,7 +32,6 @@ public class TablePanel extends BorderPanel {
         titleLabel = BasePanel.createTitle("", "Arial", Font.BOLD, 20, Color.BLACK);
         titleLabel.setBorder(new EmptyBorder(20,20,20,20));
         add(titleLabel, BorderLayout.NORTH);
-
         model = new DefaultTableModel(){
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -84,11 +84,17 @@ public class TablePanel extends BorderPanel {
         model.addColumn(name);
     }
 
-    public void addColumn(int order, String name,int width){
-        column.put(order,name);
-        model.addColumn(name);
-    }
+    public void addColumn(int order, String name, int width) {
 
+        column.put(order, name);
+        model.addColumn(name);
+
+        TableColumn tableColumn = table.getColumnModel().getColumn(order);
+
+        tableColumn.setPreferredWidth(width);
+        tableColumn.setMinWidth(width);
+        tableColumn.setMaxWidth(width);
+    }
     public Map<Integer,String> getColumn(){
         return column;
     }
@@ -129,41 +135,46 @@ public class TablePanel extends BorderPanel {
     public int getHoveredX() {
         return this.hoveredX;
     }
-    public void autoResizeColumns() {
 
-        JTable table = this.table;
+    public List<Object[]> getAllRows(){
 
-        for (int col = 0; col < table.getColumnCount(); col++) {
+        java.util.List<Object[]> rows = new java.util.ArrayList<>();
 
-            TableColumn column = table.getColumnModel().getColumn(col);
+        DefaultTableModel model = getModel();
 
-            int maxWidth = 50;
+        for(int r = 0; r < model.getRowCount(); r++){
 
-            TableCellRenderer headerRenderer = table.getTableHeader().getDefaultRenderer();
+            Object[] row = new Object[model.getColumnCount()];
 
-            Component headerComp = headerRenderer.getTableCellRendererComponent(
-                    table,
-                    column.getHeaderValue(),
-                    false,
-                    false,
-                    0,
-                    col
-            );
-
-            maxWidth = Math.max(maxWidth, headerComp.getPreferredSize().width);
-
-            for (int row = 0; row < table.getRowCount(); row++) {
-
-                TableCellRenderer cellRenderer = table.getCellRenderer(row, col);
-
-                Component comp = table.prepareRenderer(cellRenderer, row, col);
-
-                maxWidth = Math.max(maxWidth, comp.getPreferredSize().width + 20);
+            for(int c = 0; c < model.getColumnCount(); c++){
+                row[c] = model.getValueAt(r,c);
             }
 
-            column.setPreferredWidth(maxWidth);
+            rows.add(row);
         }
+
+        return rows;
     }
 
+    public Object[] getRowData(int viewRowIndex){
+
+        if(viewRowIndex < 0) return null;
+
+        int modelRow = table.convertRowIndexToModel(viewRowIndex);
+
+        DefaultTableModel model = getModel();
+
+        Object[] data = new Object[model.getColumnCount()];
+
+        for(int i = 0; i < data.length; i++){
+            data[i] = model.getValueAt(modelRow, i);
+        }
+
+        return data;
+    }
+
+    public Object[] getSelectedRow(){
+        return getRowData(table.getSelectedRow());
+    }
 
 }

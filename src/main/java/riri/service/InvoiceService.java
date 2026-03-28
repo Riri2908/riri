@@ -3,6 +3,7 @@ package riri.service;
 import riri.dao.InvoiceDAO;
 import riri.dao.InvoiceDetailDAO;
 import riri.model.Book;
+import riri.model.Customer;
 import riri.model.Invoice;
 import riri.model.InvoiceDetail;
 import riri.util.AppContext;
@@ -21,9 +22,11 @@ public class InvoiceService {
     public InvoiceService() {
         invoices = invoiceDAO.findAll();
         details = detailDAO.findAll();
+
+        mapDetailsToInvoices();
     }
 
-    public Map<Integer,Invoice> getAllInvoices() {
+    public Map<Integer,Invoice> getAll() {
         return invoices;
     }
 
@@ -31,16 +34,22 @@ public class InvoiceService {
         return details.get(invoiceId);
     }
 
-    public void createInvoice(Integer employeeId, Map<Integer,InvoiceDetail> invoiceDetails) {
+    public Invoice addInvoice(Integer customerId, Integer employeeId, Map<Integer,InvoiceDetail> invoiceDetails) {
         Collection<InvoiceDetail> detailValues = invoiceDetails.values();
+
+        if (AppContext.CUSTOMER_SERVICE.findById(employeeId) == null) {
+            throw new RuntimeException("Sách không tồn tại");
+        }
 
         if (AppContext.EMPLOYEE_SERVICE.findById(employeeId) == null) {
             throw new RuntimeException("Employee không tồn tại");
         }
 
-        Integer invoiceId = generateId();
+        int invoiceId = generateId();
 
         double totalAmount = 0;
+
+        Invoice invoice = new Invoice(invoiceId, customerId ,employeeId, LocalDate.now(), totalAmount);
 
         for (InvoiceDetail d : detailValues) {
 
@@ -58,22 +67,40 @@ public class InvoiceService {
 
             totalAmount += d.getQuantity() * d.getPrice();
 
-            d.setId(invoiceId);
+            d.setId(generateDetailId());
+            d.setInvoiceId(invoiceId);
 
-            details.put(invoiceId,d);
+            details.put(generateDetailId(),d);
+            invoice.addDetail(d);
         }
 
-        Invoice invoice = new Invoice(invoiceId, employeeId, LocalDate.now(), totalAmount);
-
+        invoice.setTotalAmount(totalAmount);
         invoices.put(invoiceId,invoice);
 
         invoiceDAO.saveAll(invoices);
-        detailDAO.saveAll(invoiceDetails);
+        detailDAO.saveAll(details);
 
         AppContext.BOOK_SERVICE.save();
+
+        return invoice;
+    }
+
+    private void mapDetailsToInvoices() {
+
+        for (InvoiceDetail d : details.values()) {
+            Invoice invoice = invoices.get(d.getInvoiceId());
+
+            if (invoice != null) {
+                invoice.addDetail(d);
+            }
+        }
     }
 
     private Integer generateId() {
         return invoices.size()+1;
+    }
+
+    private Integer generateDetailId() {
+        return details.size() + 1;
     }
 }

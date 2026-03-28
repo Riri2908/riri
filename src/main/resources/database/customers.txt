@@ -1,5 +1,6 @@
-1;Nguyen Van A;0901234567;vana@gmail.com;1;50;3000000
-2;Tran Thi B;0912345678;thib@yahoo.com;3;12;600000
-3;Le Van C;0988776655;vanc@outlook.com;4;2;100300
-4;Pham Minh D;0933445566;minhd@gmail.com;2;105;5000000
-5;Hoang Anh E;0977112233;anhe@fpt.edu.vn;1;25;800000
+1;Nguyen Van A;0901234567;vana@gmail.com;1;50;3000000.0
+2;Tran Thi B;0912345678;thib@yahoo.com;3;13;784000.0
+3;Le Van C;0988776655;vanc@outlook.com;4;2;100300.0
+4;Pham Minh D;0933445566;minhd@gmail.com;2;105;5000000.0
+5;Hoang Anh E;0977112233;anhe@fpt.edu.vn;1;25;800000.0
+6;Trong Nhan;120312308;Không có;1;1;200000.0

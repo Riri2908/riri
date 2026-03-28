@@ -3,11 +3,13 @@ package riri.model;
 public class InvoiceDetail extends BaseModel{
 
     private int bookId;
+    private int invoiceId;
     private int quantity;
     private double price;
 
-    public InvoiceDetail(int id, int bookId, int quantity, double price) {
+    public InvoiceDetail(int id, int invoiceId, int bookId, int quantity, double price) {
         super(id);
+        this.invoiceId = invoiceId;
         this.bookId = bookId;
         this.quantity = quantity;
         this.price = price;
@@ -19,6 +21,14 @@ public class InvoiceDetail extends BaseModel{
 
     public void setBookId(int bookId) {
         this.bookId = bookId;
+    }
+
+    public int getInvoiceId() {
+        return invoiceId;
+    }
+
+    public void setInvoiceId(int invoiceId) {
+        this.invoiceId = invoiceId;
     }
 
     public double getPrice() {
@@ -39,6 +49,6 @@ public class InvoiceDetail extends BaseModel{
 
     @Override
     public String toFileString() {
-        return id + ";" + bookId + ";" + quantity + ";" + price;
+        return id + ";" + invoiceId + ";" + bookId + ";" + quantity + ";" + price;
     }
 }

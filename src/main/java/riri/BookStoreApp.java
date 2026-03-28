@@ -1,6 +1,7 @@
 package riri;
 
-import riri.components.page.ContentPanel;
+import riri.components.page.*;
+import riri.components.page.MenuBar;
 import riri.components.sidebar.*;
 
 import javax.swing.*;
@@ -14,9 +15,11 @@ public class BookStoreApp {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
 
+        JMenuBar menuBar = new MenuBar();
         ContentPanel contentPanel = new ContentPanel();
         SideBarMain sideBarMain = new SideBarMain(contentPanel);
 
+        frame.setJMenuBar(menuBar);
         frame.add(sideBarMain, BorderLayout.WEST);
         frame.add(contentPanel, BorderLayout.CENTER);
 

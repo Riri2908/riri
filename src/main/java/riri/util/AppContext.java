@@ -13,6 +13,7 @@ public final class AppContext {
     public static final EmployeeService EMPLOYEE_SERVICE = new EmployeeService();
     public static final TransactionService TRANSACTION_SERVICE = new TransactionService();
     public static final InvoiceService INVOICE_SERVICE = new InvoiceService();
+    public static final InvoiceDetailService INVOICE_DETAIL_SERVICE = new InvoiceDetailService();
     public static final CustomerService CUSTOMER_SERVICE = new CustomerService();
     public static final CustomerTypeService CUSTOMER_TYPE_SERVICE = new CustomerTypeService();
     public static final ShelfService SHELF_SERVICE = new ShelfService();

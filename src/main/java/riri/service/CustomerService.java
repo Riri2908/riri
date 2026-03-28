@@ -38,10 +38,11 @@ public class CustomerService {
                 .orElse(null);
     }
 
-    public void add(Customer customer) {
+    public Customer add(Customer customer) {
         customer.setId(generateId());
         customers.put(customer.getId(), customer);
         save();
+        return customer;
     }
 
     public void update(Customer customer) {

@@ -6,6 +6,8 @@ public class Customer extends BaseModel {
     public String email;
     public int idType;
     public int totalOrders;
+
+
     public double totalPrice;
 
     public Customer(int id, String name, String phone, String email, int idType, int totalOrders, double totalPrice) {
@@ -54,13 +56,22 @@ public class Customer extends BaseModel {
         return idType;
     }
 
-    public void setType(int type) {
+    public void setIdType(int type) {
         this.idType = type;
     }
 
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+
     @Override
     public String toFileString() {
-        return id+" "+name+";"+phone+";"+email+";"+ idType +";"+totalOrders+";"+totalPrice;
+        return id+";"+name+";"+phone+";"+email+";"+ idType +";"+totalOrders+";"+totalPrice;
     }
 
 }

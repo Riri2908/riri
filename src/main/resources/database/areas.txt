@@ -1,0 +1,4 @@
+1;Kho
+2;Khu A
+3;Khu B
+4;Khu C

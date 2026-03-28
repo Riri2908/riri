@@ -1,6 +1,7 @@
 package riri.dao;
 
 import riri.model.Invoice;
+import riri.model.InvoiceDetail;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -26,7 +27,7 @@ public class InvoiceDAO extends BaseFileDAO {
 
                 String[] d = line.split(";");
 
-                invoiceMap.put(Integer.parseInt(d[0]) ,new Invoice(Integer.parseInt(d[0]), Integer.parseInt(d[1]), LocalDate.parse(d[2],formatter), Double.parseDouble(d[3])));
+                invoiceMap.put(Integer.parseInt(d[0]) ,new Invoice(Integer.parseInt(d[0]), Integer.parseInt(d[1]), Integer.parseInt(d[2]),LocalDate.parse(d[3],formatter), Double.parseDouble(d[4])));
             }
 
         } catch (IOException e) {
@@ -50,4 +51,5 @@ public class InvoiceDAO extends BaseFileDAO {
             throw new RuntimeException("Failed to save invoices", e);
         }
     }
+
 }
