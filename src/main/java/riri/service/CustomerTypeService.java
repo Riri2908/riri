@@ -56,6 +56,6 @@ public class CustomerTypeService {
     }
 
     private Integer generateId() {
-        return customerTypes.size() + 1;
+        return customerTypes.keySet().stream().max(Integer::compareTo).orElse(0) + 1;
     }
 }

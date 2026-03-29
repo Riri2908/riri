@@ -69,6 +69,6 @@ public class BookService {
                 .sum();
     }
     private Integer generateId() {
-        return books.size()+1;
+        return books.keySet().stream().max(Integer::compareTo).orElse(0) + 1;
     }
 }

@@ -69,13 +69,14 @@ public class CustomerService {
     }
 
     public int totalOrders() {
-        return customers.values()
-                .stream()
-                .mapToInt(Customer::getTotalOrders)
-                .sum();
+        return customers.values().stream().mapToInt(Customer::getTotalOrders).sum();
+    }
+
+    public double totalPrice(){
+        return customers.values().stream().mapToDouble(Customer::getTotalPrice).sum();
     }
 
     private Integer generateId() {
-        return customers.size() + 1;
+        return customers.keySet().stream().max(Integer::compareTo).orElse(0) + 1;
     }
 }

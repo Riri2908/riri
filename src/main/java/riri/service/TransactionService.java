@@ -70,6 +70,6 @@ public class TransactionService {
     }
 
     private Integer generateId() {
-        return transactions.size()+1;
+        return transactions.keySet().stream().max(Integer::compareTo).orElse(0) + 1;
     }
 }

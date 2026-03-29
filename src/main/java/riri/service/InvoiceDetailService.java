@@ -107,6 +107,6 @@ public class InvoiceDetailService {
         detailDAO.saveAll(details);
     }
     private Integer generateId() {
-        return details.size()+1;
+        return details.keySet().stream().max(Integer::compareTo).orElse(0) + 1;
     }
 }

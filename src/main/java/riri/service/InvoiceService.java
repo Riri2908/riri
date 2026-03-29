@@ -97,10 +97,10 @@ public class InvoiceService {
     }
 
     private Integer generateId() {
-        return invoices.size()+1;
+        return invoices.keySet().stream().max(Integer::compareTo).orElse(0) + 1;
     }
 
     private Integer generateDetailId() {
-        return details.size() + 1;
+        return details.keySet().stream().max(Integer::compareTo).orElse(0) + 1;
     }
 }

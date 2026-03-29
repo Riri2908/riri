@@ -72,6 +72,6 @@ public class AreaService {
     }
 
     private Integer generateId() {
-        return areas.size() + 1;
+        return areas.keySet().stream().max(Integer::compareTo).orElse(0) + 1;
     }
 }

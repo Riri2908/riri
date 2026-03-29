@@ -37,7 +37,7 @@ public class EmployeeService {
         employees.remove(id);
         employeeDAO.saveAll(employees);
     }
-    public Integer generateId() {
-        return employees.size()+1;
+    private Integer generateId() {
+        return employees.keySet().stream().max(Integer::compareTo).orElse(0) + 1;
     }
 }

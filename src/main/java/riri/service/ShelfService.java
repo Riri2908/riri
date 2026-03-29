@@ -61,6 +61,6 @@ public class ShelfService {
     }
 
     private Integer generateId() {
-        return shelves.size() + 1;
+        return shelves.keySet().stream().max(Integer::compareTo).orElse(0) + 1;
     }
 }
