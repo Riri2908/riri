@@ -147,7 +147,7 @@ public class ListPanel extends BorderPanel {
             BorderPanel buttonRemove =  new BorderPanel(14,new Color(253, 164, 164),0,0,null, 0);
             buttonRemove.setBorder(new EmptyBorder(1,1,1,1));
 
-            Icon icon = new ImageIcon(BasePanel.createImageLogo(getClass(), "invoice/listpanel/remove", 17,17));
+            Icon icon = new ImageIcon(BasePanel.createImageLogo(getClass(), "baseicon/remove", 17,17));
             JLabel iconLabel = new JLabel(icon);
             iconLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 

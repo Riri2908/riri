@@ -1,16 +1,22 @@
 package riri.model;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 public class Customer extends BaseModel {
+
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
     public String name;
     public String phone;
     public String email;
     public int idType;
+    public LocalDate recentDate;
     public int totalOrders;
-
-
     public double totalPrice;
+    public String note;
 
-    public Customer(int id, String name, String phone, String email, int idType, int totalOrders, double totalPrice) {
+    public Customer(int id, String name, String phone, String email, int idType, int totalOrders, double totalPrice, LocalDate recentDate, String note) {
         super(id);
         this.name = name;
         this.phone = phone;
@@ -18,6 +24,24 @@ public class Customer extends BaseModel {
         this.idType = idType;
         this.totalOrders = totalOrders;
         this.totalPrice = totalPrice;
+        this.recentDate = recentDate;
+        this.note = note;
+    }
+
+    public LocalDate getRecentDate() {
+        return recentDate;
+    }
+
+    public void setRecentDate(LocalDate recentDate) {
+        this.recentDate = recentDate;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 
     public String getName() {
@@ -71,7 +95,7 @@ public class Customer extends BaseModel {
 
     @Override
     public String toFileString() {
-        return id+";"+name+";"+phone+";"+email+";"+ idType +";"+totalOrders+";"+totalPrice;
+        return id+";"+name+";"+phone+";"+email+";"+ idType +";"+totalOrders+";"+totalPrice+";"+recentDate.format(FORMATTER)+";"+note;
     }
 
 }

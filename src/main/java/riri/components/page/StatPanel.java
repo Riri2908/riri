@@ -1,18 +1,16 @@
-package riri.admin.management.stat;
+package riri.components.page;
 
 import riri.components.BorderPanel;
-import riri.components.CreateIconPanel;
-import riri.components.page.BasePanel;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
-public class ManagementStat extends BorderPanel  {
+public class StatPanel extends BorderPanel  {
 
     private final JLabel valueLabel;
 
-    public ManagementStat(String text,double value,Color color,String logoName) {
+    public StatPanel(String text1, String value, String text2, Color colorBackGroundIcon, String logoName) {
         super();
 
         setLayout(new BorderLayout());
@@ -22,24 +20,23 @@ public class ManagementStat extends BorderPanel  {
         statPanel.setLayout( new BoxLayout(statPanel, BoxLayout.Y_AXIS));
         statPanel.setOpaque(false);
 
-        JLabel title = BasePanel.createTitle(text,"Arial", Font.PLAIN,14, new Color(136, 136, 136));
+        JLabel title = BasePanel.createTitle(text1,"Arial", Font.PLAIN,14, new Color(136, 136, 136));
 
         statPanel.add(title);
         statPanel.add(Box.createVerticalStrut(6));
 
-        valueLabel = BasePanel.createTitle(String.valueOf(value),"Arial",Font.BOLD,20,Color.BLACK);
+        valueLabel = BasePanel.createTitle(value,"Arial",Font.BOLD,20,Color.BLACK);
         statPanel.add(valueLabel);
         statPanel.add(Box.createVerticalStrut(6));
 
-        statPanel.add(BasePanel.createTitle("sản phẩm","Arial",Font.PLAIN,14, new Color(136, 136, 136)));
+        statPanel.add(BasePanel.createTitle(text2,"Arial",Font.PLAIN,14, new Color(136, 136, 136)));
 
-
-        Image icon = BasePanel.createImageLogo(getClass(), "management/package_"+logoName, 24, 24);
+        Image icon = BasePanel.createImageLogo(getClass(), logoName, 24, 24);
 
         JLabel label = new JLabel(new ImageIcon(icon));
         label.setHorizontalAlignment(SwingConstants.CENTER);
 
-        CreateIconPanel iconPanel = new CreateIconPanel(label,color);
+        BorderPanel iconPanel = BasePanel.createIconPanel(label,colorBackGroundIcon);
 
         JPanel rightWrapper = new JPanel(new GridBagLayout());
         rightWrapper.setBorder(new EmptyBorder(0,0,30,0));

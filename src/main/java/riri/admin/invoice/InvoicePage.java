@@ -1,6 +1,5 @@
 package riri.admin.invoice;
 
-import riri.admin.invoice.item.*;
 import riri.admin.invoice.item.invoice.InformationPanel;
 import riri.admin.invoice.item.invoice.ListPanel;
 import riri.admin.invoice.item.invoice.ShoppingCart;
@@ -13,7 +12,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
-public class InvoicePanel extends JPanel {
+public class InvoicePage extends JPanel {
     public InformationPanel informationPanel = new InformationPanel(null);
     public TotalAmountPanel totalAmountPanel = new TotalAmountPanel(null,informationPanel,null);
     public ListPanel listPanel = new ListPanel(totalAmountPanel);
@@ -27,7 +26,7 @@ public class InvoicePanel extends JPanel {
     public CardLayout cardLayout = new CardLayout();
     private final JPanel root = new JPanel();
 
-    public InvoicePanel() {
+    public InvoicePage() {
         this.totalAmountPanel.listPanel = listPanel;
         this.informationPanel.totalAmountPanel = totalAmountPanel;
         this.totalAmountPanel.listInvoiceTable = listInvoiceTable;

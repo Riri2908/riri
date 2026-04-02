@@ -1,7 +1,8 @@
 package riri.components.page;
 
+import riri.admin.customers.CustomerPage;
 import riri.admin.dashboard.DashBoardPage;
-import riri.admin.invoice.InvoicePanel;
+import riri.admin.invoice.InvoicePage;
 import riri.admin.management.ManagementPage;
 import riri.admin.store.BookPage;
 
@@ -12,7 +13,7 @@ public class ContentPanel extends JPanel {
 
 
     private final CardLayout cardLayout=new CardLayout();
-    private final JPanel textPanel;
+    private final JPanel contentPanel;
     private final TopBar topBar=new TopBar("DashBoard");
 
     public ContentPanel() {
@@ -21,21 +22,26 @@ public class ContentPanel extends JPanel {
         setLayout(new BorderLayout());
         setBackground(new Color(247, 248, 249));
 
+        this.contentPanel=new JPanel();
+        contentPanel.setLayout(cardLayout);
 
-        this.textPanel=new JPanel();
-        textPanel.setLayout(cardLayout);
-        textPanel.add(new DashBoardPage(), "DashBoard");
-        textPanel.add(new BookPage(), "Quản lý sách");
-        textPanel.add(new ManagementPage(), "Quản lý tồn kho");
-        textPanel.add(new InvoicePanel(), "Hóa đơn");
-        textPanel.add(new JLabel("Khách hàng"), "Khách hàng");
+        DashBoardPage dashBoardPage = new DashBoardPage();
+        BookPage bookPage = new BookPage();
+        ManagementPage managementPage = new ManagementPage();
+        InvoicePage invoicePage = new InvoicePage();
+        CustomerPage customerPage = new CustomerPage(invoicePage);
 
+        contentPanel.add(dashBoardPage, "DashBoard");
+        contentPanel.add(bookPage, "Quản lý sách");
+        contentPanel.add(managementPage, "Quản lý tồn kho");
+        contentPanel.add(invoicePage, "Hóa đơn");
+        contentPanel.add(customerPage, "Khách hàng");
         add(topBar,BorderLayout.NORTH);
-        add(textPanel,BorderLayout.CENTER);
+        add(contentPanel,BorderLayout.CENTER);
     }
     public void showPage(String page) {
         topBar.setTitle(page);
-        cardLayout.show(textPanel, page);
+        cardLayout.show(contentPanel, page);
     }
 
 }

@@ -1,10 +1,8 @@
 package riri.admin.management.inventory.form;
 
 import riri.admin.management.history.HistoryPanel;
-import riri.admin.management.stat.ManagementStat;
 import riri.admin.management.stat.ManagementStatCard;
 import riri.components.BorderPanel;
-import riri.components.field.FieldPanel;
 import riri.components.page.BasePanel;
 
 import javax.swing.*;

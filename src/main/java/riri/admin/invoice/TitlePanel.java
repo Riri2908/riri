@@ -1,6 +1,5 @@
-package riri.admin.invoice.item;
+package riri.admin.invoice;
 
-import riri.admin.invoice.InvoicePanel;
 import riri.components.BorderPanel;
 import riri.components.page.BasePanel;
 
@@ -19,9 +18,9 @@ public class TitlePanel extends BorderPanel {
     public String textButton;
     public String constructor;
 
-    public InvoicePanel titlePanel;
+    public InvoicePage titlePanel;
 
-    public TitlePanel(String title, String textButton, String constructor, InvoicePanel titlePanel) {
+    public TitlePanel(String title, String textButton, String constructor, InvoicePage titlePanel) {
         super(0,new Color(247, 248, 249),0,0,null,0);
         this.tilte = title;
         this.textButton = textButton;
@@ -39,7 +38,6 @@ public class TitlePanel extends BorderPanel {
 
     private BorderPanel createButton(String title) {
         BorderPanel button = new BorderPanel(16,new Color(51, 113, 250),0,0,null,0);
-
 
         button.setPreferredSize(new Dimension(WEIGHT_BUTTON, HEIGHT_TITLEPANEL));
         button.setMaximumSize(new Dimension(WEIGHT_BUTTON, HEIGHT_TITLEPANEL));

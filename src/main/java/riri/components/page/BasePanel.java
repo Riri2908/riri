@@ -12,7 +12,7 @@ public abstract class BasePanel {
 
     public static Image createImageLogo(Class <?> clazz, String name, int width, int height) {
         ImageIcon logo=new ImageIcon(Objects.requireNonNull(clazz.getResource("/icons/"+name+".png")));
-        return logo.getImage().getScaledInstance(width,height,Image.SCALE_SMOOTH);
+        return logo.getImage().getScaledInstance(width,height, Image.SCALE_SMOOTH);
     }
 
     public static JLabel createTitle(String text, String font, int style, int size, Color color) {
@@ -21,15 +21,35 @@ public abstract class BasePanel {
         return title;
     }
 
-    public static JPanel createItem(String title, Component component){
+    public static JPanel createItem(String title, JComponent component){
         JPanel item = new JPanel();
         item.setOpaque(false);
-        item.setLayout(new BorderLayout(0,5));
+        item.setLayout(new BoxLayout(item,BoxLayout.Y_AXIS));
+
         JLabel label = createTitle(title,"Segue UI",Font.BOLD, 13, new Color(71, 71, 71));
         label.setBorder(new EmptyBorder(0,5,0,0));
-        item.add(label, BorderLayout.NORTH);
-        item.add(component,BorderLayout.CENTER);
+
+        label.setAlignmentX(Component.LEFT_ALIGNMENT);
+        component.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        item.add(label);
+        item.add(Box.createVerticalStrut(5));
+        item.add(component);
         return item;
+    }
+
+    public static BorderPanel createIconPanel(JLabel iconLabel,Color color) {
+        BorderPanel icon =  new BorderPanel(24, color, 0, 0,Color.WHITE,0);
+        icon.setOpaque(false);
+
+        icon.setPreferredSize(new Dimension(48, 48));
+        icon.setMinimumSize(new Dimension(48, 48));
+        icon.setLayout(new BorderLayout());
+        icon.setBorder(new EmptyBorder(0, 0, 0, 0));
+
+        icon.add(iconLabel, BorderLayout.CENTER);
+
+        return icon;
     }
 
     public static JScrollPane createScroll(Component panel){
@@ -57,4 +77,17 @@ public abstract class BasePanel {
         return scrollPane;
     }
 
+    public static String formatNumber(long number) {
+
+        if (number >= 1_000_000_000)
+            return String.format("%.1fB", number / 1_000_000_000.0);
+
+        if (number >= 1_000_000)
+            return String.format("%.1fM", number / 1_000_000.0);
+
+        if (number >= 1_000)
+            return String.format("%.1fK", number / 1_000.0);
+
+        return String.valueOf(number);
+    }
 }

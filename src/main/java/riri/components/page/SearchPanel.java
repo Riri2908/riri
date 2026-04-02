@@ -1,6 +1,6 @@
-package riri.components;
+package riri.components.page;
 
-import riri.components.page.BasePanel;
+import riri.components.BorderPanel;
 import riri.components.table.TablePanel;
 
 import javax.swing.border.EmptyBorder;

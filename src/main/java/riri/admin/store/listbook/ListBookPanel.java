@@ -8,7 +8,6 @@ import riri.model.Area;
 import riri.model.Book;
 import riri.model.Shelf;
 import riri.util.AppContext;
-import riri.components.SearchPanel;
 //import riri.admin.store.action.EditBook;
 
 import javax.swing.*;
@@ -28,8 +27,8 @@ public class ListBookPanel extends JPanel {
     public TableRowSorter<DefaultTableModel> sorter;
 
     private final Icon bookIcon   = new ImageIcon(BasePanel.createImageLogo(getClass(), "store/book-open", 20, 20));
-    private final Icon editIcon   = new ImageIcon(BasePanel.createImageLogo(getClass(), "store/edit",      20, 20));
-    private final Icon deleteIcon = new ImageIcon(BasePanel.createImageLogo(getClass(), "store/delete",    20, 20));
+    private final Icon editIcon   = new ImageIcon(BasePanel.createImageLogo(getClass(), "baseicon/edit",      20, 20));
+    private final Icon deleteIcon = new ImageIcon(BasePanel.createImageLogo(getClass(), "baseicon/remove",    20, 20));
 
     public ListBookPanel() {
         setLayout(new BorderLayout());

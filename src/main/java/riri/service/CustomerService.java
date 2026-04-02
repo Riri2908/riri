@@ -76,6 +76,22 @@ public class CustomerService {
         return customers.values().stream().mapToDouble(Customer::getTotalPrice).sum();
     }
 
+    public int parseIntSafe(String value){
+        try{
+            return Integer.parseInt(value);
+        }catch(Exception e){
+            return 0;
+        }
+    }
+
+    public double parseDoubleSafe(String value){
+        try{
+            return Double.parseDouble(value);
+        }catch(Exception e){
+            return 0;
+        }
+    }
+
     private Integer generateId() {
         return customers.keySet().stream().max(Integer::compareTo).orElse(0) + 1;
     }

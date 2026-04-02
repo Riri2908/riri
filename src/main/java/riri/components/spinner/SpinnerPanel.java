@@ -18,6 +18,8 @@ public class SpinnerPanel extends BorderPanel {
 
         super(20, Color.WHITE, 0,0,new Color(200,200,200),1);
         setLayout(new BorderLayout());
+        setPreferredSize(new Dimension(0, 36));
+        setMaximumSize(new Dimension(Integer.MAX_VALUE, 36));
 
         this.spinnerModel = new SpinnerNumberModel(0, 0, null, 1);
 

@@ -3,23 +3,13 @@ package riri.admin.management;
 import riri.admin.management.inventory.InventoryPanel;
 import riri.admin.management.history.HistoryPanel;
 import riri.admin.management.stat.ManagementStatCard;
-import riri.components.SearchPanel;
+import riri.components.page.SearchPanel;
 import riri.components.page.BasePanel;
 import riri.components.table.TablePanel;
-import riri.model.Book;
-import riri.model.Employee;
-import riri.model.Transaction;
-import riri.service.BookService;
-import riri.service.EmployeeService;
-import riri.service.TransactionService;
-import riri.util.AppContext;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class ManagementPage extends JPanel {
 

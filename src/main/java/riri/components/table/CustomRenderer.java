@@ -12,11 +12,11 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public class CustomRenderer extends DefaultTableCellRenderer {
-    public Map<Integer, Customer> customers = AppContext.CUSTOMER_SERVICE.getAll();
 
     private final Map<Integer, BiFunction<JLabel,Integer,Component>> renderers = new HashMap<>();
     private BiFunction<JLabel,Integer,JLabel> defaultSetting;
     private Function<JLabel, JLabel> headerSetting;
+    private final Map<Integer, CellRendererFunction> valueRenderers = new HashMap<>();
 
     @Override
     public Component getTableCellRendererComponent(
@@ -30,8 +30,12 @@ public class CustomRenderer extends DefaultTableCellRenderer {
             label = defaultSetting.apply(label,row);
         }
 
-        BiFunction<JLabel,Integer,Component> renderer = renderers.get(column);
+        CellRendererFunction valueRenderer = valueRenderers.get(column);
+        if(valueRenderer != null){
+            return valueRenderer.apply(label,value,row);
+        }
 
+        BiFunction<JLabel,Integer,Component> renderer = renderers.get(column);
         if(renderer != null){
             return renderer.apply(label,row);
         }
@@ -41,6 +45,10 @@ public class CustomRenderer extends DefaultTableCellRenderer {
 
     public void addLabel(int column, BiFunction<JLabel,Integer,Component> renderer){
         renderers.put(column,renderer);
+    }
+
+    public void addLabel(int column, CellRendererFunction renderer){
+        valueRenderers.put(column,renderer);
     }
 
     public void setDefaultSetting(BiFunction<JLabel,Integer,JLabel> setting){
@@ -70,5 +78,10 @@ public class CustomRenderer extends DefaultTableCellRenderer {
         };
 
         table.getTableHeader().setDefaultRenderer(headerRenderer);
+    }
+
+    @FunctionalInterface
+    public interface CellRendererFunction {
+        Component apply(JLabel label, Object value, int row);
     }
 }

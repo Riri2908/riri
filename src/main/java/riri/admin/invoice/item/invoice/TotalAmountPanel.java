@@ -14,6 +14,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -159,7 +160,9 @@ public class TotalAmountPanel extends JPanel {
                             "Không có",
                             informationPanel.customerTypeBox.getComboBox().getSelectedIndex()+1,
                             1,
-                            0
+                            0,
+                            LocalDate.now(),
+                            ""
                             )
                     );
                     customerId = customer.getId();
@@ -199,6 +202,7 @@ public class TotalAmountPanel extends JPanel {
                         Customer updateCustomer = AppContext.CUSTOMER_SERVICE.findById(customerId);
                         int order = updateCustomer.getTotalOrders() + 1;
                         updateCustomer.setTotalOrders(order);
+                        updateCustomer.setRecentDate(LocalDate.now());
                         double totalPrice = invoice.getTotalAmount()+updateCustomer.getTotalPrice();
                         updateCustomer.setTotalPrice(totalPrice);
                         AppContext.CUSTOMER_SERVICE.update(updateCustomer);

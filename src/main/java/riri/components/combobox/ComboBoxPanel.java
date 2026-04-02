@@ -20,6 +20,8 @@ public class ComboBoxPanel<T> extends BorderPanel {
 
         setBorder(new EmptyBorder(10,10,10,10));
         setLayout(new BorderLayout());
+        setPreferredSize(new Dimension(0, 36));
+        setMaximumSize(new Dimension(Integer.MAX_VALUE, 36));
 
         this.comboBox = new JComboBox<>();
 
