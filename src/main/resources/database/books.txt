@@ -1,0 +1,30 @@
+1;Java Core;Riri;Học thuật;NXB Giáo Dục;200000.0;0;1;1
+2;Clean Code;Robert C. Martin;Lập trình;Prentice Hall;38000.0;0;1;2
+3;Đắc Nhân Tâm;Dale Carnegie;Kỹ năng sống;NXB Tổng Hợp TP.HCM;150000.0;1;1;1
+4;Design Patterns;GoF;Lập trình;Addison-Wesley;400000.0;38;2;3
+5;Spring Boot;Riri Dev;Công nghệ;NXB Công Nghệ Thông Tin;280000.0;45;2;4
+6;Effective Java;Joshua Bloch;Lập trình;Addison-Wesley;420000.0;60;2;3
+7;Atomic Habits;James Clear;Kỹ năng sống;Penguin Random House;180000.0;75;3;5
+8;Nhà Giả Kim;Paulo Coelho;Văn học;NXB Văn Học;120000.0;32;3;6
+9;Sapiens: Lược Sử Loài Người;Yuval Noah Harari;Lịch sử;NXB Thế Giới;189000.0;28;3;5
+10;Tôi Thấy Hoa Vàng Trên Cỏ Xanh;Nguyễn Nhật Ánh;Văn học;NXB Trẻ;110000.0;23;1;2
+11;Cà Phê Cùng Tony;Tony Buổi Sáng;Kỹ năng sống;NXB Trẻ;95000.0;41;1;1
+12;Mắt Biếc;Nguyễn Nhật Ánh;Văn học;NXB Trẻ;105000.0;15;1;2
+13;Algorithm Design;Jon Kleinberg;Công nghệ;Pearson;450000.0;20;2;3
+14;Deep Learning;Ian Goodfellow;Công nghệ;MIT Press;600000.0;12;2;4
+15;Lược Sử Thời Gian;Stephen Hawking;Khoa học;NXB Trẻ;135000.0;18;3;5
+16;Dế Mèn Phiêu Lưu Ký;Tô Hoài;Thiếu nhi;NXB Kim Đồng;55000.0;90;3;6
+17;Harry Potter và Hòn Đá Phù Thủy;J.K. Rowling;Văn học;NXB Trẻ;250000.0;50;1;1
+18;Cha Giàu Cha Nghèo;Robert Kiyosaki;Kinh doanh;NXB Trẻ;165000.0;35;1;2
+19;Khởi Nghiệp Tinh Gọn;Eric Ries;Kinh doanh;NXB Thế Giới;195000.0;22;2;3
+20;Think and Grow Rich;Napoleon Hill;Kỹ năng sống;NXB Tổng Hợp;140000.0;48;2;4
+21;Guns, Germs, and Steel;Jared Diamond;Lịch sử;W. W. Norton;320000.0;14;3;5
+22;Python Crash Course;Eric Matthes;Lập trình;No Starch Press;380000.0;55;3;6
+23;The Pragmatic Programmer;Andrew Hunt;Lập trình;Addison-Wesley;410000.0;27;1;1
+24;Chiến Tranh và Hòa Bình;Leo Tolstoy;Văn học;NXB Văn Học;550000.0;8;1;2
+25;Không Gia Đình;Hector Malot;Văn học;NXB Văn Học;145000.0;33;2;3
+26;Bắt Trẻ Đồng Xanh;J.D. Salinger;Văn học;NXB Hội Nhà Văn;98000.0;19;2;4
+27;Tư Duy Nhanh và Chậm;Daniel Kahneman;Tâm lý;NXB Thế Giới;220000.0;25;3;5
+28;Hành Trình Về Phương Đông;Baird T. Spalding;Tâm linh;NXB Tổng Hợp;130000.0;42;3;6
+29;Suối Nguồn;Ayn Rand;Văn học;NXB Trẻ;285000.0;17;1;1
+30;Trí Tuệ Do Thái;Eran Katz;Kỹ năng sống;NXB Thái Hà;160000.0;29;1;2

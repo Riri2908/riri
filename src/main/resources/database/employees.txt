@@ -1,4 +1,0 @@
-1;Quản lý cửa hàng;0901234567;Admin
-2;Trần Thị B;0912345678;Staff
-3;Lê Văn C;0923456789;Staff
-4;Phạm Thị D;0934567890;Manager
