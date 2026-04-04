@@ -1,6 +1,11 @@
 package riri.admin.store;
 
+import riri.admin.store.listbook.ListBookPanel;
+import riri.admin.store.stat.BookStatHeader;
 import riri.components.page.BasePanel;
+import riri.components.page.SearchPanel;
+import riri.components.table.TablePanel;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -24,17 +29,17 @@ public class BookPage extends JPanel {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setOpaque(false);
         panel.setFocusable(true);
-//
-//        ListBookPanel listBookPanel = new ListBookPanel();
-//        TablePanel table = listBookPanel.getTable();
-//        SearchPanel searchPanel = new SearchPanel(table, "Tìm kiếm theo tên sách, tác giả, thể loại...");
-//        BookStatHeader statHeader = new BookStatHeader(() -> listBookPanel.updateData());
-//
-//        panel.add(statHeader);
-//        panel.add(Box.createVerticalStrut(20));
-//        panel.add(searchPanel);
-//        panel.add(Box.createVerticalStrut(25));
-//        panel.add(listBookPanel);
+
+        ListBookPanel listBookPanel = new ListBookPanel();
+        TablePanel table = listBookPanel.getTable();
+        SearchPanel searchPanel = new SearchPanel(table, "Tìm kiếm theo tên sách, tác giả, thể loại...");
+        BookStatHeader statHeader = new BookStatHeader(() -> listBookPanel.updateData());
+
+        panel.add(statHeader);
+        panel.add(Box.createVerticalStrut(20));
+        panel.add(searchPanel);
+        panel.add(Box.createVerticalStrut(25));
+        panel.add(listBookPanel);
 
         JScrollPane scrollPanel = BasePanel.createScroll(panel);
         add(scrollPanel, BorderLayout.CENTER);
