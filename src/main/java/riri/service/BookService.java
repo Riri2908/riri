@@ -68,6 +68,11 @@ public class BookService {
                 .mapToInt(Book::getQuantity)
                 .sum();
     }
+
+    public List<Book> getLowStockBooks() {
+        return books.values().stream().filter(book -> book.getQuantity() <= 10).toList();
+    }
+
     private Integer generateId() {
         return books.keySet().stream().max(Integer::compareTo).orElse(0) + 1;
     }

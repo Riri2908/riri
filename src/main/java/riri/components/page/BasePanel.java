@@ -1,11 +1,13 @@
 package riri.components.page;
 
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import riri.components.BorderPanel;
 import riri.components.ModernScrollBarUI;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.net.URL;
 import java.util.Objects;
 
 public abstract class BasePanel {
@@ -15,8 +17,19 @@ public abstract class BasePanel {
         return logo.getImage().getScaledInstance(width,height, Image.SCALE_SMOOTH);
     }
 
+
+    public static Icon createIcon(Class<?> clazz, String name, int width, int height, Color color) {
+
+        FlatSVGIcon icon = new FlatSVGIcon(Objects.requireNonNull(clazz.getResource("/icons/" + name + ".svg")));
+
+        icon.setColorFilter(new FlatSVGIcon.ColorFilter(c -> color));
+
+        return icon.derive(width, height);
+    }
+
     public static JLabel createTitle(String text, String font, int style, int size, Color color) {
-        JLabel title = new JLabel(text);title.setFont(new Font(font, style, size));
+        JLabel title = new JLabel(text);
+        title.setFont(new Font(font, style, size));
         title.setForeground(color);
         return title;
     }

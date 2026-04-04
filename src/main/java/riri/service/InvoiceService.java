@@ -8,6 +8,7 @@ import riri.model.Invoice;
 import riri.model.InvoiceDetail;
 import riri.util.AppContext;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -94,6 +95,23 @@ public class InvoiceService {
                 invoice.addDetail(d);
             }
         }
+    }
+
+    public int totalOrdersWeek(LocalDate date) {
+
+        LocalDate startOfWeek = date.with(DayOfWeek.MONDAY);
+        LocalDate endOfWeek = date.with(DayOfWeek.SUNDAY);
+
+        return invoices.values().stream()
+                .filter(i -> {
+                    LocalDate orderDate = i.getDate();
+                    return orderDate != null
+                            && !orderDate.isBefore(startOfWeek)
+                            && !orderDate.isAfter(endOfWeek);
+                })
+                .flatMap(i -> i.getDetails().stream())
+                .mapToInt(InvoiceDetail::getQuantity)
+                .sum();
     }
 
     private Integer generateId() {

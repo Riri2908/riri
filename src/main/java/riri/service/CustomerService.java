@@ -3,6 +3,8 @@ package riri.service;
 import riri.dao.CustomerDAO;
 import riri.model.Customer;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.*;
 
 public class CustomerService {
@@ -72,8 +74,40 @@ public class CustomerService {
         return customers.values().stream().mapToInt(Customer::getTotalOrders).sum();
     }
 
+    public int totalOrdersWeek(LocalDate date) {
+
+        LocalDate startOfWeek = date.with(DayOfWeek.MONDAY);
+        LocalDate endOfWeek = date.with(DayOfWeek.SUNDAY);
+
+        return customers.values().stream()
+                .filter(c -> {
+                    LocalDate orderDate = c.getRecentDate();
+                    return orderDate != null
+                            && !orderDate.isBefore(startOfWeek)
+                            && !orderDate.isAfter(endOfWeek);
+                })
+                .mapToInt(Customer::getTotalOrders)
+                .sum();
+    }
+
     public double totalPrice(){
         return customers.values().stream().mapToDouble(Customer::getTotalPrice).sum();
+    }
+
+    public double totalPriceWeek(LocalDate date) {
+
+        LocalDate startOfWeek = date.with(DayOfWeek.MONDAY);
+        LocalDate endOfWeek = date.with(DayOfWeek.SUNDAY);
+
+        return customers.values().stream()
+                .filter(c -> {
+                    LocalDate orderDate = c.getRecentDate();
+                    return orderDate != null
+                            && !orderDate.isBefore(startOfWeek)
+                            && !orderDate.isAfter(endOfWeek);
+                })
+                .mapToDouble(Customer::getTotalPrice)
+                .sum();
     }
 
     public int parseIntSafe(String value){

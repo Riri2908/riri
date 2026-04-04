@@ -18,6 +18,7 @@ public final class AppContext {
     public static final CustomerTypeService CUSTOMER_TYPE_SERVICE = new CustomerTypeService();
     public static final ShelfService SHELF_SERVICE = new ShelfService();
     public static final AreaService AREA_SERVICE = new AreaService();
+    public static final CategoryService CATEGORY_SERVICE = new CategoryService();
 
     private AppContext() {
         throw new UnsupportedOperationException("Cannot instantiate AppContext");

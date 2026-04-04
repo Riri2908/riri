@@ -103,6 +103,10 @@ public class TablePanel extends BorderPanel {
         titleLabel.setText(title);
     }
 
+    public JLabel getTitle(){
+        return titleLabel;
+    }
+
     public void setRenderer(DefaultTableCellRenderer renderer){
         this.renderer = renderer;
         this.table.setDefaultRenderer(Object.class, renderer);

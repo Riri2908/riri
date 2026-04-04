@@ -15,8 +15,10 @@ public class FieldPanel extends BorderPanel {
 
     public FieldPanel(String title) {
         super(20, Color.WHITE, 0, 0, new Color(214, 214, 214), 1);
-        setBorder(new EmptyBorder(10,10,10,10));
+        setBorder(new EmptyBorder(0,10,0,10));
         setLayout(new BorderLayout());
+        setPreferredSize(new Dimension(0, 36));
+        setMaximumSize(new Dimension(Integer.MAX_VALUE, 36));
 
         this.title = title;
         field = new JTextField();
@@ -27,12 +29,18 @@ public class FieldPanel extends BorderPanel {
         field.setOpaque(false);
         field.setBorder(BorderFactory.createEmptyBorder());
         field.addFocusListener(new FocusAdapter() {
+
             @Override
             public void focusGained(FocusEvent e) {
+                setBorder(new Color(31, 95, 255),2);
                 if(getTextField().equals(title)){
                     setTextField("");
                     field.setForeground(Color.BLACK);
                 }
+            }
+            @Override
+            public void focusLost(FocusEvent e) {
+                setBorder(new Color(221, 221, 221),1);
             }
         });
 
@@ -49,6 +57,7 @@ public class FieldPanel extends BorderPanel {
 
     public void setTextField(String text) {
         field.setText(text);
+        field.setForeground(Color.BLACK);
     }
 
     public String getTextField() {

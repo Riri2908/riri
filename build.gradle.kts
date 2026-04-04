@@ -14,6 +14,9 @@ version = property("version") as String
 
 application {
     mainClass.set("riri.BookStoreApp")
+    applicationDefaultJvmArgs = listOf(
+        "--enable-native-access=ALL-UNNAMED"
+    )
 }
 
 tasks {

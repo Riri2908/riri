@@ -7,16 +7,15 @@ import javax.swing.*;
 import java.awt.*;
 
 public class SideBarMain extends JPanel {
+    public ContentPanel contentPanel;
 
     public SideBarMain(ContentPanel contentPanel) {
+        this.contentPanel = contentPanel;
         setLayout(new BorderLayout());
 
         SideBar sideBar = new SideBar();
-
         SideBarHeader header = new SideBarHeader();
-
         SideBarMenu menu = new SideBarMenu(contentPanel);
-
         SideBarAccount account = new SideBarAccount();
 
         sideBar.add(header, BorderLayout.NORTH);

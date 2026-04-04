@@ -67,8 +67,6 @@ public class ShoppingCart extends BorderPanel {
 
         addItem(buttonAdd(),2,1);
 
-
-
     }
 
     public void addItem(Component component, int x, int y) {

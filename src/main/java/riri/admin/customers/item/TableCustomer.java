@@ -15,9 +15,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -25,6 +22,7 @@ import java.util.Map;
 
 
 public class TableCustomer extends BorderPanel {
+    public final int PADDING = 25;
 
     public CustomRenderer renderer = new CustomRenderer();
     public TablePanel tablePanel = new TablePanel();
@@ -59,16 +57,15 @@ public class TableCustomer extends BorderPanel {
 
             boolean hover = row == tablePanel.getHoveredRow();
 
-            label.setBorder(new EmptyBorder(10,20,10,10));
-
             label.setBackground(hover ? new Color(245,245,245) : Color.WHITE);
 
-            label.setBorder(BorderFactory.createMatteBorder(
-                    0,0,1,0,
-                    hover ? new Color(245,245,245) : new Color(230,230,230)
+            label.setBorder(BorderFactory.createCompoundBorder(
+                    BorderFactory.createMatteBorder(0, 0, 1, 0,
+                            hover ? new Color(245, 245, 245) : new Color(230, 230, 230)),
+                    new EmptyBorder(10, PADDING+10, 10, 10)
             ));
 
-            label.setHorizontalAlignment(JLabel.CENTER);
+            label.setHorizontalAlignment(JLabel.LEFT);
             label.setForeground(new Color(57,57,57));
 
             label.setIcon(null);
@@ -91,6 +88,7 @@ public class TableCustomer extends BorderPanel {
             Customer customer = (Customer) value;
 
             BorderPanel panel = new BorderPanel(0,Color.WHITE,0,0,null,0);
+            panel.setBorder(new EmptyBorder(10,PADDING,10,10));
 
             panel.setBackground(hoverRow ? new Color(245,245,245) : Color.WHITE);
 
@@ -105,7 +103,7 @@ public class TableCustomer extends BorderPanel {
             JLabel phone = BasePanel.createTitle(customer.getPhone(),"Arial",Font.PLAIN,14,new Color(112,112,112));
             phone.setIcon(phoneIcon);
             phone.setIconTextGap(5);
-            phone.setAlignmentX(Component.CENTER_ALIGNMENT);
+            phone.setAlignmentX(Component.LEFT_ALIGNMENT);
             phone.setBorder(new EmptyBorder(5,0,5,0));
 
             ImageIcon mailIcon = new ImageIcon(BasePanel.createImageLogo(getClass(),"customer/mail",15,15));
@@ -113,7 +111,7 @@ public class TableCustomer extends BorderPanel {
             JLabel mail = BasePanel.createTitle(customer.getEmail(),"Arial",Font.PLAIN,14,new Color(112,112,112));
             mail.setIcon(mailIcon);
             mail.setIconTextGap(5);
-            mail.setAlignmentX(Component.CENTER_ALIGNMENT);
+            mail.setAlignmentX(Component.LEFT_ALIGNMENT);
             mail.setBorder(new EmptyBorder(5,0,5,0));
 
             panel.add(phone);
@@ -136,14 +134,17 @@ public class TableCustomer extends BorderPanel {
                     hoverRow ? new Color(245,245,245) : new Color(230,230,230)));
 
             panel.setLayout(new GridBagLayout());
+            panel.setAlignmentX(SwingConstants.LEFT);
             GridBagConstraints gbc = new GridBagConstraints();
             gbc.gridx = 0;
             gbc.insets = new Insets(4, 0, 4, 0);
+            gbc.anchor = GridBagConstraints.CENTER;
+            gbc.weightx = 1.0;
 
             BorderPanel badgePanel = new BorderPanel(25,Color.WHITE,0,0,null,0);
+            badgePanel.setAlignmentX(SwingConstants.LEFT);
 
             JLabel badgeLabel = BasePanel.createTitle(String.valueOf(type.getName()),"Arial",Font.BOLD,14,new Color(112,112,112));
-
             int typeName = type.getId();
 
             if (typeName==4){
@@ -166,17 +167,18 @@ public class TableCustomer extends BorderPanel {
             }
 
             badgeLabel.setBorder(new EmptyBorder(4, 4, 4, 4));
-            badgeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+            badgeLabel.setAlignmentX(SwingConstants.LEFT);
             badgeLabel.setIconTextGap(5);
 
             gbc.gridy = 0;
             badgePanel.add(badgeLabel,gbc);
+            panel.add(badgePanel,gbc);
 
             JLabel discount = BasePanel.createTitle("Giảm " + type.getDiscountRate()*100 + "%","Arial",Font.BOLD,13,new Color(39, 168, 87));
-            discount.setAlignmentX(Component.CENTER_ALIGNMENT);
+            discount.setAlignmentX(SwingConstants.LEFT);
             gbc.gridy = 1;
 
-            panel.add(badgePanel);
+
             panel.add(discount,gbc);
 
             return panel;
@@ -203,7 +205,7 @@ public class TableCustomer extends BorderPanel {
             Rectangle cellRect = tablePanel.getTable().getCellRect(row, 7, true);
             int colStart = cellRect.x;
             int colWidth = cellRect.width;
-            int relX     = tablePanel.getHoveredX() - colStart;
+            int relX = tablePanel.getHoveredX() - colStart;
 
             boolean hoverEdit   = hoverCol && relX < colWidth / 2;
             boolean hoverDelete = hoverCol && relX >= colWidth / 2;
@@ -211,6 +213,7 @@ public class TableCustomer extends BorderPanel {
             GridBagConstraints gbc = new GridBagConstraints();
             gbc.gridy = 0;
             gbc.insets = new Insets(4, 4, 4, 4);
+            gbc.anchor = GridBagConstraints.WEST;
 
             BorderPanel panel =  new BorderPanel(0,new Color(255, 255, 255),0,0,null, 0);
             panel.setBackground(hoverRow ? new Color(245,245,245) : Color.WHITE);
@@ -225,7 +228,7 @@ public class TableCustomer extends BorderPanel {
 
             ImageIcon imageRemove = new ImageIcon(BasePanel.createImageLogo(getClass(), "baseicon/remove", 17,17));
             JLabel iconRemove = new JLabel(imageRemove);
-            iconRemove.setAlignmentX(Component.CENTER_ALIGNMENT);
+            iconRemove.setAlignmentX(Component.LEFT_ALIGNMENT);
 
             buttonRemove.add(iconRemove);
 
@@ -234,7 +237,7 @@ public class TableCustomer extends BorderPanel {
 
             ImageIcon imageEdit = new ImageIcon(BasePanel.createImageLogo(getClass(), "baseicon/edit", 17,17));
             JLabel iconEdit = new JLabel(imageEdit);
-            iconEdit.setAlignmentX(Component.CENTER_ALIGNMENT);
+            iconEdit.setAlignmentX(Component.LEFT_ALIGNMENT);
 
             buttonEdit.add(iconEdit);
 
@@ -264,7 +267,7 @@ public class TableCustomer extends BorderPanel {
         });
 
         renderer.setHeaderSetting(label -> {
-            label.setBorder(new EmptyBorder(10,0,10,0));
+            label.setBorder(new EmptyBorder(10,0,10,30 ));
             label.setBackground(new Color(247, 248, 249));
             label.setForeground(new Color(110, 110, 110));
             label.setFont(new Font("Segoe UI", Font.BOLD, 12));

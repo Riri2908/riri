@@ -10,16 +10,16 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class SideBarItem extends JPanel {
+    public ContentPanel contentPanel;
 
     private boolean active=false;
-    private static SideBarItem activeItem = null;
 
     private final JLabel title;
     private final ImageIcon iconNormal;
     private final ImageIcon iconActive;
 
-
     public SideBarItem(String Text, String logoName,ContentPanel contentPanel) {
+        this.contentPanel = contentPanel;
         this.iconNormal = new ImageIcon(BasePanel.createImageLogo(getClass(),"sidebar/"+logoName+"_gray",24,24));
         this.iconActive = new ImageIcon(BasePanel.createImageLogo(getClass(),"sidebar/"+logoName+"_blue",24,24));
         setOpaque(false);
@@ -39,11 +39,6 @@ public class SideBarItem extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 contentPanel.showPage(Text);
-                if(activeItem != null){
-                    activeItem.setActive(false);
-                }
-                activeItem = SideBarItem.this;
-                activeItem.setActive(true);
             }
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -55,7 +50,7 @@ public class SideBarItem extends JPanel {
             }
         });
     }
-    private void setActive(boolean active) {
+    public void setActive(boolean active) {
         this.active = active;
         setBackground(active ? new Color(231, 231, 255) : Color.WHITE);
         title.setForeground(active ? new Color(110, 153, 255) : new Color(121, 121, 121));

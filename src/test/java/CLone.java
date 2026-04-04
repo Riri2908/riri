@@ -1,68 +1,82 @@
-import riri.components.BorderPanel;
-
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.plaf.basic.BasicSpinnerUI;
 import java.awt.*;
+import java.awt.event.*;
 
-private BorderPanel spinnerWrapper(){
-    BorderPanel spinnerWrapper = new BorderPanel(12, Color.WHITE, 0, 0, new Color(200,200,200), 1);
+public class CLone {
 
-    JSpinner.NumberEditor editor = new JSpinner.NumberEditor(spinner, "#");
+    public static void main(String[] args) {
 
-    spinner.setEditor(editor);
-    spinner.setOpaque(false);
-    spinner.setBorder(null);
-    spinner.setBackground(new Color(0,0,0,0));
+        JFrame frame = new JFrame("Draggable Floating Panel");
+        frame.setSize(600, 400);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-    spinner.setUI(new BasicSpinnerUI() {
+        // ✅ Dùng JLayeredPane thay vì setLayout(null)
+        JLayeredPane layeredPane = new JLayeredPane();
+        layeredPane.setPreferredSize(new Dimension(600, 400));
+        frame.setContentPane(layeredPane);
 
-        @Override
-        protected void installDefaults() {
-            super.installDefaults();
-            spinner.setBorder(BorderFactory.createEmptyBorder(0,10,0,20));
-        }
-        @Override
-        protected Component createNextButton() {
-            JButton btn = new JButton("▲");
-            btn.setBorder(new EmptyBorder(0,0,0,10));
-            btn.setContentAreaFilled(false);
-            btn.setOpaque(false);
-            btn.setMargin(new Insets(0, 0, 0, 8));
-            btn.addActionListener(_ -> spinner.setValue(spinner.getNextValue()));
-            btn.setFocusPainted(false);
-            return btn;
-        }
+        // ── Tầng nền (layer 0): các panel bình thường ──
+        JPanel background = new JPanel(null);
+        background.setBounds(0, 0, 600, 400);
+        background.setBackground(Color.WHITE);
 
-        @Override
-        protected Component createPreviousButton() {
-            JButton btn = new JButton("▼");
-            btn.setBorder(new EmptyBorder(0,0,0,10));
-            btn.setContentAreaFilled(false);
-            btn.setOpaque(false);
-            btn.setMargin(new Insets(0, 0, 0, 8));
-            btn.addActionListener(_ -> spinner.setValue(spinner.getPreviousValue()));
-            btn.setFocusPainted(false);
-            return btn;
-        }
-    });
+        JPanel panel1 = new JPanel();
+        panel1.setBackground(Color.LIGHT_GRAY);
+        panel1.setBounds(50, 50, 200, 150);
+        panel1.add(new JLabel("Panel nền 1"));
 
-    JFormattedTextField textField = editor.getTextField();
-    textField.setHorizontalAlignment(SwingConstants.LEFT);
+        JPanel panel2 = new JPanel();
+        panel2.setBackground(Color.ORANGE);
+        panel2.setBounds(300, 80, 200, 150);
+        panel2.add(new JLabel("Panel nền 2"));
 
-    JComponent editorComp = spinner.getEditor();
-    editorComp.setOpaque(false);
+        JButton toggleBtn = new JButton("Bật / Tắt Float");
+        toggleBtn.setBounds(20, 20, 140, 30);
 
+        background.add(panel1);
+        background.add(panel2);
+        background.add(toggleBtn);
 
-    if (editorComp instanceof JSpinner.DefaultEditor) {
-        JFormattedTextField tf = ((JSpinner.DefaultEditor) editorComp).getTextField();
-        tf.setOpaque(false);
-        tf.setBorder(null);
-        tf.setBackground(new Color(0,0,0,0));
-        tf.setUI(new javax.swing.plaf.basic.BasicFormattedTextFieldUI());
+        // ✅ Thêm background vào tầng DEFAULT (0)
+        layeredPane.add(background, JLayeredPane.DEFAULT_LAYER);
+
+        // ── Tầng nổi (layer PALETTE): panel đè lên tất cả ──
+        JPanel floatingPanel = new JPanel(new FlowLayout());
+        floatingPanel.setBackground(Color.CYAN);
+        floatingPanel.setBounds(180, 120, 220, 130);
+        floatingPanel.setBorder(BorderFactory.createLineBorder(Color.BLUE, 2));
+        floatingPanel.add(new JLabel("Form nhập liệu"));
+        floatingPanel.add(new JTextField(10));
+        floatingPanel.setVisible(false);
+
+        // ✅ Thêm floatingPanel vào tầng PALETTE (cao hơn DEFAULT)
+        layeredPane.add(floatingPanel, JLayeredPane.PALETTE_LAYER);
+
+        // ── Logic kéo thả ──
+        Point clickPoint = new Point();
+
+        floatingPanel.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent e) {
+                clickPoint.setLocation(e.getPoint());
+                // ✅ Khi click thì đưa lên tầng cao nhất
+                layeredPane.moveToFront(floatingPanel);
+            }
+        });
+
+        floatingPanel.addMouseMotionListener(new MouseMotionAdapter() {
+            public void mouseDragged(MouseEvent e) {
+                int x = floatingPanel.getX() + e.getX() - clickPoint.x;
+                int y = floatingPanel.getY() + e.getY() - clickPoint.y;
+                floatingPanel.setLocation(x, y);
+            }
+        });
+
+        // ── Toggle hiện/ẩn ──
+        toggleBtn.addActionListener(e ->
+                floatingPanel.setVisible(!floatingPanel.isVisible())
+        );
+
+        frame.pack();
+        frame.setVisible(true);
     }
-
-    spinnerWrapper.setLayout(new BorderLayout());
-    spinnerWrapper.add(spinner, BorderLayout.CENTER);
-    return spinnerWrapper;
 }

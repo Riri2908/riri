@@ -19,6 +19,7 @@ public class BookStoreApp {
         ContentPanel contentPanel = new ContentPanel();
         SideBarMain sideBarMain = new SideBarMain(contentPanel);
 
+
         frame.setJMenuBar(menuBar);
         frame.add(sideBarMain, BorderLayout.WEST);
         frame.add(contentPanel, BorderLayout.CENTER);
