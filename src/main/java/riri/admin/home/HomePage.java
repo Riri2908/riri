@@ -17,11 +17,12 @@ public class HomePage extends JPanel {
     public ContentPanel contentPanel;
     public HeaderPanel headerPanel = new HeaderPanel();
     public FeaturePanel featurePanel = new FeaturePanel(null);
-    public TopPanel topPanel = new TopPanel();
+    public TopPanel topPanel = new TopPanel(null);
 
     public HomePage(ContentPanel contentPanel) {
         this.contentPanel=contentPanel;
         this.featurePanel.contentPanel = contentPanel;
+        this.topPanel.contentPanel = contentPanel;
         setLayout(new BorderLayout());
 
         root.setBorder(new EmptyBorder(25, 25, 25, 25));

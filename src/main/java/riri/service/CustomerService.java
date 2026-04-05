@@ -6,6 +6,7 @@ import riri.model.Customer;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Stream;
 
 public class CustomerService {
 
@@ -18,6 +19,12 @@ public class CustomerService {
 
     public Map<Integer, Customer> getAll() {
         return customers;
+    }
+
+    private Stream<Customer> activeCustomers() {
+        return customers.values()
+                .stream()
+                .filter(c -> !c.isDeleted());
     }
 
     public Customer findById(Integer id) {
@@ -58,8 +65,11 @@ public class CustomerService {
     }
 
     public void delete(Integer id) {
-        customers.remove(id);
-        save();
+        Customer c = customers.get(id);
+        if (c != null) {
+            c.setDeleted(true);
+            save();
+        }
     }
 
     public void save() {
@@ -67,19 +77,19 @@ public class CustomerService {
     }
 
     public int totalCustomers() {
-        return customers.size();
+        return (int) activeCustomers().count();
     }
 
     public int totalOrders() {
-        return customers.values().stream().mapToInt(Customer::getTotalOrders).sum();
+        return activeCustomers().mapToInt(Customer::getTotalOrders).sum();
     }
 
     public int totalOrdersWeek(LocalDate date) {
 
         LocalDate startOfWeek = date.with(DayOfWeek.MONDAY);
-        LocalDate endOfWeek = date.with(DayOfWeek.SUNDAY);
+        LocalDate endOfWeek = startOfWeek.plusDays(6);
 
-        return customers.values().stream()
+        return activeCustomers()
                 .filter(c -> {
                     LocalDate orderDate = c.getRecentDate();
                     return orderDate != null
@@ -90,16 +100,16 @@ public class CustomerService {
                 .sum();
     }
 
-    public double totalPrice(){
-        return customers.values().stream().mapToDouble(Customer::getTotalPrice).sum();
+    public double totalPrice() {
+        return activeCustomers().mapToDouble(Customer::getTotalPrice).sum();
     }
 
     public double totalPriceWeek(LocalDate date) {
 
         LocalDate startOfWeek = date.with(DayOfWeek.MONDAY);
-        LocalDate endOfWeek = date.with(DayOfWeek.SUNDAY);
+        LocalDate endOfWeek = startOfWeek.plusDays(6);
 
-        return customers.values().stream()
+        return activeCustomers()
                 .filter(c -> {
                     LocalDate orderDate = c.getRecentDate();
                     return orderDate != null

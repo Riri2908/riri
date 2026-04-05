@@ -70,8 +70,7 @@ public class CustomerPage extends BorderPanel {
 
         double total = AppContext.CUSTOMER_SERVICE.totalPrice();
         double totalOrder = AppContext.CUSTOMER_SERVICE.totalOrders();
-
-        int customerCount = customers.size();
+        int customerCount = AppContext.CUSTOMER_SERVICE.totalCustomers();
 
         double avg = customerCount == 0 ? 0 : total / totalOrder;
 

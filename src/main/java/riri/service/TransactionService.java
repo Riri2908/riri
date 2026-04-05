@@ -2,10 +2,12 @@ package riri.service;
 
 import riri.dao.TransactionDAO;
 import riri.model.Book;
+import riri.model.Customer;
 import riri.model.Employee;
 import riri.model.Transaction;
 import riri.util.AppContext;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -40,13 +42,18 @@ public class TransactionService {
             throw new RuntimeException("Khách hàng không tồn tại");
         }
 
-        if (transaction.getType().equalsIgnoreCase("Nhập")) {
-            book.setQuantity(book.getQuantity() + transaction.getQuantity());
-        } else {
-            if (book.getQuantity() < transaction.getQuantity()) {
-                throw new RuntimeException("Không đủ số lượng trong kho");
+        if (transaction.isAffectStock()) {
+
+            if (transaction.getType().equalsIgnoreCase("Nhập")) {
+                book.setQuantity(book.getQuantity() + transaction.getQuantity());
+            } else {
+                if (book.getQuantity() < transaction.getQuantity()) {
+                    throw new RuntimeException("Không đủ số lượng trong kho");
+                }
+                book.setQuantity(book.getQuantity() - transaction.getQuantity());
             }
-            book.setQuantity(book.getQuantity() - transaction.getQuantity());
+
+            AppContext.BOOK_SERVICE.update(book);
         }
 
         transactions.put(transaction.getId(),transaction);
@@ -65,6 +72,23 @@ public class TransactionService {
         Collection<Transaction> transaction =  transactions.values();
         return transaction.stream()
                 .filter(t -> t.getType().equalsIgnoreCase("Xuất"))
+                .mapToInt(Transaction::getQuantity)
+                .sum();
+    }
+
+    public int totalQuantityWeek(LocalDate date, String type) {
+
+        LocalDate startOfWeek = date.with(DayOfWeek.MONDAY);
+        LocalDate endOfWeek = startOfWeek.plusDays(6);
+
+        return transactions.values().stream()
+                .filter(t -> {
+                    LocalDate d = t.getDate();
+                    return d != null
+                            && !d.isBefore(startOfWeek)
+                            && !d.isAfter(endOfWeek)
+                            && t.getType().equalsIgnoreCase(type);
+                })
                 .mapToInt(Transaction::getQuantity)
                 .sum();
     }

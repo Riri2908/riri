@@ -10,8 +10,7 @@ public class Book extends BaseModel {
     private int idArea;
     private int idShelf;
 
-    public Book(int id, String name, String author, String category, String publisher,
-                double price, int quantity, int idArea, int idShelf) {
+    public Book(int id, String name, String author, String category, String publisher, double price, int quantity, int idArea, int idShelf) {
         super(id);
         this.name = name;
         this.author = author;

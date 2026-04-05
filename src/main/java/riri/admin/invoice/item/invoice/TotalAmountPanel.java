@@ -3,10 +3,8 @@ package riri.admin.invoice.item.invoice;
 import riri.admin.invoice.item.invoicelist.ListInvoiceTable;
 import riri.components.BorderPanel;
 import riri.components.page.BasePanel;
-import riri.model.Book;
-import riri.model.Customer;
-import riri.model.Invoice;
-import riri.model.InvoiceDetail;
+import riri.components.page.ContentPanel;
+import riri.model.*;
 import riri.util.AppContext;
 
 import javax.swing.*;
@@ -20,10 +18,10 @@ import java.util.Map;
 import java.util.Objects;
 
 public class TotalAmountPanel extends JPanel {
-    public Map<Integer,Invoice> invoices = AppContext.INVOICE_SERVICE.getAll();
 
     public ImageIcon icon = new ImageIcon( BasePanel.createImageLogo(getClass(),"invoice/pay",16,16));
 
+    public ContentPanel contentPanel;
     public ListPanel listPanel;
     public InformationPanel informationPanel;
     public ListInvoiceTable  listInvoiceTable;
@@ -37,8 +35,8 @@ public class TotalAmountPanel extends JPanel {
 
     public double totalAmount = 0;
 
-    public TotalAmountPanel(ListPanel listPanel, InformationPanel informationPanel, ListInvoiceTable  listInvoiceTable) {
-
+    public TotalAmountPanel(ListPanel listPanel, InformationPanel informationPanel, ListInvoiceTable  listInvoiceTable, ContentPanel contentPanel) {
+        this.contentPanel = contentPanel;
         this.listPanel = listPanel;
         this.informationPanel = informationPanel;
         this.listInvoiceTable = listInvoiceTable;
@@ -195,6 +193,7 @@ public class TotalAmountPanel extends JPanel {
                     if (Objects.equals(informationPanel.customerBox.getComboBox().getSelectedItem(), "--Thêm khách hàng mới--")) {
 
                         assert customer != null;
+                        customer.setTotalOrders(1);
                         customer.setTotalPrice(invoice.getTotalAmount());
                         AppContext.CUSTOMER_SERVICE.update(customer);
 
@@ -212,7 +211,15 @@ public class TotalAmountPanel extends JPanel {
 
                     listPanel.tableClear();
                     updateTotals();
-
+                    for(int i=0; i<detailMap.size();i++){
+                        InvoiceDetail detail = detailMap.get(i);
+                        AppContext.TRANSACTION_SERVICE.add(new Transaction(
+                                0,detail.getBookId(),employeeId,
+                                detail.getQuantity(),
+                                "Xuất",LocalDate.now(),"Bán cho đơn INV"+detail.getInvoiceId(),
+                                false
+                        ));
+                    }
                 } catch (Exception ex) {
 
                     JOptionPane.showMessageDialog(TotalAmountPanel.this, ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
@@ -221,6 +228,7 @@ public class TotalAmountPanel extends JPanel {
                 informationPanel.loadDataCustomer();
                 informationPanel.customerCard.show(informationPanel.customerPanel,"customerBox");
                 listInvoiceTable.updateData();
+                contentPanel.managementPage.historyPanel.loadData();
             }
             @Override
             public void mouseEntered(MouseEvent e) {

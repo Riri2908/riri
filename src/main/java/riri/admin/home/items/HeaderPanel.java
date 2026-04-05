@@ -45,7 +45,7 @@ public class HeaderPanel extends BorderPanel {
 
         double totalPriceCurrentWeek = AppContext.CUSTOMER_SERVICE.totalPriceWeek(LocalDate.now());
         double totalPriceLastWeek = AppContext.CUSTOMER_SERVICE.totalPriceWeek(LocalDate.now().minusDays(1));
-        double percentPrice = (totalPriceCurrentWeek /totalPriceLastWeek)*100;
+        double percentPrice = totalPriceLastWeek == 0 ? Double.NaN : ((totalPriceCurrentWeek - totalPriceLastWeek) / totalPriceLastWeek) * 100;
 
         addItem(statCard(
                 "Doanh thu", new Color(22,163,74),
@@ -59,7 +59,7 @@ public class HeaderPanel extends BorderPanel {
 
         int totalOrderCurrentWeek = AppContext.CUSTOMER_SERVICE.totalOrdersWeek(LocalDate.now());
         int totalOrderLastWeek = AppContext.CUSTOMER_SERVICE.totalOrdersWeek(LocalDate.now().minusDays(1));
-        double percentOrder = ((double) totalOrderCurrentWeek /totalOrderLastWeek)*100;
+        double percentOrder = ((double) (totalOrderCurrentWeek-totalOrderLastWeek) /totalOrderLastWeek)*100;
 
         addItem(statCard(
                 "Số đơn hàng", new Color(37, 99, 235),
@@ -73,13 +73,13 @@ public class HeaderPanel extends BorderPanel {
 
         int totalBookCurrentWeek = AppContext.INVOICE_SERVICE.totalOrdersWeek(LocalDate.now());
         int totalBookLastWeek = AppContext.INVOICE_SERVICE.totalOrdersWeek(LocalDate.now().minusDays(1));
-        double percentBook = ((double) totalBookCurrentWeek /totalBookLastWeek)*100;
+        double percentBook = ((double) (totalBookCurrentWeek-totalBookLastWeek) /totalBookLastWeek)*100;
 
         addItem(statCard(
                 "Số sách đã được bán", new Color(147, 51, 234),
                 "user",
                 totalBookCurrentWeek,
-                percentBook, "% so với ngày tuần trước",
+                percentBook, "% so với hôm qua",
                 new Color(250, 245, 255),
                 new Color(233, 213, 255)),
                 2,1
@@ -133,17 +133,18 @@ public class HeaderPanel extends BorderPanel {
         JLabel valueLabel = BasePanel.createTitle(BasePanel.formatNumber((long) value),"Arial",Font.BOLD,20,Color.BLACK);
         Icon iconUp = BasePanel.createIcon(getClass(),"homepage/up",15,15,titleColor);
         Icon iconDown = BasePanel.createIcon(getClass(),"homepage/down",15,15,titleColor);
-        JLabel subLabel = BasePanel.createTitle(percent+subText,"Arial",Font.PLAIN,14,titleColor);
+        JLabel subLabel = BasePanel.createTitle(String.format("%.1f", percent) + subText,"Arial",Font.PLAIN,14,titleColor);
         if(percent==-Double.MAX_VALUE){
             subLabel.setIcon(null);
             subLabel.setText(subText);
         }else {
-            if(percent >=0)
+            if(percent >=0) {
                 subLabel.setIcon(iconUp);
-            else
+            }
+            else{
                 subLabel.setIcon(iconDown);
+            }
         }
-
 
         cardPanel.add(Box.createVerticalStrut(10));
         cardPanel.add(titleLabel);

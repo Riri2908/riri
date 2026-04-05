@@ -13,6 +13,10 @@ import java.awt.*;
 
 public class ManagementPage extends JPanel {
 
+    public ManagementStatCard stat = new ManagementStatCard();
+    public HistoryPanel historyPanel = new HistoryPanel();
+    public InventoryPanel iventoryPanel = new InventoryPanel(historyPanel,stat);
+
     public ManagementPage() {
         setOpaque(true);
         setBackground(new Color(247, 248, 249));
@@ -31,10 +35,6 @@ public class ManagementPage extends JPanel {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setOpaque(false);
         panel.setFocusable(true);
-
-        ManagementStatCard stat = new ManagementStatCard();
-        HistoryPanel historyPanel = new HistoryPanel();
-        InventoryPanel iventoryPanel = new InventoryPanel(historyPanel,stat);
 
         TablePanel table = historyPanel.getTable();
         SearchPanel searchPanel = new SearchPanel(table,"Tìm kiếm theo số thứ tự, tên sách, tên tác giả...");

@@ -12,6 +12,7 @@ public class Transaction extends BaseModel{
     private String type;
     private LocalDate date;
     private String note;
+    private boolean affectStock;
 
     public Transaction(int id, int bookId, int employeeId, int quantity, String type, LocalDate date, String note) {
         super(id);
@@ -21,6 +22,18 @@ public class Transaction extends BaseModel{
         this.type = type;
         this.date = date;
         this.note = note;
+        this.affectStock = true;
+    }
+
+    public Transaction(int id, int bookId, int employeeId, int quantity, String type, LocalDate date, String note, boolean affectStock) {
+        super(id);
+        this.bookId = bookId;
+        this.employeeId = employeeId;
+        this.quantity = quantity;
+        this.type = type;
+        this.date = date;
+        this.note = note;
+        this.affectStock = affectStock;
     }
 
     public String getNote() {
@@ -66,6 +79,15 @@ public class Transaction extends BaseModel{
     public Integer getEmployeeId() {
         return employeeId;
     }
+
+    public boolean isAffectStock() {
+        return affectStock;
+    }
+
+    public void setAffectStock(boolean affectStock) {
+        this.affectStock = affectStock;
+    }
+
 
     public void setEmployeeId(Integer employeeId) {
         this.employeeId = employeeId;

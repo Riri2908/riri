@@ -1,6 +1,8 @@
 package riri.admin.store.action;
 
 import riri.components.combobox.ComboBoxPanel;
+import riri.model.Area;
+import riri.model.BaseModel;
 import riri.model.Book;
 import riri.util.AppContext;
 
@@ -24,7 +26,6 @@ public class AddBook extends JDialog {
         getContentPane().setBackground(Color.WHITE);
         setLayout(new BorderLayout());
 
-        // HEADER
         JPanel header = new JPanel(new BorderLayout());
         header.setBackground(Color.WHITE);
         header.setBorder(new EmptyBorder(20, 24, 10, 24));
@@ -53,7 +54,7 @@ public class AddBook extends JDialog {
 
         // ===== SETUP AREA =====
         String[] areaNames = AppContext.AREA_SERVICE.getAll().values()
-                .stream().map(a -> a.getName()).toArray(String[]::new);
+                .stream().map(Area::getName).toArray(String[]::new);
         ComboBoxPanel cbArea = new ComboBoxPanel();
         cbArea.setItems(areaNames);
         cbArea.setMaximumSize(new Dimension(Integer.MAX_VALUE, 48));
@@ -82,13 +83,33 @@ public class AddBook extends JDialog {
         cbArea.getComboBox().addActionListener(e -> loadShelves.run());
 
         // ===== THÊM VÀO FORM =====
-        form.add(createLabel("Tên sách"));     form.add(tfName);      form.add(Box.createVerticalStrut(12));
-        form.add(createLabel("Tác giả"));      form.add(tfAuthor);    form.add(Box.createVerticalStrut(12));
-        form.add(createLabel("Nhà xuất bản")); form.add(tfPublisher); form.add(Box.createVerticalStrut(12));
-        form.add(createLabel("Thể loại"));     form.add(tfCategory); form.add(Box.createVerticalStrut(12));
-        form.add(createLabel("Giá (đ)"));      form.add(tfPrice);     form.add(Box.createVerticalStrut(12));
-        form.add(createLabel("Khu vực"));      form.add(cbArea);      form.add(Box.createVerticalStrut(12));
-        form.add(createLabel("Kệ sách"));      form.add(cbShelf);     form.add(Box.createVerticalStrut(12));
+        form.add(createLabel("Tên sách"));
+        form.add(tfName);
+        form.add(Box.createVerticalStrut(12));
+
+        form.add(createLabel("Tác giả"));
+        form.add(tfAuthor);
+        form.add(Box.createVerticalStrut(12));
+
+        form.add(createLabel("Nhà xuất bản"));
+        form.add(tfPublisher);
+        form.add(Box.createVerticalStrut(12));
+
+        form.add(createLabel("Thể loại"));
+        form.add(tfCategory);
+        form.add(Box.createVerticalStrut(12));
+
+        form.add(createLabel("Giá (đ)"));
+        form.add(tfPrice);
+        form.add(Box.createVerticalStrut(12));
+
+        form.add(createLabel("Khu vực"));
+        form.add(cbArea);
+        form.add(Box.createVerticalStrut(12));
+
+        form.add(createLabel("Kệ sách"));
+        form.add(cbShelf);
+        form.add(Box.createVerticalStrut(12));
 
         // FOOTER
         JPanel footer = new JPanel(new GridLayout(1, 2, 12, 0));
@@ -122,17 +143,17 @@ public class AddBook extends JDialog {
                 // Lấy ID thể loại
                 int idCategory = AppContext.CATEGORY_SERVICE.getAll().values().stream()
                         .filter(c -> c.getName().equals(categoryName))
-                        .findFirst().map(c -> c.getId()).orElse(0);
+                        .findFirst().map(BaseModel::getId).orElse(0);
 
                 // Lấy ID khu vực
                 int idArea = AppContext.AREA_SERVICE.getAll().values().stream()
                         .filter(a -> a.getName().equals(areaName))
-                        .findFirst().map(a -> a.getId()).orElse(0);
+                        .findFirst().map(BaseModel::getId).orElse(0);
 
                 // Lấy ID kệ sách
                 int idShelf = AppContext.SHELF_SERVICE.getAll().values().stream()
                         .filter(s -> s.getName().equals(shelfName))
-                        .findFirst().map(s -> s.getId()).orElse(0);
+                        .findFirst().map(BaseModel::getId).orElse(0);
 
                 Book book = new Book(
                         0,

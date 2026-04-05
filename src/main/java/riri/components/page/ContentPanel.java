@@ -17,6 +17,13 @@ public class ContentPanel extends JPanel {
     private final Map<String, SideBarItem> menuMap = new HashMap<>();
     private SideBarItem activeItem;
 
+    public HomePage homePage;
+    public DashBoardPage dashBoardPage;
+    public BookPage bookPage;
+    public ManagementPage managementPage;
+    public InvoicePage invoicePage;
+    public CustomerPage customerPage;
+
     private final CardLayout cardLayout=new CardLayout();
     private final JPanel contentPanel;
     private final TopBar topBar=new TopBar("Trang chủ");
@@ -26,16 +33,15 @@ public class ContentPanel extends JPanel {
         setPreferredSize(new Dimension(600,600));
         setLayout(new BorderLayout());
         setBackground(new Color(247, 248, 249));
+        this.homePage = new HomePage(this);
+        this.dashBoardPage = new DashBoardPage();
+        this.bookPage = new BookPage();
+        this.managementPage = new ManagementPage();
+        this.invoicePage = new InvoicePage(this);
+        this.customerPage =new CustomerPage(invoicePage);
 
         this.contentPanel=new JPanel();
         contentPanel.setLayout(cardLayout);
-
-        HomePage homePage =new HomePage(this);
-        DashBoardPage dashBoardPage = new DashBoardPage();
-        BookPage bookPage = new BookPage();
-        ManagementPage managementPage = new ManagementPage();
-        InvoicePage invoicePage = new InvoicePage();
-        CustomerPage customerPage = new CustomerPage(invoicePage);
 
         contentPanel.add(homePage,"Trang chủ");
         contentPanel.add(dashBoardPage, "Thống kê");

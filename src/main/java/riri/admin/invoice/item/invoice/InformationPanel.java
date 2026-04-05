@@ -167,6 +167,7 @@ public class InformationPanel extends BorderPanel {
         this.customerBox.addItem("--Chọn khách hàng--");
 
         for(Customer customer: customerList.values()){
+            if(customer.isDeleted()) continue;
             this.customerBox.addItem(customer.getName());
         }
         this.customerBox.addItem("--Thêm khách hàng mới--");

@@ -166,14 +166,16 @@ public class HistoryPanel extends BorderPanel {
 
     }
 
-    private void loadData(){
+    public void loadData(){
         List<Transaction> transactionCollection =new ArrayList<>(transactions.values());
         Collections.reverse(transactionCollection);
 
+        tablePanel.getModel().setRowCount(0);
+
         for(Transaction transaction : transactionCollection ){
 
-            Book book = books.get(transaction.getBookId());
-            Employee employee = employees.get(transaction.getEmployeeId());
+            Book book = AppContext.BOOK_SERVICE.findById(transaction.getBookId());
+            Employee employee = AppContext.EMPLOYEE_SERVICE.findById(transaction.getEmployeeId());
 
             if(book == null || employee == null) continue;
 
@@ -189,14 +191,8 @@ public class HistoryPanel extends BorderPanel {
                     transaction.getNote(),
             });
         }
-
-
     }
 
-    public void updateData(){
-        tablePanel.getModel().setRowCount(0);
-        loadData();
-    }
 
     public TablePanel getTable(){
         return this.tablePanel;

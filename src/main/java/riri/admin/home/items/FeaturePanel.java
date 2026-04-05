@@ -127,7 +127,7 @@ public class FeaturePanel extends BorderPanel {
             public void mouseEntered(MouseEvent e) {
                 isHovering[0] = true;
                 startAnim();
-                arrowLabel.setForeground(new Color(0, 42, 255));
+                arrowLabel.setForeground(tagColor);
             }
 
             @Override
@@ -138,7 +138,6 @@ public class FeaturePanel extends BorderPanel {
             }
 
             void startAnim() {
-                // Stop timer cũ nếu đang chạy, KHÔNG reset progress
                 if (hoverTimer[0] != null && hoverTimer[0].isRunning()) {
                     hoverTimer[0].stop();
                 }

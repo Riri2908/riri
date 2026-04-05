@@ -7,17 +7,19 @@ import riri.admin.invoice.item.invoice.TotalAmountPanel;
 import riri.admin.invoice.item.invoicelist.ListInvoiceTable;
 import riri.components.BorderPanel;
 import riri.components.page.BasePanel;
+import riri.components.page.ContentPanel;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class InvoicePage extends JPanel {
-    public InformationPanel informationPanel = new InformationPanel(null);
-    public TotalAmountPanel totalAmountPanel = new TotalAmountPanel(null,informationPanel,null);
-    public ListPanel listPanel = new ListPanel(totalAmountPanel);
-    public ShoppingCart shoppingCart = new ShoppingCart(listPanel, totalAmountPanel);
-    public ListInvoiceTable listInvoiceTable = new ListInvoiceTable(informationPanel, shoppingCart);
+    public ContentPanel contentPanel;
+    public InformationPanel informationPanel;
+    public TotalAmountPanel totalAmountPanel;
+    public ListPanel listPanel;
+    public ShoppingCart shoppingCart;
+    public ListInvoiceTable listInvoiceTable;
 
     public BorderPanel invoice = new BorderPanel(0, new Color(247, 248, 249), 0, 0, null, 0);
 
@@ -26,10 +28,22 @@ public class InvoicePage extends JPanel {
     public CardLayout cardLayout = new CardLayout();
     private final JPanel root = new JPanel();
 
-    public InvoicePage() {
+    public InvoicePage(ContentPanel contentPanel) {
+        this.contentPanel = contentPanel;
+
+        informationPanel = new InformationPanel(null);
+
+        totalAmountPanel = new TotalAmountPanel(null, informationPanel, null, contentPanel);
+
+        listPanel = new ListPanel(totalAmountPanel);
+
+        shoppingCart = new ShoppingCart(listPanel, totalAmountPanel);
+
+        listInvoiceTable = new ListInvoiceTable(informationPanel, shoppingCart);
+
         this.totalAmountPanel.listPanel = listPanel;
-        this.informationPanel.totalAmountPanel = totalAmountPanel;
         this.totalAmountPanel.listInvoiceTable = listInvoiceTable;
+        this.informationPanel.totalAmountPanel = totalAmountPanel;
 
         setLayout(new BorderLayout());
         root.setOpaque(true);

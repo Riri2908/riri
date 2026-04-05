@@ -292,6 +292,8 @@ public class TableCustomer extends BorderPanel {
 
         for(Customer c : customer){
 
+            if (c.isDeleted()) continue;
+
             CustomerType customerType =AppContext.CUSTOMER_TYPE_SERVICE.findById(c.getIdType());
 
             tablePanel.addRow(new Object[]{

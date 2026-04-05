@@ -203,7 +203,7 @@ public class BaseFormPanel extends BorderPanel {
                 "Admin",
                 transaction.getNote()
         });
-        historyPanel.updateData();
+        historyPanel.loadData();
     }
 
     public void showPlaceholder(){
