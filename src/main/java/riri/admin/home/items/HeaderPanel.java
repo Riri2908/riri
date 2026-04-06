@@ -2,6 +2,7 @@ package riri.admin.home.items;
 
 import riri.components.BorderPanel;
 import riri.components.page.BasePanel;
+import riri.service.component.Period;
 import riri.util.AppContext;
 
 import javax.swing.*;
@@ -43,40 +44,40 @@ public class HeaderPanel extends BorderPanel {
         gbc.weightx = 1;
         gbc.weighty = 1.;
 
-        double totalPriceCurrentWeek = AppContext.CUSTOMER_SERVICE.totalPriceWeek(LocalDate.now());
-        double totalPriceLastWeek = AppContext.CUSTOMER_SERVICE.totalPriceWeek(LocalDate.now().minusDays(1));
+        double totalPriceCurrentWeek = AppContext.INVOICE_SERVICE.totalPrice(LocalDate.now(), Period.DAY);
+        double totalPriceLastWeek = AppContext.INVOICE_SERVICE.totalPrice(LocalDate.now().minusDays(1), Period.DAY);
         double percentPrice = totalPriceLastWeek == 0 ? Double.NaN : ((totalPriceCurrentWeek - totalPriceLastWeek) / totalPriceLastWeek) * 100;
 
         addItem(statCard(
                 "Doanh thu", new Color(22,163,74),
                 "revenue",
                 totalPriceCurrentWeek,
-                percentPrice, "% so với ngày tuần trước",
+                percentPrice, "% so với hôm qua",
                 new Color(240, 253, 244),
                 new Color(187,247,208)),
                 0,1
         );
 
-        int totalOrderCurrentWeek = AppContext.CUSTOMER_SERVICE.totalOrdersWeek(LocalDate.now());
-        int totalOrderLastWeek = AppContext.CUSTOMER_SERVICE.totalOrdersWeek(LocalDate.now().minusDays(1));
+        int totalOrderCurrentWeek = AppContext.INVOICE_SERVICE.totalOrders(LocalDate.now(),Period.DAY);
+        int totalOrderLastWeek = AppContext.INVOICE_SERVICE.totalOrders(LocalDate.now().minusDays(1),Period.DAY);
         double percentOrder = ((double) (totalOrderCurrentWeek-totalOrderLastWeek) /totalOrderLastWeek)*100;
 
         addItem(statCard(
                 "Số đơn hàng", new Color(37, 99, 235),
                 "total_price",
                 totalOrderCurrentWeek,
-                percentOrder,"% so với ngày tuần trước",
+                percentOrder,"% so với hôm qua",
                 new Color(239, 246, 255),
                 new Color(191, 219, 254)),
                 1,1
         );
 
-        int totalBookCurrentWeek = AppContext.INVOICE_SERVICE.totalOrdersWeek(LocalDate.now());
-        int totalBookLastWeek = AppContext.INVOICE_SERVICE.totalOrdersWeek(LocalDate.now().minusDays(1));
+        int totalBookCurrentWeek = AppContext.INVOICE_SERVICE.totalQuantityBook(LocalDate.now(),Period.DAY);
+        int totalBookLastWeek = AppContext.INVOICE_SERVICE.totalQuantityBook(LocalDate.now().minusDays(1),Period.DAY);
         double percentBook = ((double) (totalBookCurrentWeek-totalBookLastWeek) /totalBookLastWeek)*100;
 
         addItem(statCard(
-                "Số sách đã được bán", new Color(147, 51, 234),
+                "Số lượng sách đã bán", new Color(147, 51, 234),
                 "user",
                 totalBookCurrentWeek,
                 percentBook, "% so với hôm qua",

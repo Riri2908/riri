@@ -2,6 +2,8 @@ package riri.service;
 
 import riri.dao.CustomerDAO;
 import riri.model.Customer;
+import riri.service.component.DateRangeUtil;
+import riri.service.component.Period;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -102,22 +104,6 @@ public class CustomerService {
 
     public double totalPrice() {
         return activeCustomers().mapToDouble(Customer::getTotalPrice).sum();
-    }
-
-    public double totalPriceWeek(LocalDate date) {
-
-        LocalDate startOfWeek = date.with(DayOfWeek.MONDAY);
-        LocalDate endOfWeek = startOfWeek.plusDays(6);
-
-        return activeCustomers()
-                .filter(c -> {
-                    LocalDate orderDate = c.getRecentDate();
-                    return orderDate != null
-                            && !orderDate.isBefore(startOfWeek)
-                            && !orderDate.isAfter(endOfWeek);
-                })
-                .mapToDouble(Customer::getTotalPrice)
-                .sum();
     }
 
     public int parseIntSafe(String value){

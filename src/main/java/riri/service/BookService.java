@@ -73,6 +73,21 @@ public class BookService {
         return books.values().stream().filter(book -> book.getQuantity() <= 10).toList();
     }
 
+    public Map<Integer, Integer> totalQuantityByArea() {
+
+        Map<Integer, Integer> result = new HashMap<>();
+
+        for (Book book : books.values()) {
+
+            int areaId = book.getIdArea();
+            int qty = book.getQuantity();
+
+            result.merge(areaId, qty, Integer::sum);
+        }
+
+        return result;
+    }
+
     private Integer generateId() {
         return books.keySet().stream().max(Integer::compareTo).orElse(0) + 1;
     }

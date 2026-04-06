@@ -3,14 +3,16 @@ package riri.service;
 import riri.dao.InvoiceDAO;
 import riri.dao.InvoiceDetailDAO;
 import riri.model.Book;
-import riri.model.Customer;
 import riri.model.Invoice;
 import riri.model.InvoiceDetail;
+import riri.service.component.DateRangeUtil;
+import riri.service.component.Period;
 import riri.util.AppContext;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class InvoiceService {
 
@@ -31,15 +33,17 @@ public class InvoiceService {
         return invoices;
     }
 
-    public InvoiceDetail getDetailsByInvoiceId(Integer invoiceId) {
-        return details.get(invoiceId);
+    public List<InvoiceDetail> getDetailsByInvoiceId(Integer invoiceId) {
+        return details.values().stream()
+                .filter(d -> d.getInvoiceId() == invoiceId)
+                .toList();
     }
 
     public Invoice addInvoice(Integer customerId, Integer employeeId, Map<Integer,InvoiceDetail> invoiceDetails) {
         Collection<InvoiceDetail> detailValues = invoiceDetails.values();
 
-        if (AppContext.CUSTOMER_SERVICE.findById(employeeId) == null) {
-            throw new RuntimeException("Sách không tồn tại");
+        if (AppContext.CUSTOMER_SERVICE.findById(customerId) == null) {
+            throw new RuntimeException("Customer không tồn tại");
         }
 
         if (AppContext.EMPLOYEE_SERVICE.findById(employeeId) == null) {
@@ -68,10 +72,12 @@ public class InvoiceService {
 
             totalAmount += d.getQuantity() * d.getPrice();
 
-            d.setId(generateDetailId());
+            Integer detailId = generateDetailId();
+
+            d.setId(detailId);
             d.setInvoiceId(invoiceId);
 
-            details.put(generateDetailId(),d);
+            details.put(detailId, d);
             invoice.addDetail(d);
         }
 
@@ -97,22 +103,53 @@ public class InvoiceService {
         }
     }
 
-    public int totalOrdersWeek(LocalDate date) {
+    public int totalOrders(LocalDate date, Period period) {
 
-        LocalDate startOfWeek = date.with(DayOfWeek.MONDAY);
-        LocalDate endOfWeek = date.with(DayOfWeek.SUNDAY);
+        LocalDate start = DateRangeUtil.start(date, period);
+        LocalDate end = DateRangeUtil.end(date, period);
+
+        return (int) invoices.values().stream()
+                .filter(i -> DateRangeUtil.inRange(i.getDate(), start, end))
+                .count();
+    }
+
+    public int totalQuantityBook(LocalDate date, Period period) {
+
+        LocalDate start = DateRangeUtil.start(date, period);
+        LocalDate end = DateRangeUtil.end(date, period);
 
         return invoices.values().stream()
-                .filter(i -> {
-                    LocalDate orderDate = i.getDate();
-                    return orderDate != null
-                            && !orderDate.isBefore(startOfWeek)
-                            && !orderDate.isAfter(endOfWeek);
-                })
-                .flatMap(i -> i.getDetails().stream())
+                .filter(i -> DateRangeUtil.inRange(i.getDate(), start, end))
+                .flatMap(i->i.getDetails().stream())
                 .mapToInt(InvoiceDetail::getQuantity)
                 .sum();
     }
+
+    public double totalPrice(LocalDate date, Period period) {
+
+        LocalDate start = DateRangeUtil.start(date, period);
+        LocalDate end = DateRangeUtil.end(date, period);
+
+        return invoices.values().stream()
+                .filter(i -> DateRangeUtil.inRange(i.getDate(), start, end))
+                .mapToDouble(Invoice::getTotalAmount)
+                .sum();
+    }
+
+    public int returningCustomers(LocalDate date, Period period) {
+
+        LocalDate start = DateRangeUtil.start(date, period);
+        LocalDate end = DateRangeUtil.end(date, period);
+
+        return (int) invoices.values().stream()
+                .filter(i -> DateRangeUtil.inRange(i.getDate(), start, end))
+                // nhóm lại theo customer
+                .collect(Collectors.groupingBy(Invoice::getCustomerId, Collectors.counting()))
+                .values().stream()
+                .filter(count -> count >= 2)
+                .count();
+    }
+
 
     private Integer generateId() {
         return invoices.keySet().stream().max(Integer::compareTo).orElse(0) + 1;

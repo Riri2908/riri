@@ -27,9 +27,6 @@ public class CustomerDAO extends BaseFileDAO {
                 if (line.isBlank()) continue;
 
                 String[] d = line.split(";");
-
-
-
                 Customer customer = new Customer(
                         Integer.parseInt(d[0]),
                         d[1], d[2], d[3],

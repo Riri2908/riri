@@ -1,13 +1,8 @@
 package riri.admin.dashboard;
 
-import riri.admin.customers.controller.CustomerController;
-import riri.admin.customers.item.CustomerForm;
-import riri.admin.customers.item.TableCustomer;
-import riri.admin.customers.item.TitleCustomerPanel;
 import riri.components.BorderPanel;
 import riri.components.page.BasePanel;
-import riri.components.page.StatPanel;
-import riri.components.sidebar.SideBar;
+import riri.service.component.Period;
 import riri.util.AppContext;
 
 import javax.swing.*;
@@ -18,9 +13,16 @@ import java.awt.event.MouseEvent;
 import java.time.LocalDate;
 
 public class DashBoardPage extends BorderPanel {
+
+    public RevenueChartPanel revenueChartPanel;
+    public WarningPanel warningPanel;
+
     public BorderPanel mainPanel = new BorderPanel(0,new Color(247, 248, 249),0,0,null,0);
     public DashBoardPage() {
         super(0,new Color(247, 248, 249),0,0,null,0);
+
+        this.revenueChartPanel = new RevenueChartPanel();
+        this.warningPanel =new WarningPanel();
 
         addMouseListener(new MouseAdapter() {
             @Override
@@ -37,6 +39,9 @@ public class DashBoardPage extends BorderPanel {
 
         mainPanel.add(statusPanel());
         mainPanel.add(Box.createVerticalStrut(15));
+        mainPanel.add(revenueChartPanel);
+        mainPanel.add(Box.createVerticalStrut(15));
+        mainPanel.add(warningPanel);
 
         JScrollPane scrollPane = BasePanel.createScroll(mainPanel);
 
@@ -49,24 +54,37 @@ public class DashBoardPage extends BorderPanel {
         statusPanel.setOpaque(false);
         statusPanel.setLayout(new BoxLayout(statusPanel,BoxLayout.X_AXIS));
 
-        int totalBookCurrentMonth = AppContext.TRANSACTION_SERVICE.totalQuantityWeek(LocalDate.now(),"Nhập");
-        int totalBookLastMonth = AppContext.TRANSACTION_SERVICE.totalQuantityWeek(LocalDate.now().minusMonths(1),"Nhập");
+        int totalBookCurrentMonth = AppContext.INVOICE_SERVICE.totalQuantityBook(LocalDate.now(), Period.MONTH);
+        int totalBookLastMonth = AppContext.INVOICE_SERVICE.totalQuantityBook(LocalDate.now().minusMonths(1),Period.MONTH);
         double percentBook = ((double) (totalBookCurrentMonth-totalBookLastMonth) /totalBookLastMonth)*100;
 
-        BorderPanel bookStat = statCard(
-                "Tổng số sách đã nhập",new Color(54, 91, 236),"homepage/book",
+        BorderPanel bookStat = statCard("Tổng số sách đã bán",new Color(43, 126, 253),"homepage/book",
                 totalBookCurrentMonth,percentBook,"% so với tháng trước"
-                ,Color.WHITE,new Color(221, 232, 251));
+                ,Color.WHITE,new Color(198, 218, 251));
 
-        double totalPriceCurrentMonth = AppContext.CUSTOMER_SERVICE.totalPriceWeek(LocalDate.now());
-        double totalPriceLastMonth = AppContext.CUSTOMER_SERVICE.totalPriceWeek(LocalDate.now().minusDays(1));
+        double totalPriceCurrentMonth = AppContext.INVOICE_SERVICE.totalPrice(LocalDate.now(), Period.MONTH);
+        double totalPriceLastMonth = AppContext.INVOICE_SERVICE.totalPrice(LocalDate.now().minusMonths(1), Period.MONTH);
         double percentPrice = totalPriceLastMonth == 0 ? Double.NaN : ((totalPriceCurrentMonth - totalPriceLastMonth) / totalPriceLastMonth) * 100;
 
-        BorderPanel revenueStat = statCard("Doanh thu tháng này",new Color(0,0,0),"homepage/book",
+        BorderPanel revenueStat = statCard("Doanh thu tháng này",new Color(22,163,74),"homepage/revenue",
                 totalPriceCurrentMonth,percentPrice, "% so với tháng trước",
-                Color.WHITE,Color.BLACK);
-        BorderPanel revenueArgStat = statCard("Tổng số sách",new Color(0,0,0),"homepage/book",0,0," so với tháng trước",Color.WHITE,Color.BLACK);
-        BorderPanel ArgStat = statCard("Tổng số sách",new Color(0,0,0),"homepage/book",0,0," so với tháng trước",Color.WHITE,Color.BLACK);
+                Color.WHITE, new Color(187,247,208));
+
+        int totalOrderCurrentMonth = AppContext.INVOICE_SERVICE.totalOrders(LocalDate.now(), Period.MONTH);
+        int totalOrderLastMonth = AppContext.INVOICE_SERVICE.totalOrders(LocalDate.now().minusMonths(1), Period.MONTH);
+        double percentOrder = totalOrderLastMonth == 0 ? Double.NaN : (((double)totalOrderCurrentMonth - totalOrderLastMonth) / totalOrderLastMonth) * 100;
+
+        BorderPanel revenueArgStat = statCard("Số hóa đơn",new Color(172, 70, 253),"homepage/invoice",
+                totalOrderCurrentMonth,percentOrder,"% so với tháng trước",
+                Color.WHITE,new Color(244, 210, 255));
+
+        int returningCustomersCurrentMonth = AppContext.INVOICE_SERVICE.totalOrders(LocalDate.now(), Period.MONTH);
+        int returningCustomersLastMonth = AppContext.INVOICE_SERVICE.totalOrders(LocalDate.now().minusMonths(1), Period.MONTH);
+        double percentreturningCustomers = totalOrderLastMonth == 0 ? Double.NaN : (((double)returningCustomersCurrentMonth - returningCustomersLastMonth) / returningCustomersLastMonth) * 100;
+
+        BorderPanel ArgStat = statCard("Số lượng khách quay lại",new Color(253, 104,0),"homepage/users",
+                returningCustomersCurrentMonth,percentreturningCustomers," so với tháng trước",
+                Color.WHITE,new Color(255, 217, 194));
 
         statusPanel.add(bookStat);
         statusPanel.add(Box.createHorizontalStrut(15));
@@ -86,11 +104,12 @@ public class DashBoardPage extends BorderPanel {
         cardPanel.setBorder(new EmptyBorder(15,15,10,10));
 
         Icon icon = BasePanel.createIcon(getClass(),iconName, 24,24,titleColor);
-        JLabel titleLabel = BasePanel.createTitle(title,"Arial",Font.BOLD,17,titleColor);
+        JLabel titleLabel = BasePanel.createTitle(title,"Arial",Font.BOLD,18,titleColor);
         titleLabel.setIcon(icon);
         titleLabel.setIconTextGap(5);
 
         JLabel valueLabel = BasePanel.createTitle(BasePanel.formatNumber((long) value),"Arial",Font.BOLD,20,Color.BLACK);
+        valueLabel.setBorder(new EmptyBorder(0,20,0,0));
         Icon iconUp = BasePanel.createIcon(getClass(),"homepage/up",15,15,titleColor);
         Icon iconDown = BasePanel.createIcon(getClass(),"homepage/down",15,15,titleColor);
         JLabel subLabel = BasePanel.createTitle(String.format("%.1f", percent) + subText,"Arial",Font.PLAIN,14,titleColor);

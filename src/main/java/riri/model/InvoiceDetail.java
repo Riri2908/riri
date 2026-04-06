@@ -47,6 +47,10 @@ public class InvoiceDetail extends BaseModel{
         this.quantity = quantity;
     }
 
+    public double getTotalPrice() {
+        return price * quantity;
+    }
+
     @Override
     public String toFileString() {
         return id + ";" + invoiceId + ";" + bookId + ";" + quantity + ";" + price;
