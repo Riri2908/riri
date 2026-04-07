@@ -48,6 +48,6 @@ public class StatPanel extends BorderPanel  {
     }
 
     public void setValue(double value){
-        valueLabel.setText(String.valueOf(value));
+        valueLabel.setText(BasePanel.formatNumber((long)value));
     }
 }

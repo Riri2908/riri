@@ -2,6 +2,7 @@ package riri.components.page;
 
 import riri.components.BorderPanel;
 import riri.components.table.TablePanel;
+import riri.model.Customer;
 
 import javax.swing.border.EmptyBorder;
 import javax.swing.*;
@@ -81,7 +82,7 @@ public class SearchPanel extends BorderPanel {
     }
     private void search() {
 
-        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        DefaultTableModel model = table.getModel();
         TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
         table.setRowSorter(sorter);
         searchField.getDocument().addDocumentListener(new DocumentListener() {
@@ -104,8 +105,26 @@ public class SearchPanel extends BorderPanel {
 
                 if(text.isEmpty() || isPlaceholder()){
                     sorter.setRowFilter(null);
-                }else {
-                    sorter.setRowFilter(RowFilter.regexFilter("(?i)"+ Pattern.quote(text)));
+                } else {
+                    String query = text.toLowerCase();
+
+                    sorter.setRowFilter(new RowFilter<DefaultTableModel, Integer>() {
+                        @Override
+                        public boolean include(Entry<? extends DefaultTableModel, ? extends Integer> entry) {
+                            for (int i = 0; i < entry.getValueCount(); i++) {
+                                Object value = entry.getValue(i);
+                                if (value instanceof Customer c) {
+                                    if (c.getPhone().toLowerCase().contains(query)) return true;
+                                    if (c.getEmail().toLowerCase().contains(query)) return true;
+                                    continue;
+                                }
+                                if (value != null && value.toString().toLowerCase().contains(query)) {
+                                    return true;
+                                }
+                            }
+                            return false;
+                        }
+                    });
                 }
             }
         });

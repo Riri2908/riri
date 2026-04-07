@@ -4,6 +4,7 @@ import riri.components.BorderPanel;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
@@ -11,7 +12,7 @@ import java.awt.event.FocusEvent;
 public class FieldPanel extends BorderPanel {
     public String title;
 
-    public JTextField field;
+    public JTextComponent field;
 
     public FieldPanel(String title) {
         super(20, Color.WHITE, 0, 0, new Color(214, 214, 214), 1);
@@ -23,35 +24,51 @@ public class FieldPanel extends BorderPanel {
         this.title = title;
         field = new JTextField();
 
-        this.setFontField(new Font("Noto Sans",Font.PLAIN,16 ));
+        initField();
+
+    }
+
+    public FieldPanel(String title, boolean passwordField) {
+        this(title);
+        if (passwordField) {
+            remove(field);
+            field = new JPasswordField();
+            initField();
+        }
+    }
+
+    private void initField() {
+
+        this.setFontField(new Font("Noto Sans", Font.PLAIN, 16));
         this.showPlaceholder();
 
         field.setOpaque(false);
         field.setBorder(BorderFactory.createEmptyBorder());
-        field.addFocusListener(new FocusAdapter() {
 
+        field.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                setBorder(new Color(31, 95, 255),2);
-                if(getTextField().equals(title)){
+                setBorder(new Color(31, 95, 255), 2);
+                if (getTextField().equals(title)) {
                     setTextField("");
                     field.setForeground(Color.BLACK);
                 }
             }
+
             @Override
             public void focusLost(FocusEvent e) {
-                setBorder(new Color(221, 221, 221),1);
+                setBorder(new Color(221, 221, 221), 1);
             }
         });
 
         add(field, BorderLayout.CENTER);
-
     }
+
     public void setField(JTextField field){
         this.field = field;
     }
 
-    public JTextField getField(){
+    public JTextComponent getField(){
         return this.field;
     }
 

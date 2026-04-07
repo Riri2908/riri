@@ -2,12 +2,11 @@ package riri.admin.customers;
 
 import riri.admin.customers.controller.CustomerController;
 import riri.admin.customers.item.CustomerForm;
+import riri.admin.customers.item.StatCardPanel;
 import riri.admin.customers.item.TableCustomer;
 import riri.admin.customers.item.TitleCustomerPanel;
 import riri.admin.invoice.InvoicePage;
 import riri.components.BorderPanel;
-import riri.components.page.BasePanel;
-import riri.components.page.StatPanel;
 import riri.model.Customer;
 import riri.util.AppContext;
 
@@ -44,10 +43,11 @@ public class CustomerPage extends BorderPanel {
         CustomerForm customerForm = new CustomerForm();
         TableCustomer tableCustomer = new TableCustomer(this);
         TitleCustomerPanel titleCustomerPanel = new TitleCustomerPanel("Quản lý khách hàng","+ Thêm khách hàng",this,tableCustomer);
+        StatCardPanel statCardPanel = new StatCardPanel();
 
         mainPanel.setLayout(new BoxLayout(mainPanel,BoxLayout.Y_AXIS));
 
-        mainPanel.add(statusPanel());
+        mainPanel.add(statCardPanel);
         mainPanel.add(Box.createVerticalStrut(15));
 
         mainPanel.add(titleCustomerPanel);
@@ -60,32 +60,8 @@ public class CustomerPage extends BorderPanel {
 
         add(layeredPane,BorderLayout.CENTER);
 
-        CustomerController _ = new CustomerController(this,customerForm,tableCustomer,titleCustomerPanel);
+        CustomerController _ = new CustomerController(this,statCardPanel,customerForm,tableCustomer,titleCustomerPanel);
     }
 
-    public JPanel statusPanel() {
-        JPanel statusPanel = new JPanel();
-        statusPanel.setOpaque(false);
-        statusPanel.setLayout(new BoxLayout(statusPanel,BoxLayout.X_AXIS));
-
-        double total = AppContext.CUSTOMER_SERVICE.totalPrice();
-        double totalOrder = AppContext.CUSTOMER_SERVICE.totalOrders();
-        int customerCount = AppContext.CUSTOMER_SERVICE.totalCustomers();
-
-        double avg = customerCount == 0 ? 0 : total / totalOrder;
-
-        BorderPanel customerStat = new StatPanel("Tổng khách hàng",String.valueOf(customerCount),"khách hàng",new Color(0, 48, 255),"customer/customer");
-        BorderPanel revenueStat = new StatPanel("Tổng doanh thu", BasePanel.formatNumber((long) total),"từ khách hàng",new Color(0, 200, 80),"customer/shoppingbag");
-        BorderPanel revenueArgStat = new StatPanel("Giá trị đơn TB",BasePanel.formatNumber((long) avg),"mỗi đơn",new Color(172, 70, 253),"customer/shoppingbag");
-
-        statusPanel.add(customerStat);
-        statusPanel.add(Box.createHorizontalStrut(15));
-        statusPanel.add(revenueStat);
-        statusPanel.add(Box.createHorizontalStrut(15));
-        statusPanel.add(revenueArgStat);
-
-        statusPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, statusPanel.getPreferredSize().height));
-        return statusPanel;
-    }
 
 }

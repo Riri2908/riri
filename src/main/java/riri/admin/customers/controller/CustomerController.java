@@ -2,6 +2,7 @@ package riri.admin.customers.controller;
 
 import riri.admin.customers.CustomerPage;
 import riri.admin.customers.item.CustomerForm;
+import riri.admin.customers.item.StatCardPanel;
 import riri.admin.customers.item.TableCustomer;
 import riri.admin.customers.item.TitleCustomerPanel;
 import riri.model.Customer;
@@ -20,6 +21,7 @@ public class CustomerController {
     public Map<Integer,Customer> customers = AppContext.CUSTOMER_SERVICE.getAll();
 
     public FormMode formMode = FormMode.ADD;
+    public StatCardPanel statCardPanel;
     public CustomerPage customerPage;
     public CustomerForm customerForm;
     public TableCustomer tableCustomer;
@@ -38,7 +40,8 @@ public class CustomerController {
         return false;
     };;
 
-    public CustomerController(CustomerPage customerPage, CustomerForm customerForm, TableCustomer tableCustomer, TitleCustomerPanel titleCustomerPanel) {
+    public CustomerController(CustomerPage customerPage, StatCardPanel statCardPanel,CustomerForm customerForm, TableCustomer tableCustomer, TitleCustomerPanel titleCustomerPanel) {
+        this.statCardPanel = statCardPanel;
         this.customerPage = customerPage;
         this.customerForm = customerForm;
         this.tableCustomer = tableCustomer;
@@ -135,6 +138,7 @@ public class CustomerController {
 
                 if(formMode == FormMode.ADD){
                     addCustomer();
+                    statCardPanel.updateQuantity();
                 }
                 else if(formMode == FormMode.EDIT){
                     updateCustomer();
@@ -185,6 +189,7 @@ public class CustomerController {
                     else if(clickX > width/2){
                         tableCustomer.tablePanel.getModel().removeRow(row);
                         AppContext.CUSTOMER_SERVICE.delete((int)model[0]);
+                        statCardPanel.updateQuantity();
                     }
                 }
             }
