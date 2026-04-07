@@ -177,8 +177,6 @@ public class HistoryPanel extends BorderPanel {
             Book book = AppContext.BOOK_SERVICE.findById(transaction.getBookId());
             Employee employee = AppContext.EMPLOYEE_SERVICE.findById(transaction.getEmployeeId());
 
-            if(book == null || employee == null) continue;
-
             tablePanel.addRow(new Object[]{
                     transaction.getId(),
                     transaction.getType(),

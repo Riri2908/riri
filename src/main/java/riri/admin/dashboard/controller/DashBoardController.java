@@ -116,6 +116,7 @@ public class DashBoardController {
         warningPanel.clearRows();
 
         for (Book book : books) {
+            if (book.isDeleted()) continue;
             if (book.getQuantity() >= LOW_STOCK_THRESHOLD) continue;
 
             Shelf shelf = AppContext.SHELF_SERVICE.findById(book.getIdShelf());

@@ -118,6 +118,7 @@ public class HomeController {
     }
 
     private void loadTopCustomers() {
+        topPanel.clearCustomerRows();
         Map<Integer, Customer> data = AppContext.CUSTOMER_SERVICE.getAll();
         List<Customer> customers = new ArrayList<>(data.values());
         customers.sort(Comparator.comparing(Customer::getTotalPrice).reversed());
@@ -151,7 +152,7 @@ public class HomeController {
             for (InvoiceDetail detail : invoice.getDetails()) {
                 int bookId = detail.getBookId();
                 Book book  = books.get(bookId);
-                if (book == null) continue;
+                if (book == null || book.isDeleted()) continue;
 
                 result.compute(bookId, (_, stat) ->
                         stat == null ? new BookSaleStat(book, detail.getQuantity())

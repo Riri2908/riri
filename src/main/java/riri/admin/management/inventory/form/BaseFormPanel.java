@@ -90,7 +90,10 @@ public class BaseFormPanel extends BorderPanel {
 
         this.comboBoxBook.addItem("--Chọn sách--");
 
-        for(Book book : bookList.values()){ this.comboBoxBook.addItem(book.getName()); }
+        for(Book book : bookList.values()){
+            if(book.isDeleted()) continue;
+            this.comboBoxBook.addItem(book.getName());
+        }
 
         if(type.equals("Nhập")){
             this.comboBoxBook.addItem("--Thêm sách mới--");

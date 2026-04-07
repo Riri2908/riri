@@ -54,7 +54,7 @@ public class TopPanel extends BorderPanel {
 
     public void clearBookRows()     { topBookTable.getModel().setRowCount(0); }
 
-//    public void clearCustomerRows() { customerTable.getModel().setRowCount(0); }
+    public void clearCustomerRows() { customerTable.getModel().setRowCount(0); }
 
     public void settingTopBookTable(){
         topBookTable.setTitle("Top sách bán chạy");

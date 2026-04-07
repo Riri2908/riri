@@ -81,6 +81,7 @@ public class ShoppingCart extends BorderPanel {
 
         bookBox.addItem(null);
         for(Book book:books.values()){
+            if(book.isDeleted()) continue;
             bookBox.addItem(book);
         }
 
