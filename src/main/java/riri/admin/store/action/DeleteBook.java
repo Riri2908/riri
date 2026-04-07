@@ -82,7 +82,8 @@ public class DeleteBook extends JDialog {
         btnDelete.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btnDelete.addActionListener(e -> {
             try {
-                AppContext.BOOK_SERVICE.delete(book.getId());
+                book.setDeleted(true);
+                AppContext.BOOK_SERVICE.update(book);
                 if (onSuccess != null) onSuccess.run();
                 dispose();
             } catch (Exception ex) {

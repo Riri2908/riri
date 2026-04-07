@@ -1,8 +1,6 @@
 package riri.admin.store.action;
 
-import riri.components.BorderPanel;
 import riri.components.combobox.ComboBoxPanel;
-import riri.components.field.FieldPanel;
 import riri.model.Area;
 import riri.model.BaseModel;
 import riri.model.Book;
@@ -11,38 +9,31 @@ import riri.util.AppContext;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class AddBook extends JDialog {
-    public JPanel header = new JPanel(new BorderLayout());
-    public FieldPanel fpName      = new FieldPanel("Tên sách");
-    public FieldPanel fpAuthor    = new FieldPanel("Tác giả");
-    public FieldPanel fpPublisher = new FieldPanel("Nhà xuất bản");
-    public FieldPanel fpCategory  = new FieldPanel("Thể loại");
-    public FieldPanel fpPrice     = new FieldPanel("Giá (đ)");
-    public ComboBoxPanel<String> cbArea = new ComboBoxPanel<>();
-    public ComboBoxPanel<String> cbShelf = new ComboBoxPanel<String>();
-    public JPanel footer = new JPanel(new GridLayout(1, 2, 12, 0));
-    public BorderPanel BUTTON_CANCEL = new BorderPanel(12, new Color(245, 245, 245), 0, 0, null, 0);
-    public BorderPanel BUTTON_SAVE = new BorderPanel(12, new Color(41, 121, 255), 0, 0, null, 0);
 
     public AddBook(Runnable onSuccess) {
+        UIManager.put("TextComponent.arc", 12);
+        UIManager.put("Component.arc", 12);
+        UIManager.put("Button.arc", 12);
+        UIManager.put("ComboBox.arc", 12);
+
         setTitle("Thêm sách mới");
         setModal(true);
-        setSize(480, 580);
+        setSize(480, 680);
         setLocationRelativeTo(null);
         setResizable(false);
         getContentPane().setBackground(Color.WHITE);
         setLayout(new BorderLayout());
 
-        // HEADER
+        JPanel header = new JPanel(new BorderLayout());
         header.setBackground(Color.WHITE);
         header.setBorder(new EmptyBorder(20, 24, 10, 24));
 
         JLabel title = new JLabel("Thêm sách mới");
         title.setFont(new Font("Arial", Font.BOLD, 18));
         title.setForeground(new Color(16, 16, 16));
+
         header.add(title, BorderLayout.WEST);
 
         // FORM
@@ -51,22 +42,27 @@ public class AddBook extends JDialog {
         form.setLayout(new BoxLayout(form, BoxLayout.Y_AXIS));
         form.setBorder(new EmptyBorder(10, 24, 10, 24));
 
-        this.fpName.setAlignmentX(Component.LEFT_ALIGNMENT);
-        this.fpAuthor.setAlignmentX(Component.LEFT_ALIGNMENT);
-        this.fpPublisher.setAlignmentX(Component.LEFT_ALIGNMENT);
-        this.fpCategory.setAlignmentX(Component.LEFT_ALIGNMENT);
-        this.fpPrice.setAlignmentX(Component.LEFT_ALIGNMENT);
+        JTextField tfName      = createField("");
+        JTextField tfAuthor    = createField("");
+        JTextField tfPublisher = createField("");
+        JTextField tfPrice     = createField("");
 
-        // ===== AREA =====
+        // ===== SETUP CATEGORY =====
+        String[] categoryNames = AppContext.CATEGORY_SERVICE.getAll().values()
+                .stream().map(c -> c.getName()).toArray(String[]::new);
+        JTextField tfCategory = createField("");
+
+        // ===== SETUP AREA =====
         String[] areaNames = AppContext.AREA_SERVICE.getAll().values()
                 .stream().map(Area::getName).toArray(String[]::new);
-
+        ComboBoxPanel cbArea = new ComboBoxPanel();
         cbArea.setItems(areaNames);
-        cbArea.setMaximumSize(new Dimension(Integer.MAX_VALUE, 36));
+        cbArea.setMaximumSize(new Dimension(Integer.MAX_VALUE, 48));
         cbArea.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        // ===== SHELF =====
-        cbShelf.setMaximumSize(new Dimension(Integer.MAX_VALUE, 36));
+        // ===== SETUP SHELF =====
+        ComboBoxPanel cbShelf = new ComboBoxPanel();
+        cbShelf.setMaximumSize(new Dimension(Integer.MAX_VALUE, 48));
         cbShelf.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         Runnable loadShelves = () -> {
@@ -86,95 +82,147 @@ public class AddBook extends JDialog {
         loadShelves.run();
         cbArea.getComboBox().addActionListener(e -> loadShelves.run());
 
-        // ===== ADD FORM (không label) =====
-        form.add(fpName);      form.add(Box.createVerticalStrut(12));
-        form.add(fpAuthor);    form.add(Box.createVerticalStrut(12));
-        form.add(fpPublisher); form.add(Box.createVerticalStrut(12));
-        form.add(fpCategory);  form.add(Box.createVerticalStrut(12));
-        form.add(fpPrice);     form.add(Box.createVerticalStrut(12));
-        form.add(cbArea);      form.add(Box.createVerticalStrut(12));
-        form.add(cbShelf);     form.add(Box.createVerticalStrut(12));
+        // ===== THÊM VÀO FORM =====
+        form.add(createLabel("Tên sách"));
+        form.add(tfName);
+        form.add(Box.createVerticalStrut(12));
+
+        form.add(createLabel("Tác giả"));
+        form.add(tfAuthor);
+        form.add(Box.createVerticalStrut(12));
+
+        form.add(createLabel("Nhà xuất bản"));
+        form.add(tfPublisher);
+        form.add(Box.createVerticalStrut(12));
+
+        form.add(createLabel("Thể loại"));
+        form.add(tfCategory);
+        form.add(Box.createVerticalStrut(12));
+
+        form.add(createLabel("Giá (đ)"));
+        form.add(tfPrice);
+        form.add(Box.createVerticalStrut(12));
+
+        form.add(createLabel("Khu vực"));
+        form.add(cbArea);
+        form.add(Box.createVerticalStrut(12));
+
+        form.add(createLabel("Kệ sách"));
+        form.add(cbShelf);
+        form.add(Box.createVerticalStrut(12));
 
         // FOOTER
-
+        JPanel footer = new JPanel(new GridLayout(1, 2, 12, 0));
         footer.setBackground(Color.WHITE);
         footer.setBorder(new EmptyBorder(10, 24, 24, 24));
-        footer.setPreferredSize(new Dimension(0, 70));
 
-        // ===== CANCEL =====
-        BUTTON_CANCEL.setLayout(new BorderLayout());
-        BUTTON_CANCEL.setPreferredSize(new Dimension(0, 48));
-        BUTTON_CANCEL.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        JButton btnCancel = new JButton("Hủy");
+        btnCancel.setFont(new Font("Arial", Font.PLAIN, 14));
+        btnCancel.setBackground(new Color(245, 245, 245));
+        btnCancel.setForeground(new Color(57, 57, 57));
+        btnCancel.setBorderPainted(false);
+        btnCancel.setFocusPainted(false);
+        btnCancel.putClientProperty("JButton.buttonType", "roundRect");
+        btnCancel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        btnCancel.addActionListener(e -> dispose());
 
-        JLabel lblCancel = new JLabel("Hủy", SwingConstants.CENTER);
-        lblCancel.setFont(new Font("Arial", Font.PLAIN, 14));
-        lblCancel.setForeground(new Color(57, 57, 57));
-        BUTTON_CANCEL.add(lblCancel, BorderLayout.CENTER);
+        JButton btnSave = new JButton("Thêm sách");
+        btnSave.setFont(new Font("Arial", Font.BOLD, 14));
+        btnSave.setBackground(new Color(41, 121, 255));
+        btnSave.setForeground(Color.WHITE);
+        btnSave.setBorderPainted(false);
+        btnSave.setFocusPainted(false);
+        btnSave.putClientProperty("JButton.buttonType", "roundRect");
+        btnSave.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        btnSave.addActionListener(e -> {
+            try {
+                String categoryName = tfCategory.getText().trim();
+                String areaName     = (String) cbArea.getComboBox().getSelectedItem();
+                String shelfName    = (String) cbShelf.getComboBox().getSelectedItem();
 
-        BUTTON_CANCEL.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
+                // Lấy ID thể loại
+                int idCategory = AppContext.CATEGORY_SERVICE.getAll().values().stream()
+                        .filter(c -> c.getName().equals(categoryName))
+                        .findFirst().map(BaseModel::getId).orElse(0);
+
+                // Lấy ID khu vực
+                int idArea = AppContext.AREA_SERVICE.getAll().values().stream()
+                        .filter(a -> a.getName().equals(areaName))
+                        .findFirst().map(BaseModel::getId).orElse(0);
+
+                // Lấy ID kệ sách
+                int idShelf = AppContext.SHELF_SERVICE.getAll().values().stream()
+                        .filter(s -> s.getName().equals(shelfName))
+                        .findFirst().map(BaseModel::getId).orElse(0);
+
+                Book book = new Book(
+                        0,
+                        tfName.getText().trim(),
+                        tfAuthor.getText().trim(),
+                        categoryName,        // ← String category (giữ lại)
+                        tfPublisher.getText().trim(),
+                        Double.parseDouble(tfPrice.getText().trim()),
+                        0,
+                        idArea,
+                        idShelf
+                );
+
+                AppContext.BOOK_SERVICE.add(book);
+                if (onSuccess != null) onSuccess.run();
                 dispose();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this,
+                        "Vui lòng kiểm tra lại dữ liệu!",
+                        "Lỗi", JOptionPane.ERROR_MESSAGE);
+                ex.printStackTrace(); // In lỗi ra console để dễ debug nếu có
             }
         });
 
-        // ===== SAVE =====
-        BUTTON_SAVE.setLayout(new BorderLayout());
-        BUTTON_SAVE.setPreferredSize(new Dimension(0, 48));
-        BUTTON_SAVE.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
-        JLabel lblSave = new JLabel("Thêm sách", SwingConstants.CENTER);
-        lblSave.setFont(new Font("Arial", Font.BOLD, 14));
-        lblSave.setForeground(Color.WHITE);
-        BUTTON_SAVE.add(lblSave, BorderLayout.CENTER);
-
-        BUTTON_SAVE.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
-                try {
-                    String categoryName = fpCategory.getTextField().trim();
-                    String areaName     = (String) cbArea.getComboBox().getSelectedItem();
-                    String shelfName    = (String) cbShelf.getComboBox().getSelectedItem();
-
-                    int idArea = AppContext.AREA_SERVICE.getAll().values().stream()
-                            .filter(a -> a.getName().equals(areaName))
-                            .findFirst().map(BaseModel::getId).orElse(0);
-
-                    int idShelf = AppContext.SHELF_SERVICE.getAll().values().stream()
-                            .filter(s -> s.getName().equals(shelfName))
-                            .findFirst().map(BaseModel::getId).orElse(0);
-
-                    Book book = new Book(
-                            0,
-                            fpName.getTextField().trim(),
-                            fpAuthor.getTextField().trim(),
-                            categoryName,
-                            fpPublisher.getTextField().trim(),
-                            Double.parseDouble(fpPrice.getTextField().trim()),
-                            0,
-                            idArea,
-                            idShelf
-                    );
-
-                    AppContext.BOOK_SERVICE.add(book);
-                    if (onSuccess != null) onSuccess.run();
-                    dispose();
-
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(AddBook.this,
-                            "Vui lòng kiểm tra lại dữ liệu!",
-                            "Lỗi", JOptionPane.ERROR_MESSAGE);
-                    ex.printStackTrace();
-                }
-            }
-        });
-
-        footer.add(BUTTON_CANCEL);
-        footer.add(BUTTON_SAVE);
+        footer.add(btnCancel);
+        footer.add(btnSave);
 
         add(header, BorderLayout.NORTH);
-        add(form, BorderLayout.CENTER);
+        add(form,   BorderLayout.CENTER);
         add(footer, BorderLayout.SOUTH);
 
-        SwingUtilities.invokeLater(() -> getRootPane().requestFocusInWindow());
         setVisible(true);
+    }
+
+    private JLabel createLabel(String text) {
+        JLabel lbl = new JLabel(text);
+        lbl.setFont(new Font("Arial", Font.PLAIN, 13));
+        lbl.setForeground(new Color(100, 100, 100));
+        lbl.setAlignmentX(Component.LEFT_ALIGNMENT);
+        return lbl;
+    }
+
+    private JTextField createField(String value) {
+        JTextField tf = new JTextField(value) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setColor(getBackground());
+                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 16, 16);
+                g2.dispose();
+                super.paintComponent(g);
+            }
+
+            @Override
+            protected void paintBorder(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setColor(new Color(180, 180, 180));
+                g2.setStroke(new BasicStroke(1.5f));
+                g2.drawRoundRect(1, 1, getWidth() - 2, getHeight() - 2, 16, 16);
+                g2.dispose();
+            }
+        };
+        tf.setFont(new Font("Arial", Font.PLAIN, 14));
+        tf.setOpaque(false);
+        tf.setBorder(new EmptyBorder(10, 14, 10, 14));
+        tf.setMaximumSize(new Dimension(Integer.MAX_VALUE, 44));
+        tf.setAlignmentX(Component.LEFT_ALIGNMENT);
+        return tf;
     }
 }

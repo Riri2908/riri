@@ -16,8 +16,6 @@ public class BookStatHeader extends JPanel {
         setLayout(new BorderLayout());
         setMaximumSize(new Dimension(Integer.MAX_VALUE, 70));
         setPreferredSize(new Dimension(0, 70));
-
-        // Bên trái: tiêu đề + tổng số
         JPanel left = new JPanel();
         left.setOpaque(false);
         left.setLayout(new BoxLayout(left, BoxLayout.Y_AXIS));

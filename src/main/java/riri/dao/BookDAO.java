@@ -27,7 +27,9 @@ public class BookDAO extends BaseFileDAO {
                                 Double.parseDouble(d[5]),
                                 Integer.parseInt(d[6]),
                                 Integer.parseInt(d[7]),
-                                Integer.parseInt(d[8])));
+                                Integer.parseInt(d[8]),
+                                Boolean.parseBoolean(d[9]))
+                        );
             }
 
         } catch (IOException e) {

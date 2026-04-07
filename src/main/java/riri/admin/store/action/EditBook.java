@@ -18,7 +18,7 @@ public class EditBook extends JDialog {
     public EditBook(Book book, Runnable onSuccess) {
 
         setModal(true);
-        setSize(480, 750);
+        setSize(480, 580);
         setLocationRelativeTo(null);
         setResizable(false);
         getContentPane().setBackground(Color.WHITE);
@@ -40,13 +40,28 @@ public class EditBook extends JDialog {
         form.setLayout(new BoxLayout(form, BoxLayout.Y_AXIS));
         form.setBorder(new EmptyBorder(10, 24, 10, 24));
 
-        FieldPanel fpName      = createFieldPanel(book.getName());
-        FieldPanel fpAuthor    = createFieldPanel(book.getAuthor());
-        FieldPanel fpPublisher = createFieldPanel(book.getPublisher());
-        FieldPanel fpPrice     = createFieldPanel(String.valueOf(book.getPrice()));
-        FieldPanel fpQuantity  = createFieldPanel(String.valueOf(book.getQuantity()));
+        // ===== FIELD =====
+        FieldPanel fpName      = new FieldPanel("Tên sách");
+        FieldPanel fpAuthor    = new FieldPanel("Tác giả");
+        FieldPanel fpPublisher = new FieldPanel("Nhà xuất bản");
+        FieldPanel fpCategory  = new FieldPanel("Thể loại");
+        FieldPanel fpPrice     = new FieldPanel("Giá (đ)");
+        FieldPanel fpQuantity  = new FieldPanel("Số lượng");
 
-        FieldPanel fpCategory = createFieldPanel(book.getCategory());
+        // set dữ liệu cũ
+        fpName.setTextField(book.getName());
+        fpAuthor.setTextField(book.getAuthor());
+        fpPublisher.setTextField(book.getPublisher());
+        fpCategory.setTextField(book.getCategory());
+        fpPrice.setTextField(String.valueOf(book.getPrice()));
+        fpQuantity.setTextField(String.valueOf(book.getQuantity()));
+
+        fpName.setAlignmentX(Component.LEFT_ALIGNMENT);
+        fpAuthor.setAlignmentX(Component.LEFT_ALIGNMENT);
+        fpPublisher.setAlignmentX(Component.LEFT_ALIGNMENT);
+        fpCategory.setAlignmentX(Component.LEFT_ALIGNMENT);
+        fpPrice.setAlignmentX(Component.LEFT_ALIGNMENT);
+        fpQuantity.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         // ===== AREA =====
         ComboBoxPanel cbArea = new ComboBoxPanel();
@@ -90,14 +105,19 @@ public class EditBook extends JDialog {
         cbArea.getComboBox().addActionListener(e -> loadShelves.run());
 
         // ===== ADD FORM =====
-        form.add(createLabel("Tên sách"));     form.add(fpName);      form.add(Box.createVerticalStrut(12));
-        form.add(createLabel("Tác giả"));      form.add(fpAuthor);    form.add(Box.createVerticalStrut(12));
-        form.add(createLabel("Nhà xuất bản")); form.add(fpPublisher); form.add(Box.createVerticalStrut(12));
-        form.add(createLabel("Thể loại"));     form.add(fpCategory);  form.add(Box.createVerticalStrut(12));
-        form.add(createLabel("Giá (đ)"));      form.add(fpPrice);     form.add(Box.createVerticalStrut(12));
-        form.add(createLabel("Số lượng"));     form.add(fpQuantity);  form.add(Box.createVerticalStrut(12));
-        form.add(createLabel("Khu vực"));      form.add(cbArea);      form.add(Box.createVerticalStrut(12));
-        form.add(createLabel("Kệ sách"));      form.add(cbShelf);     form.add(Box.createVerticalStrut(12));
+        form.add(fpName);      form.add(Box.createVerticalStrut(12));
+        form.add(fpAuthor);    form.add(Box.createVerticalStrut(12));
+        form.add(fpPublisher); form.add(Box.createVerticalStrut(12));
+        form.add(fpCategory);  form.add(Box.createVerticalStrut(12));
+        form.add(fpPrice);     form.add(Box.createVerticalStrut(12));
+        form.add(fpQuantity);  form.add(Box.createVerticalStrut(12));
+        form.add(cbArea);      form.add(Box.createVerticalStrut(12));
+        form.add(cbShelf);     form.add(Box.createVerticalStrut(12));
+
+        // ===== WRAPPER FIX KHOẢNG TRẮNG =====
+        JPanel wrapper = new JPanel(new BorderLayout());
+        wrapper.setBackground(Color.WHITE);
+        wrapper.add(form, BorderLayout.NORTH);
 
         // ===== FOOTER =====
         JPanel footer = new JPanel(new GridLayout(1, 2, 12, 0));
@@ -118,8 +138,6 @@ public class EditBook extends JDialog {
                 int idArea = 0;
                 int idShelf = 0;
 
-
-                // Map Tên Area -> ID Area
                 for (Area a : areas.values()) {
                     if (a.getName().equals(areaName)) {
                         idArea = a.getId();
@@ -127,7 +145,6 @@ public class EditBook extends JDialog {
                     }
                 }
 
-                // Map Tên Shelf -> ID Shelf
                 for (Shelf s : shelves.values()) {
                     if (s.getName().equals(shelfName)) {
                         idShelf = s.getId();
@@ -135,14 +152,13 @@ public class EditBook extends JDialog {
                     }
                 }
 
-                // Map Tên Category -> ID Category
                 String categoryName = fpCategory.getTextField().trim();
 
                 Book updated = new Book(
                         book.getId(),
                         fpName.getTextField().trim(),
                         fpAuthor.getTextField().trim(),
-                        categoryName, // Sửa thành truyền idCategory (int)
+                        categoryName,
                         fpPublisher.getTextField().trim(),
                         Double.parseDouble(fpPrice.getTextField().trim()),
                         Integer.parseInt(fpQuantity.getTextField().trim()),
@@ -166,13 +182,13 @@ public class EditBook extends JDialog {
         footer.add(btnSave);
 
         add(header, BorderLayout.NORTH);
-        add(form, BorderLayout.CENTER);
+        add(wrapper, BorderLayout.CENTER);
         add(footer, BorderLayout.SOUTH);
 
         setVisible(true);
     }
 
-    // ===== STYLE BUTTON =====
+    // ===== BUTTON =====
     private JButton createButton(String text, Color bg, Color fg) {
         JButton btn = new JButton(text) {
             @Override
@@ -194,31 +210,11 @@ public class EditBook extends JDialog {
         return btn;
     }
 
-    // ===== STYLE COMBO =====
+    // ===== COMBO STYLE =====
     private void styleCombo(ComboBoxPanel cb) {
         cb.getComboBox().setFont(new Font("Arial", Font.PLAIN, 14));
         cb.setBorder(new EmptyBorder(2, 10, 2, 10));
-        cb.setMaximumSize(new Dimension(Integer.MAX_VALUE, 44));
-        cb.setPreferredSize(new Dimension(0, 44));
+        cb.setMaximumSize(new Dimension(Integer.MAX_VALUE, 36));
         cb.setAlignmentX(Component.LEFT_ALIGNMENT);
-    }
-
-    private FieldPanel createFieldPanel(String value) {
-        FieldPanel fp = new FieldPanel(value);
-        fp.setTextField(value);
-        fp.field.setForeground(Color.BLACK);
-        fp.field.setCaretPosition(0);
-        fp.setMaximumSize(new Dimension(Integer.MAX_VALUE, 44));
-        fp.setPreferredSize(new Dimension(0, 44));
-        fp.setAlignmentX(Component.LEFT_ALIGNMENT);
-        return fp;
-    }
-
-    private JLabel createLabel(String text) {
-        JLabel lbl = new JLabel(text);
-        lbl.setFont(new Font("Arial", Font.PLAIN, 13));
-        lbl.setForeground(new Color(100, 100, 100));
-        lbl.setAlignmentX(Component.LEFT_ALIGNMENT);
-        return lbl;
     }
 }

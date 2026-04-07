@@ -1,6 +1,7 @@
 package riri.admin.store.listbook;
 
 import riri.admin.store.action.DeleteBook;
+import riri.admin.store.action.EditBook;
 import riri.components.BorderPanel;
 import riri.components.page.BasePanel;
 import riri.components.table.CustomRenderer;
@@ -9,7 +10,6 @@ import riri.model.Area;
 import riri.model.Book;
 import riri.model.Shelf;
 import riri.util.AppContext;
-import riri.admin.store.action.EditBook;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -213,6 +213,7 @@ public class ListBookPanel extends JPanel {
     private void loadData() {
         for (Book b : books.values()) {
             if (b == null) continue;
+            if (b.isDeleted()) continue;
             if (b.getName() == null || b.getName().isBlank()) continue;
 
             String areaName = "";
