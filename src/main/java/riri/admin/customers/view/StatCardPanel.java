@@ -1,6 +1,5 @@
-package riri.admin.customers.item;
+package riri.admin.customers.view;
 
-import riri.components.BorderPanel;
 import riri.components.page.BasePanel;
 import riri.components.page.StatPanel;
 import riri.util.AppContext;

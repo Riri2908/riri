@@ -1,10 +1,10 @@
 package riri.admin.customers;
 
 import riri.admin.customers.controller.CustomerController;
-import riri.admin.customers.item.CustomerForm;
-import riri.admin.customers.item.StatCardPanel;
-import riri.admin.customers.item.TableCustomer;
-import riri.admin.customers.item.TitleCustomerPanel;
+import riri.admin.customers.view.CustomerForm;
+import riri.admin.customers.view.StatCardPanel;
+import riri.admin.customers.view.TableCustomer;
+import riri.admin.customers.view.TitleCustomerPanel;
 import riri.admin.invoice.InvoicePage;
 import riri.components.BorderPanel;
 import riri.model.Customer;

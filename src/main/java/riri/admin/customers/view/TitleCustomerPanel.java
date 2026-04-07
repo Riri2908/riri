@@ -1,4 +1,4 @@
-package riri.admin.customers.item;
+package riri.admin.customers.view;
 
 import riri.admin.customers.CustomerPage;
 import riri.components.BorderPanel;
@@ -7,8 +7,6 @@ import riri.components.page.BasePanel;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class TitleCustomerPanel extends BorderPanel {
 

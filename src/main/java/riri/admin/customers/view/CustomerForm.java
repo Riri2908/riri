@@ -1,4 +1,4 @@
-package riri.admin.customers.item;
+package riri.admin.customers.view;
 
 import riri.components.BorderPanel;
 import riri.components.combobox.ComboBoxPanel;
@@ -22,8 +22,8 @@ public class CustomerForm extends BorderPanel {
 
     public JLabel infomationTitle = BasePanel.createTitle("","Arial",Font.BOLD,14,Color.BLACK);
     public BorderPanel BUTTON_EXIT_CLOSE = new BorderPanel(16,Color.WHITE,0,0,new Color(220,220,220),1);
-    public BorderPanel BUTTON_CANCEL = new BorderPanel(16,null,0,0,new Color(220,220,220),1);;
-    public BorderPanel BUTTON_COMPLETE =  new BorderPanel(16,null,0,0,new Color(220,220,220),1);;
+    public BorderPanel BUTTON_CANCEL = new BorderPanel(16,null,0,0,new Color(220,220,220),1);
+    public BorderPanel BUTTON_COMPLETE =  new BorderPanel(16,null,0,0,new Color(220,220,220),1);
 
     public CustomerForm(){
         super(16,Color.WHITE,0,0,new Color(220,220,220),1);

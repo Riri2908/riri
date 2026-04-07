@@ -1,10 +1,10 @@
 package riri.admin.customers.controller;
 
 import riri.admin.customers.CustomerPage;
-import riri.admin.customers.item.CustomerForm;
-import riri.admin.customers.item.StatCardPanel;
-import riri.admin.customers.item.TableCustomer;
-import riri.admin.customers.item.TitleCustomerPanel;
+import riri.admin.customers.view.CustomerForm;
+import riri.admin.customers.view.StatCardPanel;
+import riri.admin.customers.view.TableCustomer;
+import riri.admin.customers.view.TitleCustomerPanel;
 import riri.model.Customer;
 import riri.model.CustomerType;
 import riri.util.AppContext;
@@ -26,7 +26,7 @@ public class CustomerController {
     public CustomerForm customerForm;
     public TableCustomer tableCustomer;
     public TitleCustomerPanel titleCustomer;
-    private final KeyEventDispatcher focusBlocker = e -> {
+    private final KeyEventDispatcher focusBlocker = _ -> {
         // Khi infomationPanel đang hiện, chặn tất cả phím từ component khác
         if (customerForm.isVisible()) {
             Component focused = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
@@ -38,7 +38,7 @@ public class CustomerController {
             }
         }
         return false;
-    };;
+    };
 
     public CustomerController(CustomerPage customerPage, StatCardPanel statCardPanel,CustomerForm customerForm, TableCustomer tableCustomer, TitleCustomerPanel titleCustomerPanel) {
         this.statCardPanel = statCardPanel;
@@ -253,10 +253,6 @@ public class CustomerController {
                 customerForm.totalOrderField.showPlaceholder("0",Color.BLACK);
             }
         });
-
-    }
-
-    private void updateData(){
 
     }
 

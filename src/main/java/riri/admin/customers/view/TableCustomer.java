@@ -1,4 +1,4 @@
-package riri.admin.customers.item;
+package riri.admin.customers.view;
 
 import riri.admin.customers.CustomerPage;
 import riri.components.BorderPanel;
@@ -76,12 +76,12 @@ public class TableCustomer extends BorderPanel {
             return label;
         });
 
-        renderer.addLabel(0,(label, row)->{
+        renderer.addLabel(0,(label, _)->{
             label.setFont(new Font("Arial",Font.BOLD,14));
             return label;
         });
 
-        renderer.addLabel(1,(label,value,row)->{
+        renderer.addLabel(1,(_,value,row)->{
 
             boolean hoverRow = row == tablePanel.getHoveredRow();
 
@@ -121,7 +121,7 @@ public class TableCustomer extends BorderPanel {
             return panel;
         });
 
-        renderer.addLabel(2, (label, value, row) -> {
+        renderer.addLabel(2, (_, value, row) -> {
             boolean hoverRow = row == tablePanel.getHoveredRow();
             CustomerType type = (CustomerType) value;
 
@@ -184,21 +184,21 @@ public class TableCustomer extends BorderPanel {
             return panel;
         });
 
-        renderer.addLabel(3,(label, row)->{
+        renderer.addLabel(3,(label, _)->{
             label.setText(label.getText()+" đơn");
             label.setFont(new Font("Arial",Font.BOLD,14));
             label.setForeground(new Color(89, 71, 228));
             return label;
         });
 
-        renderer.addLabel(4,(label, row)->{
+        renderer.addLabel(4,(label, _)->{
             label.setText(label.getText()+" đ");
             label.setFont(new Font("Arial",Font.BOLD,14));
             label.setForeground(new Color(89, 165, 62));
             return label;
         });
 
-        renderer.addLabel(7,(label,row)->{
+        renderer.addLabel(7,(_,row)->{
             boolean hoverRow = row == tablePanel.getHoveredRow();
             boolean hoverCol = hoverRow && tablePanel.getHoveredCol() == 7;
 

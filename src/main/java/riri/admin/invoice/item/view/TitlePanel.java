@@ -1,5 +1,6 @@
-package riri.admin.invoice;
+package riri.admin.invoice.item.view;
 
+import riri.admin.invoice.InvoicePage;
 import riri.components.BorderPanel;
 import riri.components.page.BasePanel;
 

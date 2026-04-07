@@ -1,4 +1,4 @@
-package riri.admin.invoice.item.invoice;
+package riri.admin.invoice.item.view;
 
 import riri.components.BorderPanel;
 import riri.components.combobox.ComboBoxCustomRenderer;

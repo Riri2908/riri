@@ -1,14 +1,11 @@
-package riri.admin.home.items;
+package riri.admin.home.view;
 
 import riri.components.BorderPanel;
 import riri.components.page.BasePanel;
-import riri.service.component.Period;
-import riri.util.AppContext;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
@@ -20,6 +17,11 @@ public class HeaderPanel extends BorderPanel {
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE', 'dd' tháng 'MM', 'yyy", locale);
 
     public GridBagConstraints gbc = new GridBagConstraints();
+
+    public BorderPanel revenueCard;
+    public BorderPanel orderCard;
+    public BorderPanel bookCard;
+    public BorderPanel warningCard;
 
     public HeaderPanel() {
         setLayout(new GridBagLayout());
@@ -44,59 +46,44 @@ public class HeaderPanel extends BorderPanel {
         gbc.weightx = 1;
         gbc.weighty = 1.;
 
-        double totalPriceCurrentWeek = AppContext.INVOICE_SERVICE.totalPrice(LocalDate.now(), Period.DAY);
-        double totalPriceLastWeek = AppContext.INVOICE_SERVICE.totalPrice(LocalDate.now().minusDays(1), Period.DAY);
-        double percentPrice = totalPriceLastWeek == 0 ? Double.NaN : ((totalPriceCurrentWeek - totalPriceLastWeek) / totalPriceLastWeek) * 100;
+        revenueCard = statCard("Doanh thu", new Color(22, 163, 74),
+                "revenue",0, Double.NaN, "% so với hôm qua",
+                new Color(240, 253, 244), new Color(187, 247, 208));
 
-        addItem(statCard(
-                "Doanh thu", new Color(22,163,74),
-                "revenue",
-                totalPriceCurrentWeek,
-                percentPrice, "% so với hôm qua",
-                new Color(240, 253, 244),
-                new Color(187,247,208)),
-                0,1
-        );
+        orderCard = statCard("Số đơn hàng", new Color(37, 99, 235),
+                "total_price",0, Double.NaN, "% so với hôm qua",
+                new Color(239, 246, 255), new Color(191, 219, 254));
 
-        int totalOrderCurrentWeek = AppContext.INVOICE_SERVICE.totalOrders(LocalDate.now(),Period.DAY);
-        int totalOrderLastWeek = AppContext.INVOICE_SERVICE.totalOrders(LocalDate.now().minusDays(1),Period.DAY);
-        double percentOrder = ((double) (totalOrderCurrentWeek-totalOrderLastWeek) /totalOrderLastWeek)*100;
+        bookCard = statCard("Số lượng sách đã bán", new Color(147, 51, 234),
+                "user",0, Double.NaN, "% so với hôm qua",
+                new Color(250, 245, 255), new Color(233, 213, 255));
 
-        addItem(statCard(
-                "Số đơn hàng", new Color(37, 99, 235),
-                "total_price",
-                totalOrderCurrentWeek,
-                percentOrder,"% so với hôm qua",
-                new Color(239, 246, 255),
-                new Color(191, 219, 254)),
-                1,1
-        );
+        warningCard = statCard("Cảnh báo", new Color(234, 88, 12),
+                "warning",0, -Double.MAX_VALUE, "Sách trong kho sắp hết",
+                new Color(255, 247, 237), new Color(254, 215, 170));
 
-        int totalBookCurrentWeek = AppContext.INVOICE_SERVICE.totalQuantityBook(LocalDate.now(),Period.DAY);
-        int totalBookLastWeek = AppContext.INVOICE_SERVICE.totalQuantityBook(LocalDate.now().minusDays(1),Period.DAY);
-        double percentBook = ((double) (totalBookCurrentWeek-totalBookLastWeek) /totalBookLastWeek)*100;
-
-        addItem(statCard(
-                "Số lượng sách đã bán", new Color(147, 51, 234),
-                "user",
-                totalBookCurrentWeek,
-                percentBook, "% so với hôm qua",
-                new Color(250, 245, 255),
-                new Color(233, 213, 255)),
-                2,1
-        );
-
-        int lowStockBooks = AppContext.BOOK_SERVICE.getLowStockBooks().size();
-
-        addItem(statCard(
-                "Cảnh báo", new Color(234, 88, 12),
-                "warning",
-                lowStockBooks,-Double.MAX_VALUE,"Sách trong kho sắp hết",
-                new Color(255, 247, 237),
-                new Color(254, 215, 170)),
-                3,1
-        );
+        addItem(revenueCard,0, 1);
+        addItem(orderCard,1, 1);
+        addItem(bookCard,2, 1);
+        addItem(warningCard,3, 1);
     }
+
+    public void updateCard(BorderPanel card, double value, double percent, String subText) {
+        for (Component c : card.getComponents()) {
+            if (!(c instanceof JLabel label)) continue;
+            String name = label.getName() == null ? "" : label.getName();
+            switch (name) {
+                case "valueLabel" -> label.setText(BasePanel.formatNumber((long) value));
+                case "subLabel"   -> {
+                    Color color = (Color) card.getClientProperty("titleColor");
+                    updateSubLabel(label, percent, subText, color);
+                }
+            }
+        }
+        card.revalidate();
+        card.repaint();
+    }
+
     public BorderPanel createTitle(){
 
         BorderPanel titlePanel = new BorderPanel(0,Color.WHITE,0,0,null,0);
@@ -113,11 +100,8 @@ public class HeaderPanel extends BorderPanel {
     public BorderPanel statusTitle(){
         BorderPanel statusPanel = new BorderPanel(20,new Color(240, 253, 244),0,0,null,0);
         statusPanel.setBorder(new EmptyBorder(2,10,2,10));
-
         JLabel label = BasePanel.createTitle("● Hoạt động tốt","Arial",Font.PLAIN,15,new Color(21, 128, 61));
-
         statusPanel.add(label);
-
         return statusPanel;
     }
 
@@ -125,6 +109,8 @@ public class HeaderPanel extends BorderPanel {
         BorderPanel cardPanel = new BorderPanel(17,backgroundColor,0,0,borderColor,1);
         cardPanel.setLayout(new BoxLayout(cardPanel, BoxLayout.Y_AXIS));
         cardPanel.setBorder(new EmptyBorder(15,15,10,10));
+        cardPanel.putClientProperty("titleColor", titleColor);
+        cardPanel.putClientProperty("iconName", iconName);
 
         ImageIcon icon = new ImageIcon(BasePanel.createImageLogo(getClass(),"homepage/"+iconName,20,20));
         JLabel titleLabel = BasePanel.createTitle(title,"Arial",Font.BOLD,17,titleColor);
@@ -132,9 +118,14 @@ public class HeaderPanel extends BorderPanel {
         titleLabel.setIconTextGap(5);
 
         JLabel valueLabel = BasePanel.createTitle(BasePanel.formatNumber((long) value),"Arial",Font.BOLD,20,Color.BLACK);
+        valueLabel.setName("valueLabel");
+
         Icon iconUp = BasePanel.createIcon(getClass(),"homepage/up",15,15,titleColor);
         Icon iconDown = BasePanel.createIcon(getClass(),"homepage/down",15,15,titleColor);
+
         JLabel subLabel = BasePanel.createTitle(String.format("%.1f", percent) + subText,"Arial",Font.PLAIN,14,titleColor);
+        subLabel.setName("subLabel");
+
         if(percent==-Double.MAX_VALUE){
             subLabel.setIcon(null);
             subLabel.setText(subText);
@@ -163,6 +154,20 @@ public class HeaderPanel extends BorderPanel {
         add(component,gbc);
     }
 
+    private void updateSubLabel(JLabel label, double percent, String subText, Color color) {
+
+        label.setForeground(color);
+        if (percent == -Double.MAX_VALUE || Double.isNaN(percent)) {
+            label.setIcon(null);
+            label.setText(subText);
+        } else {
+            label.setText(String.format("%.1f", percent) + subText);
+            Icon up = BasePanel.createIcon(getClass(), "homepage/up",   15, 15, color);
+            Icon down = BasePanel.createIcon(getClass(), "homepage/down", 15, 15, color);
+            label.setIcon(percent >= 0 ? up : down);
+        }
+    }
+
     private void updateTime(JLabel time) {
         LocalDateTime now = LocalDateTime.now();
         time.setText(now.format(formatter));
@@ -170,7 +175,7 @@ public class HeaderPanel extends BorderPanel {
 
     public void startClock(JLabel time) {
         updateTime(time);
-        Timer timer = new Timer(1000, e -> updateTime(time));
+        Timer timer = new Timer(1000, _ -> updateTime(time));
         timer.start();
     }
 }

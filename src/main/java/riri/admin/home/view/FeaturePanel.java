@@ -1,4 +1,4 @@
-package riri.admin.home.items;
+package riri.admin.home.view;
 
 import riri.components.BorderPanel;
 import riri.components.page.BasePanel;
@@ -17,49 +17,20 @@ public class FeaturePanel extends BorderPanel {
     public ContentPanel contentPanel;
 
     public FeaturePanel(ContentPanel contentPanel) {
-        super(0,new Color(247, 248, 249),0,0,Color.BLACK,0);
-
+        super(0, new Color(247, 248, 249), 0, 0, Color.BLACK, 0);
         this.contentPanel = contentPanel;
 
-        setPreferredSize(new Dimension(0,HEIGHT));
-        setMaximumSize(new Dimension(Integer.MAX_VALUE,HEIGHT));
+        setPreferredSize(new Dimension(0, HEIGHT));
+        setMaximumSize(new Dimension(Integer.MAX_VALUE, HEIGHT));
         setLayout(new GridBagLayout());
 
-        gbc.insets = new Insets(10,10,10,10);
+        gbc.insets = new Insets(10, 10, 10, 10);
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1;
         gbc.weighty = 0;
-
-        addItem(itemPanel(BasePanel.createIcon(getClass(),"homepage/dashboard",25,25,new Color(0, 40, 255)),
-                new Color(232, 241, 255),
-                "Thống kê","Xem tổng quan doanh thu, sách bán chạy và các chỉ số khác", "Biểu đồ và thống kê"
-                ,new Color(37, 99, 235),new Color(222, 238, 255)),
-                0, 0);
-
-        addItem(itemPanel(BasePanel.createIcon(getClass(),"homepage/book",25,25,new Color(113, 19, 213)),
-                new Color(242, 223, 255),
-                "Quản lý sách","Thêm, xóa, sửa, quản lý khu vực kho và cảnh báo tồn kho", "Theo dõi tồn kho",
-                new Color(113, 19, 213),new Color(242, 223, 255)),
-                1, 0);
-
-        addItem(itemPanel(BasePanel.createIcon(getClass(),"homepage/package",25,25,new Color(23, 172, 53)),
-                new Color(224, 253, 224),
-                "Quản lý nhập kho","Quản lý nhập hàng, theo dõi lịch sử nhập xuất hàng", "Nhập hàng"
-                ,new Color(23, 172, 53),new Color(224, 253, 224)),
-                2, 0);
-
-        addItem(itemPanel(BasePanel.createIcon(getClass(),"homepage/shopping",25,25,new Color(255, 114, 9)),
-                        new Color(253, 231, 224),
-                        "Hóa đơn bán hàng","Tạo hóa đơn, áp dụng chiết khấu theo từng loại khách hàng và tự động xuất hàng", "Thanh toán nhanh"
-                        ,new Color(255, 114, 9),new Color(253, 231, 224)),
-                0, 1);
-
-        addItem(itemPanel(BasePanel.createIcon(getClass(),"homepage/users",25,25,new Color(255, 0, 165)),
-                new Color(255, 225, 243),
-                "Thống kê","Xem tổng quan doanh thu, sách bán chạy và các chỉ số khác", "Biểu đồ và thống kê"
-                ,new Color(255, 0, 165),new Color(255, 225, 243)),
-                1, 1);
-
+    }
+    public void addFeatureItem(Icon icon, Color iconBackground, String title, String subText, String tag, Color tagColor, Color tagBackground, int x, int y) {
+        addItem(itemPanel(icon, iconBackground, title, subText, tag, tagColor, tagBackground), x, y);
     }
 
     public BorderPanel itemPanel(Icon icon,Color iconBackground, String title, String subText, String tag, Color tagColor,Color tagBackground) {

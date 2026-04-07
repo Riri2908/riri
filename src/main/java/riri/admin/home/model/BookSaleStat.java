@@ -4,7 +4,7 @@ import riri.model.Book;
 
 
 public class BookSaleStat {
-    private Book book;
+    private final Book book;
     private int quantity;
 
     public BookSaleStat(Book book, int quantity) {
@@ -15,8 +15,8 @@ public class BookSaleStat {
     public Book getBook() { return book; }
     public int getQuantity() { return quantity; }
 
-    public void add(int qty){
+    public BookSaleStat add(int qty) {
         this.quantity += qty;
+        return this;
     }
-
 }

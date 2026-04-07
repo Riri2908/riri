@@ -1,8 +1,9 @@
 package riri.admin.home;
 
-import riri.admin.home.items.FeaturePanel;
-import riri.admin.home.items.HeaderPanel;
-import riri.admin.home.items.TopPanel;
+import riri.admin.home.controller.HomeController;
+import riri.admin.home.view.FeaturePanel;
+import riri.admin.home.view.HeaderPanel;
+import riri.admin.home.view.TopPanel;
 import riri.components.BorderPanel;
 import riri.components.page.BasePanel;
 import riri.components.page.ContentPanel;
@@ -15,14 +16,15 @@ public class HomePage extends JPanel {
     public BorderPanel root = new BorderPanel(0,new Color(247, 248, 249),0,0,null,0);
 
     public ContentPanel contentPanel;
-    public HeaderPanel headerPanel = new HeaderPanel();
-    public FeaturePanel featurePanel = new FeaturePanel(null);
-    public TopPanel topPanel = new TopPanel(null);
+    public HeaderPanel headerPanel;
+    public FeaturePanel featurePanel;
+    public TopPanel topPanel;
 
     public HomePage(ContentPanel contentPanel) {
-        this.contentPanel=contentPanel;
-        this.featurePanel.contentPanel = contentPanel;
-        this.topPanel.contentPanel = contentPanel;
+        this.contentPanel = contentPanel;
+        headerPanel  = new HeaderPanel();
+        featurePanel = new FeaturePanel(contentPanel);
+        topPanel     = new TopPanel(contentPanel);
         setLayout(new BorderLayout());
 
         root.setBorder(new EmptyBorder(25, 25, 25, 25));
@@ -46,6 +48,7 @@ public class HomePage extends JPanel {
         JScrollPane scroll = BasePanel.createScroll(root);
         add(scroll,BorderLayout.CENTER);
 
+        new HomeController(this,headerPanel,featurePanel,topPanel);
 
     }
 }

@@ -1,4 +1,4 @@
-package riri.admin.home.items;
+package riri.admin.home.view;
 
 import riri.admin.home.model.BookSaleStat;
 import riri.components.BorderPanel;
@@ -15,15 +15,16 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.*;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class TopPanel extends BorderPanel {
+
     public ContentPanel contentPanel;
 
     public GridBagConstraints gbc = new GridBagConstraints();
+
     public TablePanel topBookTable = new TablePanel();
     public CustomRenderer bookRenderer = new CustomRenderer();
+
     public TablePanel customerTable = new TablePanel();
     public CustomRenderer customerRenderer = new CustomRenderer();
 
@@ -42,6 +43,18 @@ public class TopPanel extends BorderPanel {
         addItem(topBookTable,0,0);
         addItem(customerTable,1,0);
     }
+
+    public void addBookRow(BookSaleStat stat) {
+        topBookTable.addRow(new Object[]{stat});
+    }
+
+    public void addCustomerRow(Customer customer) {
+        customerTable.addRow(new Object[]{customer});
+    }
+
+    public void clearBookRows()     { topBookTable.getModel().setRowCount(0); }
+
+//    public void clearCustomerRows() { customerTable.getModel().setRowCount(0); }
 
     public void settingTopBookTable(){
         topBookTable.setTitle("Top sách bán chạy");
@@ -66,7 +79,7 @@ public class TopPanel extends BorderPanel {
         });
 
 
-        bookRenderer.addLabel(0,(label, stat,row)->{
+        bookRenderer.addLabel(0,(_, stat,row)->{
             boolean hover = row == topBookTable.getHoveredRow();
             BookSaleStat book = (BookSaleStat) stat;
 
@@ -120,54 +133,7 @@ public class TopPanel extends BorderPanel {
 
         bookRenderer.applyHeader(topBookTable.getTable());
         topBookTable.setRenderer(bookRenderer);
-        loadBookTable();
         topBookTable.add(BUTTON_SHOWPAGE("Xem tất cả sách", new Color(12, 16, 255),new Color(231, 239, 255), "Quản lý sách"),BorderLayout.SOUTH);
-    }
-
-    public void loadBookTable(){
-        Map<Integer, BookSaleStat> data = getBookSaleStats();
-
-        if(data.isEmpty()){
-            return;
-        }
-        int i = 0;
-        for (BookSaleStat stat : data.values()) {
-            topBookTable.addRow(new Object[]{stat});
-
-            if (++i == 5) break;
-        }
-    }
-
-    public Map<Integer, BookSaleStat> getBookSaleStats() {
-
-        Map<Integer, Invoice> invoices = AppContext.INVOICE_SERVICE.getAll();
-        Map<Integer, Book> books = AppContext.BOOK_SERVICE.getAll();
-        Map<Integer, BookSaleStat> result = new HashMap<>();
-
-        for (Invoice invoice : invoices.values()) {
-
-            for (InvoiceDetail detail : invoice.getDetails()) {
-
-                int bookId = detail.getBookId();
-                int qty = detail.getQuantity();
-
-                Book book = books.get(bookId);
-                if (book == null) continue;
-
-                result.compute(bookId, (id, stat) -> {
-                    if (stat == null)
-                        return new BookSaleStat(book, qty);
-
-                    stat.add(qty);
-                    return stat;
-                });
-            }
-        }
-
-        return result.entrySet().stream()
-                .sorted((a, b) ->
-                        Integer.compare(b.getValue().getQuantity(), a.getValue().getQuantity()))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
     }
 
     public void settingCustomerTable(){
@@ -192,7 +158,7 @@ public class TopPanel extends BorderPanel {
             return label;
         });
 
-        customerRenderer.addLabel(0,(label, stat,row)->{
+        customerRenderer.addLabel(0,(_, stat,row)->{
             boolean hover = row == customerTable.getHoveredRow();
             Customer customer = (Customer) stat;
 
@@ -245,26 +211,8 @@ public class TopPanel extends BorderPanel {
 
         customerRenderer.applyHeader(customerTable.getTable());
         customerTable.setRenderer(customerRenderer);
-        loadCustomerable();
         customerTable.add(BUTTON_SHOWPAGE("Xem tất cả khách hàng", new Color(210, 12, 255),new Color(247, 231, 255),"Khách hàng"),BorderLayout.SOUTH);
     }
-
-    public void loadCustomerable(){
-        Map<Integer, Customer> data = AppContext.CUSTOMER_SERVICE.getAll();
-        List<Customer> customers = new ArrayList<>(data.values());
-        customers.sort(Comparator.comparing(Customer::getTotalPrice).reversed());
-
-        if(customers.isEmpty()){
-            return;
-        }
-        int i = 0;
-        for (Customer c : customers) {
-            customerTable.addRow(new Object[]{c});
-
-            if (++i == 5) break;
-        }
-    }
-
 
     public JPanel BUTTON_SHOWPAGE(String text,Color textColor,Color background,String Constructor){
         BorderPanel BUTTON = new BorderPanel(16,Color.WHITE,0,0,textColor,1);

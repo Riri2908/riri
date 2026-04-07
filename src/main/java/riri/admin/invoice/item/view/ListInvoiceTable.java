@@ -1,7 +1,5 @@
-package riri.admin.invoice.item.invoicelist;
+package riri.admin.invoice.item.view;
 
-import riri.admin.invoice.item.invoice.InformationPanel;
-import riri.admin.invoice.item.invoice.ShoppingCart;
 import riri.components.BorderPanel;
 import riri.components.page.BasePanel;
 import riri.components.table.CustomRenderer;
