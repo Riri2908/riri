@@ -1,7 +1,7 @@
-1;Java Core;Riri;Học thuật;NXB Giáo Dục;200000.0;0;1;1
-2;Clean Code;Robert C. Martin;Lập trình;Prentice Hall;38000.0;0;1;2
-3;Đắc Nhân Tâm;Dale Carnegie;Kỹ năng sống;NXB Tổng Hợp TP.HCM;150000.0;1;1;1
-4;Design Patterns;GoF;Lập trình;Addison-Wesley;400000.0;38;2;3
+1;Java Core;Riri;Học thuật;NXB Giáo Dục;200000.0;4;1;1
+2;Clean Code;Robert C. Martin;Lập trình;Prentice Hall;38000.0;21;1;2
+3;Đắc Nhân Tâm;Dale Carnegie;Kỹ năng sống;NXB Tổng Hợp TP.HCM;150000.0;2;1;1
+4;Design Patterns;GoF;Lập trình;Addison-Wesley;400000.0;23;2;3
 5;Spring Boot;Riri Dev;Công nghệ;NXB Công Nghệ Thông Tin;280000.0;45;2;4
 6;Effective Java;Joshua Bloch;Lập trình;Addison-Wesley;420000.0;60;2;3
 7;Atomic Habits;James Clear;Kỹ năng sống;Penguin Random House;180000.0;75;3;5
